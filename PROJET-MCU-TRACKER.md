@@ -95,7 +95,7 @@ const E = [
 2. **`render()` est complet à chaque changement d'état** (pas de patch DOM ciblé). C'est volontaire : ça a corrigé plusieurs bugs de synchronisation (lien Disney+ qui ne disparaissait pas, étoiles, badges). Attention : ne pas ajouter d'animation CSS globale sur les lignes/chapitres (`.row`, `.sg`, `.ch`) — un essai avec `fadeIn` a fait "flasher" tout l'écran puisque tout se re-render à chaque clic. (`js/render.js`)
 3. **Le bouton "i" est un frère du `<label>`, jamais un enfant.** Sur mobile, un tap imprécis dans un `<label>` déclenche la checkbox associée même avec `stopPropagation()`. Structure : `.row-top` contient `<label>` (checkbox+titre) + `<button class="info-btn">` comme éléments flex séparés. (`js/render.js`, `css/style.css`)
 4. **`window.prompt()` / `alert()` / `confirm()` sont à éviter** — bloqués silencieusement dans l'aperçu Claude (iframe sandboxée). Utiliser de vraies modales HTML (voir `#tmdb-modal` comme modèle).
-5. **Toute image externe (background-image, fetch) doit avoir un fallback gracieux.** L'aperçu Claude bloque aussi le chargement d'images/requêtes vers des domaines externes dans certains contextes. Voir `applyPosterUrl()` dans `js/modals.js` : précharge via `new Image()` avec `onerror` avant de remplacer le dégradé généré.
+5. **Toute image/lien externe dépendant d'un fetch doit avoir un fallback gracieux qui marche tout de suite, pas seulement en cas d'erreur.** L'aperçu Claude bloque aussi le chargement d'images/requêtes vers des domaines externes dans certains contextes. Voir `applyPosterUrl()` dans `js/modals.js` : précharge via `new Image()` avec `onerror` avant de remplacer le dégradé généré. Même principe pour le bouton IMDb : `imdbSearchUrl()` fournit un lien de recherche IMDb toujours correct et cliquable immédiatement (aucune clé requise) ; `fetchImdbId()` ne fait que l'**améliorer** en lien direct si une clé TMDB est configurée et que l'appel réussit — jamais l'inverse (ne pas attendre le fetch pour afficher un lien).
 6. **Filtres "Tout"/"À voir" et boutons "tout déplier"/"tout replier" doivent appeler `render()` explicitement** — ils ne font pas que togguer une classe CSS, sinon les changements ne s'appliquent qu'au prochain re-render déclenché ailleurs.
 7. **Le toggle Essentiel/Tout regarder doit être resynchronisé via `syncModeToggle()`** (`js/state.js`) à chaque fois que `mode` change par un autre chemin que son propre clic — ex. après un import JSON. Oublier cet appel laisse la pastille visuelle sur l'ancien mode alors que le contenu affiché a changé (bug corrigé le 26/07/2026).
 8. **Le compteur de résultats de recherche doit refléter les entrées réellement visibles**, pas le total des entrées qui matchent — en mode "À voir", les entrées déjà vues sont matchées par la recherche mais masquées en CSS (`body.view-todo .row.done{display:none}`) ; le compte doit être filtré pareil (voir `render()` dans `js/render.js`, bug corrigé le 26/07/2026).
@@ -105,7 +105,7 @@ const E = [
 
 - Suivi coché/décoché par film et par épisode, mode Essentiel/Tout regarder
 - Deux onglets de navigation : Chronologique (interne) / Ordre de sortie (réelle), voir section dédiée ci-dessus
-- Recherche (titre affiché + VO via `TITLE_EN`, quelle que soit la langue active)
+- Recherche (titre affiché + VO via `TITLE_EN`, + acteur/réalisateur via `INFO[id].cast`/`.director`), quelle que soit la langue active
 - Filtre "À voir" (masque les items/chapitres/séries entièrement vus)
 - "Ce soir" (stepper de minutes dispo, highlight les contenus qui rentrent)
 - "Film surprise" (aléatoire parmi le non-vu, exclut le pas-sorti)
@@ -113,8 +113,8 @@ const E = [
 - Statistiques : temps vu, %, graphique de progression cumulée (SVG, hover/tap interactif), progression par chapitre, meilleures notes
 - Notation 5 étoiles par titre (persiste même si décoché ensuite, mais ne s'affiche que si actuellement coché)
 - Export/Import JSON de la progression
-- Modale "i" par titre : affiche générée (dégradé + initiales, ou vraie affiche TMDB), synopsis, réalisation, casting, scène post-crédit, budget/box-office/RT, anecdote, connexions à la saga, lien bande-annonce
-- Intégration TMDB optionnelle (clé v3 ou v4 auto-détectée) pour affiches réelles, avec cache localStorage
+- Modale "i" par titre : affiche générée (dégradé + initiales, ou vraie affiche TMDB), synopsis, réalisation, casting, scène post-crédit, budget/box-office/RT, anecdote, connexions à la saga, lien bande-annonce, bouton IMDb (jaune/amber)
+- Intégration TMDB optionnelle (clé v3 ou v4 auto-détectée) pour affiches réelles + lien IMDb direct, avec cache localStorage pour les deux
 - Lien profond Disney+ (Universal Link iOS)
 - Icône PWA générée dynamiquement (canvas, badge hexagonal vert/or)
 - Thème clair/sombre (bouton, respecte la préférence système au premier lancement, puis persisté)

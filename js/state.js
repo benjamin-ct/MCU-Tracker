@@ -15,6 +15,7 @@ let sortMode='chrono';
 // retombe simplement sur l'affiche générée (dégradé + initiales), sans bloquer.
 let tmdbKey=null;
 let posterCache={}; // "movie:1726" -> URL de l'image, ou null si vérifié absent
+let imdbCache={}; // "movie:1726" -> tt-id IMDb, ou null si vérifié absent (via TMDB external_ids)
 let viewFilter='all',tonightMin=0,searchQuery='';
 let cGroup=new Set(),cSer=new Set(E.filter(x=>x.type==='s').map(x=>x.id));
 
@@ -67,6 +68,7 @@ async function boot(){
   // de les synchroniser via window.storage, ce sont des données très locales).
   const savedKey=lsGet('mcu-tmdb-key');if(savedKey)tmdbKey=savedKey;
   const savedCache=lsGet('mcu-poster-cache');if(savedCache)try{posterCache=JSON.parse(savedCache);}catch(_){}
+  const savedImdbCache=lsGet('mcu-imdb-cache');if(savedImdbCache)try{imdbCache=JSON.parse(savedImdbCache);}catch(_){}
 
   let fromST=false,legacyChecked=null,loadedWD=null;
   if(ST){

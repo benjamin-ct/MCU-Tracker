@@ -61,6 +61,47 @@ async function fetchRealPoster(id,tmdbInfo){
     showToast(t('tmdbErrNetwork'));
   }
 }
+// Lien de repli : recherche IMDb sur le titre anglais (fiable, ne dépend d'aucune
+// clé). Utilisé tel quel si aucune clé TMDB n'est configurée, ou remplacé par le
+// lien direct dès que fetchImdbId() a trouvé le vrai tt-id.
+function imdbSearchUrl(e){
+  return`https://www.imdb.com/find/?q=${encodeURIComponent(TITLE_EN[e.id]||e.title)}&s=tt`;
+}
+// Va chercher le vrai identifiant IMDb via l'endpoint /external_ids de TMDB (si une
+// clé est configurée) et remplace le lien de recherche par le lien direct vers la
+// fiche du titre. Échec/pas de clé → le lien de recherche déjà affiché reste actif,
+// donc pas besoin de toast d'erreur ici (contrairement à l'affiche, il n'y a rien
+// à "casser" si ça échoue silencieusement).
+async function fetchImdbId(id,tmdbInfo){
+  if(!tmdbKey||!tmdbInfo)return;
+  const cacheKey=`${tmdbInfo.type}:${tmdbInfo.id}`;
+  if(cacheKey in imdbCache){
+    if(imdbCache[cacheKey])applyImdbId(id,imdbCache[cacheKey]);
+    return;
+  }
+  const isV4=tmdbKey.length>60||tmdbKey.includes('.');
+  const url=isV4
+    ?`https://api.themoviedb.org/3/${tmdbInfo.type}/${tmdbInfo.id}/external_ids`
+    :`https://api.themoviedb.org/3/${tmdbInfo.type}/${tmdbInfo.id}/external_ids?api_key=${tmdbKey}`;
+  const opts=isV4?{headers:{Authorization:`Bearer ${tmdbKey}`}}:{};
+  try{
+    const res=await fetch(url,opts);
+    if(!res.ok)return;
+    const data=await res.json();
+    const imdbId=data.imdb_id||null;
+    imdbCache[cacheKey]=imdbId;
+    lsSet('mcu-imdb-cache',JSON.stringify(imdbCache));
+    if(imdbId)applyImdbId(id,imdbId);
+  }catch(err){
+    // Réseau bloqué/hors-ligne : le lien de recherche reste affiché, rien à faire.
+  }
+}
+function applyImdbId(id,imdbId){
+  const btn=document.getElementById('imdb-btn-el');
+  if(!btn||btn.dataset.forId!==id)return;
+  btn.href=`https://www.imdb.com/title/${imdbId}/`;
+}
+
 function applyPosterUrl(id,url){
   if(!url)return;
   const el=document.getElementById('info-poster-el');
@@ -95,6 +136,7 @@ function openInfo(id){
   if(info?.box&&info.box!=='N/A')nums.push(`<div class="num-card"><div class="num-v">${info.box}</div><div class="num-l">${info.box.startsWith('TBD')?t('boxOfficeLbl'):t('boxOfficeWorldLbl')}</div></div>`);
   if(info?.rt)nums.push(`<div class="num-card num-rt"><div class="num-v">${info.rt}</div><div class="num-l">Rotten Tomatoes</div></div>`);
   const trailerBtn=info?.yt&&info.yt.startsWith('http')?`<a class="trailer-btn" href="${info.yt}" target="_blank">${t('trailerBtn')}</a>`:'';
+  const imdbBtn=`<a class="imdb-btn" id="imdb-btn-el" data-for-id="${id}" href="${imdbSearchUrl(e)}" target="_blank">${t('imdbBtn')}</a>`;
   panel.innerHTML=`
     <div class="stat-top">
       ${renderPoster(e)}
@@ -108,7 +150,7 @@ function openInfo(id){
     ${info?`
       <p class="info-synopsis">${info.synopsis}</p>
       ${nums.length?`<div class="num-grid">${nums.join('')}</div>`:''}
-      ${trailerBtn}
+      <div class="link-btns">${trailerBtn}${imdbBtn}</div>
       <div class="info-grid">
         <div class="info-row"><span class="info-lbl">${t('directorLbl')}</span><span>${info.director}</span></div>
         <div class="info-row"><span class="info-lbl">${t('castLbl')}</span><span>${info.cast}</span></div>
@@ -129,6 +171,9 @@ function openInfo(id){
   }else if(info?.tmdb){
     fetchRealPoster(id,info.tmdb);
   }
+  // Le bouton IMDb pointe déjà vers une recherche fiable (imdbSearchUrl) ; on tente
+  // juste de l'améliorer en lien direct si une clé TMDB est configurée.
+  if(info?.tmdb)fetchImdbId(id,info.tmdb);
 }
 
 // Construit la série cumulée (minutes vues au fil des jours) à partir de watchDates

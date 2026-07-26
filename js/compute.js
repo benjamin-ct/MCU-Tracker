@@ -4,13 +4,19 @@ function sDone(e){return e.epMins.filter((_,i)=>isWatched(`${e.id}-e${i+1}`)).le
 function sRem(e){return e.epMins.reduce((s,m,i)=>s+(isWatched(`${e.id}-e${i+1}`)?0:m),0);}
 function fitsTonight(e){if(tonightMin<=0||isFuture(e))return false;if(e.type==='f')return!isWatched(e.id)&&e.m<=tonightMin;return sRem(e)>0&&sRem(e)<=tonightMin;}
 // La recherche matche aussi le titre anglais (TITLE_EN, data-en.js) même en affichage
-// français, pour que taper "iron man" marche quelle que soit la langue active.
+// français (pour que taper "iron man" marche quelle que soit la langue active), ainsi
+// que le casting et la réalisation (INFO[id].cast/.director) pour chercher par acteur
+// ou réalisateur.
 function matchSearch(e){
   if(!searchQuery)return true;
   const q=searchQuery.toLowerCase();
   if(e.title.toLowerCase().includes(q))return true;
   const orig=TITLE_EN[e.id];
-  return orig?orig.toLowerCase().includes(q):false;
+  if(orig&&orig.toLowerCase().includes(q))return true;
+  const info=INFO[e.id];
+  if(info?.cast&&info.cast.toLowerCase().includes(q))return true;
+  if(info?.director&&info.director.toLowerCase().includes(q))return true;
+  return false;
 }
 function nextItem(){for(const e of E){if(!cnt(e))continue;if(isFuture(e))continue;if(e.type==='f'&&!isWatched(e.id))return e;if(e.type==='s'&&sDone(e)<e.count)return e;}return null;}
 function daysLeft(){return Math.max(0,Math.ceil((DOOM-new Date())/86400000));}
