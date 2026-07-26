@@ -9,6 +9,7 @@ let lang='fr';
 const STRINGS={
   fr:{
     chronoOrder:"Ordre Chronologique",
+    releaseOrderLbl:"Ordre de Sortie",
     remainingLbl:"Restantes",
     modeEssential:"Essentiel",
     modeAll:"Tout regarder",
@@ -81,6 +82,7 @@ const STRINGS={
   },
   en:{
     chronoOrder:"Chronological Order",
+    releaseOrderLbl:"Release Order",
     remainingLbl:"Remaining",
     modeEssential:"Essential",
     modeAll:"Watch Everything",
@@ -227,6 +229,15 @@ function applyLangToStaticDOM(){
   // on ne le retexte que s'il n'est pas en train d'attendre une confirmation.
   const rst=document.getElementById('rst');
   if(rst&&!rst.classList.contains('armed'))rst.textContent=t('resetBtn');
+  syncBrandLabel();
+}
+// Le sous-titre du header dépend à la fois de la langue ET de l'onglet de tri actif
+// (sortMode, js/state.js) — pas juste de la langue, donc pas géré via data-i18n comme
+// le reste du texte statique. Appelée ici (changement de langue) et depuis
+// syncSortToggle() (changement d'onglet + boot).
+function syncBrandLabel(){
+  const el=document.getElementById('brand-r');
+  if(el)el.textContent=sortMode==='release'?t('releaseOrderLbl'):t('chronoOrder');
 }
 
 function langBtnLabel(){return lang==='en'?'FR':'EN';}

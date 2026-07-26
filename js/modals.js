@@ -219,11 +219,11 @@ function renderChartSVG(geom){
     <div class="chart-tip" id="chart-tip"></div>
     <svg viewBox="0 0 ${w} ${h}" id="cum-chart-svg" style="width:100%;height:112px;display:block;touch-action:none;">
       <polygon points="${areaPts}" fill="rgba(56,191,80,.14)"/>
-      <line class="chart-vline" x1="0" y1="6" x2="0" y2="${h-padB}" stroke="rgba(255,255,255,.18)" stroke-width="1" opacity="0"></line>
+      <line class="chart-vline" x1="0" y1="6" x2="0" y2="${h-padB}" stroke="var(--dim)" stroke-opacity="0.5" stroke-width="1" opacity="0"></line>
       <polyline points="${lineStr}" fill="none" stroke="#38BF50" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
-      <circle class="chart-marker" r="4" fill="#38BF50" stroke="#0D1210" stroke-width="1.5" opacity="0"></circle>
-      <text x="${pad}" y="${h-6}" font-family="DM Mono, monospace" font-size="9" fill="#3E5240">${lbl1}</text>
-      <text x="${w-pad}" y="${h-6}" font-family="DM Mono, monospace" font-size="9" fill="#3E5240" text-anchor="end">${lbl2}</text>
+      <circle class="chart-marker" r="4" fill="#38BF50" stroke="var(--card)" stroke-width="1.5" opacity="0"></circle>
+      <text x="${pad}" y="${h-6}" font-family="DM Mono, monospace" font-size="9" fill="var(--faint)">${lbl1}</text>
+      <text x="${w-pad}" y="${h-6}" font-family="DM Mono, monospace" font-size="9" fill="var(--faint)" text-anchor="end">${lbl2}</text>
     </svg>
   </div>`;
 }

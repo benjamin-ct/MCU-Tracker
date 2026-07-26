@@ -51,6 +51,7 @@ function syncModeToggle(){
 function syncSortToggle(){
   sortChronoBtn.classList.toggle('on',sortMode==='chrono');
   sortReleaseBtn.classList.toggle('on',sortMode==='release');
+  syncBrandLabel();
 }
 async function save(){
   // mcu6-c n'est plus écrit : watchDates (mcu6-wd) est l'unique source de vérité.
