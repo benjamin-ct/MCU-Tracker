@@ -21,22 +21,23 @@ Ouvre `index.html` dans un navigateur — en local (double-clic) ou via un hébe
 - Notation 5 étoiles par titre
 - Export/Import JSON de la progression
 - Fiche détaillée par titre (synopsis, casting, scène post-crédit, budget/box-office, anecdotes, bande-annonce)
-- Affiches réelles via l'API TMDB (clé optionnelle, à renseigner dans l'app)
+- Affiches réelles via l'API TMDB — automatique sur [mcuwatchtimeline.com](https://mcuwatchtimeline.com) (proxy serveur, aucune config visiteur) ; sinon clé personnelle optionnelle à coller dans l'app (voir section TMDB ci-dessous)
 - Lien direct vers Disney+
 - Icône PWA générée dynamiquement
 
 ## Structure du projet
 
 ```
-index.html       squelette HTML
-css/style.css    styles
-js/data.js       catalogue des films/séries, infos détaillées
-js/platform.js   détection plateforme + lien profond Disney+
-js/state.js      état, persistance (localStorage), migration
-js/compute.js    calculs dérivés (totaux, filtres, recherche...)
-js/render.js     rendu de la liste principale
-js/modals.js     modale infos, modale statistiques, graphique
-js/app.js        câblage des événements, démarrage de l'app
+index.html                        squelette HTML
+css/style.css                     styles
+js/data.js                        catalogue des films/séries, infos détaillées
+js/platform.js                    détection plateforme + lien profond Disney+
+js/state.js                       état, persistance (localStorage), migration
+js/compute.js                     calculs dérivés (totaux, filtres, recherche...)
+js/render.js                      rendu de la liste principale
+js/modals.js                      modale infos, modale statistiques, graphique
+js/app.js                         câblage des événements, démarrage de l'app
+functions/api/tmdb/[[path]].js    Cloudflare Pages Function : proxy TMDB (clé côté serveur)
 ```
 
 Voir `PROJET-MCU-TRACKER.md` pour le détail de l'architecture et les décisions à ne pas régresser.
@@ -44,3 +45,11 @@ Voir `PROJET-MCU-TRACKER.md` pour le détail de l'architecture et les décisions
 ## TMDB
 
 This product uses the TMDB API but is not endorsed or certified by TMDB.
+
+Sur le déploiement Cloudflare Pages (mcuwatchtimeline.com), les affiches réelles marchent pour tout le monde sans configuration grâce à une Pages Function serveur (`functions/api/tmdb/[[path]].js`) qui garde la clé côté serveur. Pour l'activer sur ton propre déploiement Cloudflare Pages :
+
+1. Génère une clé (gratuite) sur [themoviedb.org/settings/api](https://www.themoviedb.org/settings/api) — clé v3 ou jeton v4, les deux marchent.
+2. Dans le dashboard Cloudflare Pages du projet : **Settings → Environment variables**, ajoute une variable `TMDB_KEY` (Production **et** Preview) avec cette valeur. Elle n'est jamais exposée au navigateur.
+3. Redéploie (ou attends le prochain déploiement) pour que la fonction la prenne en compte.
+
+Sans cette variable configurée (ou sur un hébergement sans Pages Functions, ou en ouvrant `index.html` en local via `file://`), l'app retombe automatiquement sur une clé TMDB personnelle collée dans le bouton "🔑 Affiches TMDB", ou sinon sur l'affiche générée (dégradé + initiales) — jamais de crash.

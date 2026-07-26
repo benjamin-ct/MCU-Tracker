@@ -19,16 +19,43 @@ function renderPoster(e){
   </div>`;
 }
 
-// Va chercher l'affiche réelle sur TMDB (si une clé est configurée) et remplace
-// l'affiche générée en place, sans reconstruire toute la modale. Échec/hors-ligne/
-// pas de clé → ne fait simplement rien, l'affiche générée reste affichée.
+// Essaie d'abord le proxy same-origin /api/tmdb/<type>/<id> (functions/api/tmdb/[[path]].js) :
+// sur mcuwatchtimeline.com, une Cloudflare Pages Function garde une clé TMDB côté serveur
+// (variable d'environnement, jamais envoyée au navigateur) et répond pour TOUT LE MONDE,
+// sans qu'un visiteur ait besoin de générer sa propre clé. Voir PROJET-MCU-TRACKER.md.
+// Renvoie `undefined` si le proxy n'a pas répondu normalement (route absente — file://,
+// hébergement sans Pages Functions —, ou clé serveur pas configurée), pour que l'appelant
+// retombe sur la clé personnelle ci-dessous plutôt que d'abandonner tout de suite.
+async function fetchPosterViaProxy(tmdbInfo){
+  try{
+    const res=await fetch(`/api/tmdb/${tmdbInfo.type}/${tmdbInfo.id}`);
+    if(!res.ok)return undefined;
+    const data=await res.json();
+    return data.poster?`https://image.tmdb.org/t/p/w342${data.poster}`:null;
+  }catch(_){
+    return undefined;
+  }
+}
+// Va chercher l'affiche réelle sur TMDB et remplace l'affiche générée en place, sans
+// reconstruire toute la modale. Échec/hors-ligne/pas de clé → ne fait simplement rien,
+// l'affiche générée reste affichée.
 async function fetchRealPoster(id,tmdbInfo){
-  if(!tmdbKey||!tmdbInfo)return;
+  if(!tmdbInfo)return;
   const cacheKey=`${tmdbInfo.type}:${tmdbInfo.id}`;
   if(cacheKey in posterCache){
     applyPosterUrl(id,posterCache[cacheKey]);
     return;
   }
+  const proxied=await fetchPosterViaProxy(tmdbInfo);
+  if(proxied!==undefined){
+    posterCache[cacheKey]=proxied;
+    lsSet('mcu-poster-cache',JSON.stringify(posterCache));
+    if(proxied)applyPosterUrl(id,proxied);
+    else showToast(t('tmdbNoPoster'));
+    return;
+  }
+  // Proxy indisponible : repli sur la clé TMDB personnelle collée localement, s'il y en a une.
+  if(!tmdbKey)return;
   // TMDB propose DEUX types de clés différentes sur leur page réglages, et c'est
   // une confusion très fréquente :
   //  - "Clé API (v3 auth)" : 32 caractères hexadécimaux → passée en ?api_key=...
