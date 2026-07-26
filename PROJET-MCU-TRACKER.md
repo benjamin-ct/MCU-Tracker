@@ -1,0 +1,108 @@
+# Marathon MCU — Résumé du projet
+
+## Quoi
+
+Un tracker de visionnage MCU en **vanilla JS, sans framework, sans build**. Ordre chronologique interne (pas ordre de sortie), de Captain America: First Avenger (1942 in-universe) jusqu'à Avengers: Doomsday (18 déc. 2026). Fonctionne comme app locale, PWA installable ("Ajouter à l'écran d'accueil").
+
+**Utilisateur cible** : Benjamin (@benjamin-ct sur GitHub), qui suit un marathon MCU complet avant la sortie d'Avengers: Doomsday.
+
+## Stack & contraintes
+
+- **Multi-fichiers, zéro build.** L'app était historiquement un seul `index.html` autonome ; elle est maintenant scindée en fichiers à responsabilité unique (voir "Structure des fichiers" ci-dessous), mais **sans étape de build** : les scripts sont chargés en balises classiques (`<script src="js/...">`, pas `type="module"`), justement pour que `index.html` continue de s'ouvrir directement en local (`file://`) sans serveur — un `<script type="module">` casserait ce cas d'usage (CORS bloqué sur `file://`). Pas de dépendances externes sauf Google Fonts (Space Grotesk + DM Mono) et, optionnellement, l'API TMDB.
+- **Pas de backend.** Stockage 100% `localStorage` (+ fallback `window.storage` si disponible dans l'environnement Claude).
+- **Doit marcher hors-ligne** pour tout sauf : les vraies affiches TMDB et le lien Disney+ (dégradent proprement si pas de réseau).
+- **Partage/déploiement** : comme l'app tient maintenant sur plusieurs fichiers, la distribuer veut dire donner tout le dossier (`index.html` + `css/` + `js/`), plus seulement un fichier `index.html`.
+
+## Structure des fichiers
+
+```
+index.html       squelette HTML uniquement (markup + <link>/<script> tags)
+css/style.css    tous les styles
+js/data.js       catalogue E[], INFO, PLAT, constructeurs fil()/ser()/serE(), constantes (ROMANS, SEC, DOOM, MONTHS)
+js/platform.js   détection plateforme (_getPlatform/PLATFORM) + lien profond Disney+ (DP_HREF)
+js/state.js      état (watchDates/mode/ratings/tmdbKey/posterCache/viewFilter/tonightMin/searchQuery),
+                 isWatched/markWatched/markUnwatched, persistance localStorage (lsSet/lsGet/save),
+                 migration/boot() (reconcileLegacyChecked, syncModeToggle)
+js/compute.js    calculs dérivés purs, pas de DOM (cnt, sDone, sRem, fitsTonight, matchSearch,
+                 nextItem, daysLeft, estimateEvenings, totals)
+js/render.js     render() principal (liste des chapitres/films/séries), onCheck, étoiles,
+                 updateStats/updateCountdown/updateProchain/advanceNext, stepper "ce soir"
+js/modals.js     modale info ("i"), modale statistiques + graphique cumulé (SVG), génération
+                 d'affiches (dégradé + initiales ou vraie affiche TMDB)
+js/app.js        bootstrap : câble tous les écouteurs DOM (filtres, recherche, surprise, toggle,
+                 TMDB, export/import, reset), icône PWA, appelle boot() au chargement
+```
+
+Ordre de chargement des `<script>` = ordre ci-dessus (`data.js` en premier, `app.js` en dernier). Comme ce sont des scripts classiques (pas des modules), tous les fichiers partagent la même portée globale — l'ordre importe pour que chaque fichier puisse référencer ce que les précédents ont déjà défini, exactement comme quand tout était dans un seul `<script>`.
+
+## Design system
+
+- **Thème** : palette Doctor Doom — vert (`--red: #38BF50`, en fait le vert principal malgré le nom de variable) + or (`--purple: #C8941A`, l'armure de Doom), fond quasi-noir (`--bg: #080C09`).
+- **Polices** : `Space Grotesk` (titres/UI, var `--g`) + `DM Mono` (données/métadonnées, var `--m`).
+- **Élément signature** : bandeau façon pellicule de film (perforations + barre de progression dégradée) en haut de page.
+- **Layout** : mobile-first (colonne unique, sidebar en bas), passe en 2 colonnes (sidebar sticky 300px + contenu) à partir de 768px.
+
+## Modèle de données (dans `js/data.js`)
+
+```js
+const E = [
+  fil(id, titre, chapitre(0-3), durée_min, optionnel, année),
+  ser(id, titre, chapitre, saison, nb_épisodes, durée_totale_min, optionnel),
+  serE(id, titre, chapitre, saison, [durées_par_épisode], optionnel),
+  ...
+];
+```
+- 90 entrées au total (52 films + 38 séries), réparties en 4 chapitres (`SEC` / `ROMANS`) : Avant les Avengers / Saga de l'Infini / Saga du Multivers / Phase 6.
+- `opt: true` = contenu "optionnel" (Fox X-Men, Netflix Defenders-verse) — masqué en mode "Essentiel", visible en mode "Tout regarder".
+
+**`PLAT`** — dictionnaire des contenus **pas encore sortis** (dernière vérification : 25/07/2026) : `brandnewday`, `yfns2`, `visionquest`, `doomsday`. C'est la **source unique de vérité** pour "pas encore sorti" via `isFuture(e)` — utilisée pour exclure des totaux/soirées/countdown, désactiver la case à cocher, masquer le lien Disney+, etc. **Ne jamais dupliquer cette logique ailleurs.**
+
+**`INFO`** — dictionnaire par id avec les champs pour la modale "i" : `synopsis`, `director`, `cast`, `pc` (scène post-crédit), `budget`, `box` (box-office), `rt` (score Rotten Tomatoes), `triv` (anecdote), `link` (connexion à la saga), `yt` (URL bande-annonce), `tmdb: {id, type}` (pour fetch API), `poster` (chemin d'affiche statique vérifié, pour les quelques titres où on a une vraie image sans avoir besoin de clé API).
+
+## Décisions d'architecture importantes (ne pas régresser dessus)
+
+1. **`watchDates` est l'unique source de vérité** pour "vu ou pas" (`isWatched(id)` = `id in watchDates`). Il n'y a **pas** de Set `checked` séparé — ça a existé avant et causait des incohérences (stats "vu cette semaine" fausses). `markWatched(id)` / `markUnwatched(id)` sont les seuls points d'entrée. (`js/state.js`)
+2. **`render()` est complet à chaque changement d'état** (pas de patch DOM ciblé). C'est volontaire : ça a corrigé plusieurs bugs de synchronisation (lien Disney+ qui ne disparaissait pas, étoiles, badges). Attention : ne pas ajouter d'animation CSS globale sur les lignes/chapitres (`.row`, `.sg`, `.ch`) — un essai avec `fadeIn` a fait "flasher" tout l'écran puisque tout se re-render à chaque clic. (`js/render.js`)
+3. **Le bouton "i" est un frère du `<label>`, jamais un enfant.** Sur mobile, un tap imprécis dans un `<label>` déclenche la checkbox associée même avec `stopPropagation()`. Structure : `.row-top` contient `<label>` (checkbox+titre) + `<button class="info-btn">` comme éléments flex séparés. (`js/render.js`, `css/style.css`)
+4. **`window.prompt()` / `alert()` / `confirm()` sont à éviter** — bloqués silencieusement dans l'aperçu Claude (iframe sandboxée). Utiliser de vraies modales HTML (voir `#tmdb-modal` comme modèle).
+5. **Toute image externe (background-image, fetch) doit avoir un fallback gracieux.** L'aperçu Claude bloque aussi le chargement d'images/requêtes vers des domaines externes dans certains contextes. Voir `applyPosterUrl()` dans `js/modals.js` : précharge via `new Image()` avec `onerror` avant de remplacer le dégradé généré.
+6. **Filtres "Tout"/"À voir" et boutons "tout déplier"/"tout replier" doivent appeler `render()` explicitement** — ils ne font pas que togguer une classe CSS, sinon les changements ne s'appliquent qu'au prochain re-render déclenché ailleurs.
+7. **Le toggle Essentiel/Tout regarder doit être resynchronisé via `syncModeToggle()`** (`js/state.js`) à chaque fois que `mode` change par un autre chemin que son propre clic — ex. après un import JSON. Oublier cet appel laisse la pastille visuelle sur l'ancien mode alors que le contenu affiché a changé (bug corrigé le 26/07/2026).
+8. **Le compteur de résultats de recherche doit refléter les entrées réellement visibles**, pas le total des entrées qui matchent — en mode "À voir", les entrées déjà vues sont matchées par la recherche mais masquées en CSS (`body.view-todo .row.done{display:none}`) ; le compte doit être filtré pareil (voir `render()` dans `js/render.js`, bug corrigé le 26/07/2026).
+9. **Scripts classiques, jamais `type="module"`**, pour garder `index.html` ouvrable en double-clic (`file://`) sans serveur. Voir "Stack & contraintes" ci-dessus.
+
+## Fonctionnalités déjà en place
+
+- Suivi coché/décoché par film et par épisode, mode Essentiel/Tout regarder
+- Recherche (titre FR + VO via `ORIG_TITLE`)
+- Filtre "À voir" (masque les items/chapitres/séries entièrement vus)
+- "Ce soir" (stepper de minutes dispo, highlight les contenus qui rentrent)
+- "Film surprise" (aléatoire parmi le non-vu, exclut le pas-sorti)
+- Countdown vers Doomsday (18 déc. 2026) avec rythme quotidien nécessaire, et message honnête si contenu non-sorti restant
+- Statistiques : temps vu, %, graphique de progression cumulée (SVG, hover/tap interactif), progression par chapitre, meilleures notes
+- Notation 5 étoiles par titre (persiste même si décoché ensuite, mais ne s'affiche que si actuellement coché)
+- Export/Import JSON de la progression
+- Modale "i" par titre : affiche générée (dégradé + initiales, ou vraie affiche TMDB), synopsis, réalisation, casting, scène post-crédit, budget/box-office/RT, anecdote, connexions à la saga, lien bande-annonce
+- Intégration TMDB optionnelle (clé v3 ou v4 auto-détectée) pour affiches réelles, avec cache localStorage
+- Lien profond Disney+ (Universal Link iOS)
+- Icône PWA générée dynamiquement (canvas, badge hexagonal vert/or)
+
+## Ce qui NE marche PAS dans l'aperçu Claude (mais marche en dehors)
+
+- `window.prompt()` / dialogues natifs → bloqués silencieusement
+- Chargement d'images externes (posters TMDB, y compris les chemins statiques vérifiés) → probablement bloqué par CSP, à tester hors aperçu (Safari/Chrome direct, ou déployé)
+- Appels `fetch()` vers des APIs externes (TMDB), et le CDN Google Fonts → idem
+- **Toujours vérifier un bug potentiel en dehors de l'aperçu Claude avant de conclure à un vrai bug de code** — plusieurs "bugs" rapportés étaient en fait des restrictions d'environnement, confirmées via tests Playwright réels montrant que le code fonctionnait correctement (que ce soit servi en HTTP ou ouvert en `file://`).
+
+## Déploiement
+
+- **GitHub** : repo `benjamin-ct/MCU-Tracker`, branche `main`. Contient `index.html` + `css/` + `js/` + ce fichier + `README.md`. Poussé directement par Claude Code (accès en écriture) — le connecteur GitHub de Claude.ai classique reste lecture seule par design, différent de l'intégration Claude Code.
+- **Netlify** : site `mcu-tracker-chrono` (site ID `1bbbb62c-61bf-4998-8bd9-8dac23f1438a`). Déploiement géré par l'utilisateur directement (hors Claude) — ne pas retenter de déployer dessus sans demande explicite.
+- **Workflow actuel** : Claude (cette conversation ou une autre) modifie les fichiers directement dans le repo GitHub via Claude Code (accès écriture), commit et push sur `main`.
+
+## Convention de nommage des ids (dans `js/data.js`, tableau `E`)
+
+- Films MCU mainline : nom court en un mot (`cap1`, `ironman2`, `avengers4`, `thor3`...)
+- Séries avec plusieurs saisons : même id de base + suffixe (`dd_s1`/`dd_s2`/`dd_s3` pour Daredevil Netflix, `loki1`/`loki2`, `whatif1`/`2`/`3`)
+- Fox X-Men : noms descriptifs (`xfirstclass`, `xdofp`, `xapocalypse`...)
+- Tout nouvel ajout doit suivre ces conventions et être inséré au bon endroit chronologique dans `E`, avec une entrée `INFO` complète (tous les champs, y compris `tmdb` si applicable).
