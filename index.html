@@ -215,13 +215,12 @@ body.view-todo .sg.sg-done{display:none;}
 .stat-modal.vis{display:flex;}
 .stat-panel{background:var(--card);border-radius:20px 20px 0 0;padding:22px 20px calc(28px + env(safe-area-inset-bottom));width:100%;max-width:640px;max-height:88vh;overflow-y:auto;}
 .stat-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px;}
-.stat-close{flex:none;}
 .info-poster{width:60px;height:90px;flex:none;border-radius:9px;position:relative;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;}
 .info-poster-init{font-family:var(--g);font-weight:800;font-size:21px;color:rgba(255,255,255,.94);letter-spacing:.01em;text-shadow:0 1px 3px rgba(0,0,0,.3);}
 .info-poster-icon{position:absolute;top:5px;right:6px;font-size:10px;opacity:.85;}
 .info-head-text{flex:1;min-width:0;padding-top:1px;}
 .stat-h2{font-family:var(--m);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);}
-.stat-close{appearance:none;border:none;background:var(--raised);color:var(--dim);font-size:18px;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.stat-close{flex:none;appearance:none;border:none;background:var(--raised);color:var(--dim);font-size:18px;width:30px;height:30px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
 .scard{background:var(--raised);border:1px solid var(--ln2);border-radius:10px;padding:14px;}
 .scard-v{font-size:28px;font-weight:700;letter-spacing:-0.02em;color:var(--text);line-height:1;}
@@ -312,7 +311,6 @@ body.view-todo .sg.sg-done{display:none;}
   .sidebar .tn-wrap{margin-left:0;}
   .sidebar .bulk{padding:6px 20px 0;justify-content:flex-start;gap:20px;}
   .sb-ftr{padding:24px 32px 32px 24px;border-top:1px solid var(--ln);margin-top:0;text-align:left;}
-  .sb-ftr .rst{width:auto;}
   .sb-ftr .io-row{justify-content:flex-start;margin-top:10px;}
   .sb-ftr .lgd{justify-content:flex-start;margin-top:12px;}
   .sb-ftr .note{margin-top:8px;font-size:9px;}
@@ -899,15 +897,19 @@ function applyTonightHL(){
 }
 const TN=[0,30,60,90,120,150,180,240];
 function tnDisp(m){return m===0?'off':m<60?m+'m':fmt(m);}
-document.getElementById('tn-m').addEventListener('click',()=>{const i=TN.indexOf(tonightMin);tonightMin=TN[Math.max(0,i-1)];document.getElementById('tn-v').textContent=tnDisp(tonightMin);applyTonightHL();updateProchain();});
-document.getElementById('tn-p').addEventListener('click',()=>{const i=TN.indexOf(tonightMin);tonightMin=TN[Math.min(TN.length-1,i+1)];document.getElementById('tn-v').textContent=tnDisp(tonightMin);applyTonightHL();updateProchain();});
+const tnValEl=document.getElementById('tn-v');
+document.getElementById('tn-m').addEventListener('click',()=>{const i=TN.indexOf(tonightMin);tonightMin=TN[Math.max(0,i-1)];tnValEl.textContent=tnDisp(tonightMin);applyTonightHL();updateProchain();});
+document.getElementById('tn-p').addEventListener('click',()=>{const i=TN.indexOf(tonightMin);tonightMin=TN[Math.min(TN.length-1,i+1)];tnValEl.textContent=tnDisp(tonightMin);applyTonightHL();updateProchain();});
 
 // ── FILTER ───────────────────────────────────────────────
-document.getElementById('flt-all').addEventListener('click',()=>{viewFilter='all';document.getElementById('flt-all').classList.add('on');document.getElementById('flt-todo').classList.remove('on');document.body.classList.remove('view-todo');render();});
-document.getElementById('flt-todo').addEventListener('click',()=>{viewFilter='todo';document.getElementById('flt-todo').classList.add('on');document.getElementById('flt-all').classList.remove('on');document.body.classList.add('view-todo');render();});
+const fltAllBtn=document.getElementById('flt-all'),fltTodoBtn=document.getElementById('flt-todo');
+fltAllBtn.addEventListener('click',()=>{viewFilter='all';fltAllBtn.classList.add('on');fltTodoBtn.classList.remove('on');document.body.classList.remove('view-todo');render();});
+fltTodoBtn.addEventListener('click',()=>{viewFilter='todo';fltTodoBtn.classList.add('on');fltAllBtn.classList.remove('on');document.body.classList.add('view-todo');render();});
 
 // ── SEARCH ──────────────────────────────────────────────
 const srchEl=document.getElementById('srch');
+const srchClrBtn=document.getElementById('srch-clr');
+const srchCntEl=document.getElementById('srch-cnt');
 let wasSearching=false;
 srchEl.addEventListener('input',()=>{
   const q=srchEl.value.trim();
@@ -915,13 +917,13 @@ srchEl.addEventListener('input',()=>{
   // ainsi l'utilisateur peut replier manuellement une série pendant qu'il cherche.
   if(q&&!wasSearching){cSec.clear();cSer.clear();}
   searchQuery=q;wasSearching=q.length>0;
-  document.getElementById('srch-clr').classList.toggle('vis',q.length>0);
+  srchClrBtn.classList.toggle('vis',q.length>0);
   render();
 });
-document.getElementById('srch-clr').addEventListener('click',()=>{
+srchClrBtn.addEventListener('click',()=>{
   searchQuery='';srchEl.value='';wasSearching=false;
-  document.getElementById('srch-clr').classList.remove('vis');
-  document.getElementById('srch-cnt').classList.remove('vis');
+  srchClrBtn.classList.remove('vis');
+  srchCntEl.classList.remove('vis');
   render();
 });
 
@@ -939,7 +941,7 @@ document.getElementById('surprise-btn').addEventListener('click',()=>{
   if(chEl&&!chEl.classList.contains('open')){chEl.classList.add('open');cSec.delete(pick.sec);}
   if(pick.type==='s'){const sg=document.getElementById(`sg-${pick.id}`);if(sg&&!sg.classList.contains('open')){sg.classList.add('open');cSer.delete(pick.id);}}
   // Dismiss search if active
-  if(searchQuery){searchQuery='';srchEl.value='';wasSearching=false;document.getElementById('srch-clr').classList.remove('vis');document.getElementById('srch-cnt').classList.remove('vis');render();}
+  if(searchQuery){searchQuery='';srchEl.value='';wasSearching=false;srchClrBtn.classList.remove('vis');srchCntEl.classList.remove('vis');render();}
   const elId=pick.type==='f'?`r-${pick.id}`:`sg-${pick.id}`;
   setTimeout(()=>{
     const el=document.getElementById(elId);
@@ -949,18 +951,24 @@ document.getElementById('surprise-btn').addEventListener('click',()=>{
 });
 
 // ── STATS MODAL ──────────────────────────────────────────
+// Les 3 modales sont des éléments statiques du squelette HTML (jamais recréés par
+// render()) : on les récupère une seule fois plutôt que de refaire un getElementById
+// à chaque interaction.
+const statModal=document.getElementById('stat-modal');
+const infoModal=document.getElementById('info-modal');
+const tmdbModal=document.getElementById('tmdb-modal');
 document.getElementById('stats-btn').addEventListener('click',openStats);
 // Échap ferme la modale ouverte (stats, info, ou clé TMDB)
 document.addEventListener('keydown',ev=>{
   if(ev.key!=='Escape')return;
-  document.getElementById('stat-modal').classList.remove('vis');
-  document.getElementById('info-modal').classList.remove('vis');
-  document.getElementById('tmdb-modal')?.classList.remove('vis');
+  statModal.classList.remove('vis');
+  infoModal.classList.remove('vis');
+  tmdbModal.classList.remove('vis');
 });
-document.getElementById('stat-modal').addEventListener('click',ev=>{if(ev.target===document.getElementById('stat-modal'))document.getElementById('stat-modal').classList.remove('vis');});
+statModal.addEventListener('click',ev=>{if(ev.target===statModal)statModal.classList.remove('vis');});
 
 // ── INFO MODAL ('i') ──────────────────────────────────────
-document.getElementById('info-modal').addEventListener('click',ev=>{if(ev.target===document.getElementById('info-modal'))document.getElementById('info-modal').classList.remove('vis');});
+infoModal.addEventListener('click',ev=>{if(ev.target===infoModal)infoModal.classList.remove('vis');});
 document.addEventListener('click',ev=>{
   const btn=ev.target.closest('.info-btn');
   if(!btn)return;
@@ -1087,8 +1095,8 @@ function openInfo(id){
       </div>
     `:`<p class="info-synopsis" style="color:var(--faint)">Pas encore d'informations détaillées pour ce contenu.</p>`}
   `;
-  document.getElementById('info-modal').classList.add('vis');
-  document.getElementById('info-close').addEventListener('click',()=>document.getElementById('info-modal').classList.remove('vis'));
+  infoModal.classList.add('vis');
+  document.getElementById('info-close').addEventListener('click',()=>infoModal.classList.remove('vis'));
   const posterEl=document.getElementById('info-poster-el');
   if(posterEl)posterEl.dataset.forId=id;
   // Priorité à l'affiche statique vérifiée (pas besoin de clé API, marche pour tout
@@ -1220,8 +1228,8 @@ function openStats(){
       ${top.map((x,i)=>`<div class="stop-row"><span class="stop-rank">${i+1}</span><span class="stop-title">${x.title}</span><span class="stop-stars">${starsStr(x.r)}</span></div>`).join('')}
     `:`<div class="s-empty">Note les contenus après les avoir cochés pour voir tes stats ici.</div>`}
   `;
-  document.getElementById('stat-modal').classList.add('vis');
-  document.getElementById('stat-close').addEventListener('click',()=>document.getElementById('stat-modal').classList.remove('vis'));
+  statModal.classList.add('vis');
+  document.getElementById('stat-close').addEventListener('click',()=>statModal.classList.remove('vis'));
   if(geom)wireChartInteraction(document.getElementById('cum-chart-svg'),document.getElementById('chart-tip'),geom,t);
 }
 
@@ -1243,23 +1251,24 @@ function reconcileLegacyChecked(checkedArr,wd){
 // Utilise une vraie modale plutôt que window.prompt() : certains aperçus/iframes
 // sandboxés bloquent silencieusement les boîtes de dialogue natives du navigateur,
 // ce qui rendait le bouton inopérant sans aucun message d'erreur.
+const tmdbInputEl=document.getElementById('tmdb-input');
 document.getElementById('tmdb-btn').addEventListener('click',()=>{
-  document.getElementById('tmdb-input').value=tmdbKey||'';
-  document.getElementById('tmdb-modal').classList.add('vis');
+  tmdbInputEl.value=tmdbKey||'';
+  tmdbModal.classList.add('vis');
 });
-document.getElementById('tmdb-close').addEventListener('click',()=>document.getElementById('tmdb-modal').classList.remove('vis'));
-document.getElementById('tmdb-modal').addEventListener('click',ev=>{if(ev.target===document.getElementById('tmdb-modal'))document.getElementById('tmdb-modal').classList.remove('vis');});
+document.getElementById('tmdb-close').addEventListener('click',()=>tmdbModal.classList.remove('vis'));
+tmdbModal.addEventListener('click',ev=>{if(ev.target===tmdbModal)tmdbModal.classList.remove('vis');});
 document.getElementById('tmdb-save').addEventListener('click',()=>{
-  const val=document.getElementById('tmdb-input').value.trim();
+  const val=tmdbInputEl.value.trim();
   tmdbKey=val||null;
   lsSet('mcu-tmdb-key',tmdbKey||'');
-  document.getElementById('tmdb-modal').classList.remove('vis');
+  tmdbModal.classList.remove('vis');
   showToast(tmdbKey?'🔑 Clé TMDB enregistrée':'Clé TMDB retirée');
 });
 document.getElementById('tmdb-clear').addEventListener('click',()=>{
   tmdbKey=null;lsSet('mcu-tmdb-key','');
-  document.getElementById('tmdb-input').value='';
-  document.getElementById('tmdb-modal').classList.remove('vis');
+  tmdbInputEl.value='';
+  tmdbModal.classList.remove('vis');
   showToast('Clé TMDB retirée');
 });
 
@@ -1284,7 +1293,7 @@ document.getElementById('imp-inp').addEventListener('change',ev=>{
         watchDates=data.watchDates;
       }
       if(data.ratings)ratings=data.ratings;
-      if(data.mode)mode=data.mode;
+      if(data.mode){mode=data.mode;syncModeToggle();}
       render();save();showToast('✓ Progression importée !');
     }catch(_){showToast('⚠ Fichier invalide');}
   };
@@ -1303,11 +1312,15 @@ function render(){
     // En mode "À voir" : si plus rien ne reste à voir dans ce chapitre (les items pas
     // encore sortis comptent toujours comme "restants"), on masque le chapitre en
     // entier plutôt que de laisser un en-tête vide flotter sans aucun contenu dessous.
+    // En mode "À voir", seules les entrées non terminées restent visibles (le reste est
+    // masqué en CSS via body.view-todo) — le compteur de résultats doit refléter ça, pas
+    // le nombre total d'entrées correspondantes.
+    let visible=entries;
     if(viewFilter==='todo'){
-      const remaining=entries.filter(e=>e.type==='f'?!isWatched(e.id):sDone(e)<e.count);
-      if(remaining.length===0)return;
+      visible=entries.filter(e=>e.type==='f'?!isWatched(e.id):sDone(e)<e.count);
+      if(visible.length===0)return;
     }
-    searchTotal+=entries.length;
+    searchTotal+=visible.length;
     const ch=document.createElement('div');
     ch.className='ch'+(cSec.has(si)?'':' open');ch.id=`ch${si}`;
     const hd=document.createElement('div');hd.className='ch-hd';
@@ -1384,7 +1397,7 @@ function render(){
     ch.appendChild(hd);ch.appendChild(body);main.appendChild(ch);
   });
   main.querySelectorAll('input[type=checkbox]:not(.sg-chk)').forEach(cb=>cb.addEventListener('change',onCheck));
-  if(isSearching){const cEl=document.getElementById('srch-cnt');cEl.textContent=`${searchTotal} résultat${searchTotal!==1?'s':''}`;cEl.classList.add('vis');}
+  if(isSearching){srchCntEl.textContent=`${searchTotal} résultat${searchTotal!==1?'s':''}`;srchCntEl.classList.add('vis');}
   updateStats();updateProchain();
 }
 
@@ -1409,6 +1422,13 @@ function onCheck(ev){
 // ── STORAGE ──────────────────────────────────────────────
 function lsSet(k,v){try{localStorage.setItem(k,v);}catch(_){}}
 function lsGet(k){try{return localStorage.getItem(k);}catch(_){return null;}}
+// Resynchronise le toggle Essentiel/Tout regarder sur la valeur courante de `mode` —
+// nécessaire après le chargement initial ET après un import JSON, sinon le pastille
+// reste sur l'ancien mode alors que le contenu affiché a bien changé.
+function syncModeToggle(){
+  togEl.setAttribute('data-m',mode);
+  togEl.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-m')===mode));
+}
 async function save(){
   // mcu6-c n'est plus écrit : watchDates (mcu6-wd) est l'unique source de vérité.
   lsSet('mcu6-m',mode);
@@ -1454,9 +1474,7 @@ async function boot(){
   }else{
     watchDates=loadedWD||{};
   }
-  const tog=document.getElementById('tog');
-  tog.setAttribute('data-m',mode);
-  tog.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-m')===mode));
+  syncModeToggle();
   if(viewFilter==='todo')document.body.classList.add('view-todo');
   render();
   E.filter(e=>e.type==='s').forEach(e=>{
@@ -1470,11 +1488,11 @@ async function boot(){
 }
 
 // ── GLOBAL EVENTS ────────────────────────────────────────
-document.getElementById('tog').querySelectorAll('button').forEach(btn=>{
+const togEl=document.getElementById('tog');
+togEl.querySelectorAll('button').forEach(btn=>{
   btn.addEventListener('click',()=>{
     mode=btn.getAttribute('data-m');
-    document.getElementById('tog').setAttribute('data-m',mode);
-    document.getElementById('tog').querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===btn));
+    syncModeToggle();
     render();save();
   });
 });
