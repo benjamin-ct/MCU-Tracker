@@ -6,7 +6,9 @@ function fitsTonight(e){if(tonightMin<=0||isFuture(e))return false;if(e.type==='
 // La recherche matche aussi le titre anglais (TITLE_EN, data-en.js) même en affichage
 // français (pour que taper "iron man" marche quelle que soit la langue active), ainsi
 // que le casting et la réalisation (INFO[id].cast/.director) pour chercher par acteur
-// ou réalisateur.
+// ou réalisateur. CAST_EXTRA (js/data.js) étend la recherche aux rôles secondaires/
+// apparitions qui ne sont pas affichés dans la fiche (place limitée) mais doivent
+// quand même être trouvables.
 function matchSearch(e){
   if(!searchQuery)return true;
   const q=searchQuery.toLowerCase();
@@ -16,6 +18,8 @@ function matchSearch(e){
   const info=INFO[e.id];
   if(info?.cast&&info.cast.toLowerCase().includes(q))return true;
   if(info?.director&&info.director.toLowerCase().includes(q))return true;
+  const extra=CAST_EXTRA[e.id];
+  if(extra&&extra.toLowerCase().includes(q))return true;
   return false;
 }
 function nextItem(){for(const e of E){if(!cnt(e))continue;if(isFuture(e))continue;if(e.type==='f'&&!isWatched(e.id))return e;if(e.type==='s'&&sDone(e)<e.count)return e;}return null;}

@@ -68,7 +68,13 @@ const E = [
 
 **`PLAT`** — dictionnaire des contenus **pas encore sortis** (dernière vérification : 25/07/2026) : `brandnewday`, `yfns2`, `visionquest`, `doomsday`. C'est la **source unique de vérité** pour "pas encore sorti" via `isFuture(e)` — utilisée pour exclure des totaux/soirées/countdown, désactiver la case à cocher, masquer le lien Disney+, etc. **Ne jamais dupliquer cette logique ailleurs.**
 
-**`INFO`** — dictionnaire par id avec les champs pour la modale "i" : `synopsis`, `director`, `cast`, `pc` (scène post-crédit), `budget`, `box` (box-office), `rt` (score Rotten Tomatoes), `triv` (anecdote), `link` (connexion à la saga), `yt` (URL bande-annonce), `tmdb: {id, type}` (pour fetch API), `poster` (chemin d'affiche statique vérifié, pour les quelques titres où on a une vraie image sans avoir besoin de clé API).
+**`INFO`** — dictionnaire par id avec les champs pour la modale "i" : `synopsis`, `director`, `cast` (2-3 noms principaux affichés), `pc` (scène post-crédit), `budget`, `box` (box-office), `rt` (score Rotten Tomatoes), `triv` (anecdote), `link` (connexion à la saga), `yt` (URL bande-annonce — anglaise par défaut, mutée par `applyLangToContent()` en FR quand `TRAILER_FR[id]` existe), `tmdb: {id, type}` (pour fetch API poster uniquement), `poster` (chemin d'affiche statique vérifié, pour les quelques titres où on a une vraie image sans avoir besoin de clé API).
+
+**`IMDB_ID`** — dictionnaire par id, tt-id IMDb vérifié à la main pour les 90 entrées (jamais dérivé de l'API TMDB, voir décision #5 ci-dessous). Les séries splitées en plusieurs saisons partagent le même tt-id (IMDb n'a pas de fiche par saison). `imdbUrl(e)` (`js/modals.js`) construit le lien direct `https://www.imdb.com/title/${tt-id}/` ; repli sur une recherche IMDb seulement si un id venait à manquer pour un futur ajout pas encore mis à jour dans `IMDB_ID`.
+
+**`CAST_EXTRA`** — dictionnaire par id, casting étendu (rôles secondaires/apparitions non affichés dans `INFO[id].cast` faute de place) consulté uniquement par `matchSearch()` (`js/compute.js`) pour que la recherche par acteur trouve un rôle même s'il n'apparaît pas dans la fiche.
+
+**`TRAILER_FR`** — dictionnaire par id, URL YouTube de la bande-annonce française officielle (quand trouvée — 86/90 ; les 4 titres 2026 pas encore promus en France retombent sur la bande-annonce anglaise). Appliqué à `INFO[id].yt` par `applyLangToContent()` quand `lang==='fr'`.
 
 **`RELEASE_DATE`** — dictionnaire par id, date de sortie **réelle** au format ISO (`'YYYY-MM-DD'`), pour les 90 entrées. Sert uniquement à l'onglet "Ordre de sortie" (tri + regroupement par année) — n'a aucun effet sur le marathon en ordre chronologique interne. Dates confirmées pour tout ce qui est déjà sorti ; approximatives (mais dans le bon ordre relatif) pour le très récent/annoncé sans date figée. `releaseYear(id)` en extrait l'année pour le regroupement.
 
@@ -95,7 +101,7 @@ const E = [
 2. **`render()` est complet à chaque changement d'état** (pas de patch DOM ciblé). C'est volontaire : ça a corrigé plusieurs bugs de synchronisation (lien Disney+ qui ne disparaissait pas, étoiles, badges). Attention : ne pas ajouter d'animation CSS globale sur les lignes/chapitres (`.row`, `.sg`, `.ch`) — un essai avec `fadeIn` a fait "flasher" tout l'écran puisque tout se re-render à chaque clic. (`js/render.js`)
 3. **Le bouton "i" est un frère du `<label>`, jamais un enfant.** Sur mobile, un tap imprécis dans un `<label>` déclenche la checkbox associée même avec `stopPropagation()`. Structure : `.row-top` contient `<label>` (checkbox+titre) + `<button class="info-btn">` comme éléments flex séparés. (`js/render.js`, `css/style.css`)
 4. **`window.prompt()` / `alert()` / `confirm()` sont à éviter** — bloqués silencieusement dans l'aperçu Claude (iframe sandboxée). Utiliser de vraies modales HTML (voir `#tmdb-modal` comme modèle).
-5. **Toute image/lien externe dépendant d'un fetch doit avoir un fallback gracieux qui marche tout de suite, pas seulement en cas d'erreur.** L'aperçu Claude bloque aussi le chargement d'images/requêtes vers des domaines externes dans certains contextes. Voir `applyPosterUrl()` dans `js/modals.js` : précharge via `new Image()` avec `onerror` avant de remplacer le dégradé généré. Même principe pour le bouton IMDb : `imdbSearchUrl()` fournit un lien de recherche IMDb toujours correct et cliquable immédiatement (aucune clé requise) ; `fetchImdbId()` ne fait que l'**améliorer** en lien direct si une clé TMDB est configurée et que l'appel réussit — jamais l'inverse (ne pas attendre le fetch pour afficher un lien).
+5. **Toute image/lien externe dépendant d'un fetch doit avoir un fallback gracieux qui marche tout de suite, pas seulement en cas d'erreur.** L'aperçu Claude bloque aussi le chargement d'images/requêtes vers des domaines externes dans certains contextes. Voir `applyPosterUrl()` dans `js/modals.js` : précharge via `new Image()` avec `onerror` avant de remplacer le dégradé généré. **Le bouton IMDb fait exception à "améliorer via l'API" : il ne doit PAS dépendre de TMDB du tout.** Une version précédente utilisait `fetchImdbId()` (external_ids TMDB) pour upgrader un lien de recherche en lien direct — mais ça revient à un lien de recherche pour tout le monde tant qu'aucune clé TMDB n'est configurée, ce qui n'est pas acceptable pour un lien censé être direct. Design actuel : `IMDB_ID` (tt-ids vérifiés à la main, voir "Modèle de données") donne le lien direct **tout de suite, pour tout le monde**, sans aucun fetch ni clé.
 6. **Filtres "Tout"/"À voir" et boutons "tout déplier"/"tout replier" doivent appeler `render()` explicitement** — ils ne font pas que togguer une classe CSS, sinon les changements ne s'appliquent qu'au prochain re-render déclenché ailleurs.
 7. **Le toggle Essentiel/Tout regarder doit être resynchronisé via `syncModeToggle()`** (`js/state.js`) à chaque fois que `mode` change par un autre chemin que son propre clic — ex. après un import JSON. Oublier cet appel laisse la pastille visuelle sur l'ancien mode alors que le contenu affiché a changé (bug corrigé le 26/07/2026).
 8. **Le compteur de résultats de recherche doit refléter les entrées réellement visibles**, pas le total des entrées qui matchent — en mode "À voir", les entrées déjà vues sont matchées par la recherche mais masquées en CSS (`body.view-todo .row.done{display:none}`) ; le compte doit être filtré pareil (voir `render()` dans `js/render.js`, bug corrigé le 26/07/2026).
@@ -105,7 +111,7 @@ const E = [
 
 - Suivi coché/décoché par film et par épisode, mode Essentiel/Tout regarder
 - Deux onglets de navigation : Chronologique (interne) / Ordre de sortie (réelle), voir section dédiée ci-dessus
-- Recherche (titre affiché + VO via `TITLE_EN`, + acteur/réalisateur via `INFO[id].cast`/`.director`), quelle que soit la langue active
+- Recherche (titre affiché + VO via `TITLE_EN`, + acteur/réalisateur via `INFO[id].cast`/`.director` + rôles secondaires/apparitions via `CAST_EXTRA`), quelle que soit la langue active
 - Filtre "À voir" (masque les items/chapitres/séries entièrement vus)
 - "Ce soir" (stepper de minutes dispo, highlight les contenus qui rentrent)
 - "Film surprise" (aléatoire parmi le non-vu, exclut le pas-sorti)
@@ -113,8 +119,8 @@ const E = [
 - Statistiques : temps vu, %, graphique de progression cumulée (SVG, hover/tap interactif), progression par chapitre, meilleures notes
 - Notation 5 étoiles par titre (persiste même si décoché ensuite, mais ne s'affiche que si actuellement coché)
 - Export/Import JSON de la progression
-- Modale "i" par titre : affiche générée (dégradé + initiales, ou vraie affiche TMDB), synopsis, réalisation, casting, scène post-crédit, budget/box-office/RT, anecdote, connexions à la saga, lien bande-annonce, bouton IMDb (jaune/amber)
-- Intégration TMDB optionnelle (clé v3 ou v4 auto-détectée) pour affiches réelles + lien IMDb direct, avec cache localStorage pour les deux
+- Modale "i" par titre : affiche générée (dégradé + initiales, ou vraie affiche TMDB), synopsis, réalisation, casting, scène post-crédit, budget/box-office/RT, anecdote, connexions à la saga, lien bande-annonce (VF via `TRAILER_FR` si dispo, sinon VO), bouton IMDb (jaune/amber, lien direct via `IMDB_ID` — ne dépend jamais de TMDB/clé API)
+- Intégration TMDB optionnelle (clé v3 ou v4 auto-détectée) pour affiches réelles uniquement, avec cache localStorage
 - Lien profond Disney+ (Universal Link iOS)
 - Icône PWA générée dynamiquement (canvas, badge hexagonal vert/or)
 - Thème clair/sombre (bouton, respecte la préférence système au premier lancement, puis persisté)

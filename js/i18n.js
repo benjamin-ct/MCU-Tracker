@@ -209,6 +209,10 @@ function applyLangToContent(){
     INFO[id].budget    = lang==='en' ? (en.budget??frMoney(fr.budget)) : fr.budget;
     INFO[id].box       = lang==='en' ? (en.box??frMoney(fr.box))       : fr.box;
     INFO[id].rt        = lang==='en' ? (en.rt??frRT(fr.rt))            : fr.rt;
+    // fr.yt est la bande-annonce anglaise (fixe, seule dispo à l'origine) — en FR on
+    // bascule sur TRAILER_FR (js/data.js) quand une VF existe, sinon on garde l'anglaise
+    // plutôt que de n'afficher aucun bouton.
+    INFO[id].yt        = lang==='en' ? fr.yt : (TRAILER_FR[id]||fr.yt);
   });
   SEC.length=0;SEC.push(...(lang==='en'?SEC_EN:SEC_FR));
   MONTHS.length=0;MONTHS.push(...(lang==='en'?MONTHS_EN:MONTHS_FR));
