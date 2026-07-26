@@ -35,7 +35,7 @@ document.getElementById('surprise-btn').addEventListener('click',()=>{
     if(isFuture(e))return false; // jamais proposer un contenu pas encore sorti
     return e.type==='f'?!isWatched(e.id):sDone(e)<e.count;
   });
-  if(!pool.length){showToast('🎉 Tout est vu (parmi ce qui est sorti) !');return;}
+  if(!pool.length){showToast(t('surpriseNoneLeft'));return;}
   const pick=pool[Math.floor(Math.random()*pool.length)];
   // Open chapter
   const chEl=document.getElementById(`ch${pick.sec}`);
@@ -94,13 +94,13 @@ document.getElementById('tmdb-save').addEventListener('click',()=>{
   tmdbKey=val||null;
   lsSet('mcu-tmdb-key',tmdbKey||'');
   tmdbModal.classList.remove('vis');
-  showToast(tmdbKey?'🔑 Clé TMDB enregistrée':'Clé TMDB retirée');
+  showToast(tmdbKey?t('tmdbKeySaved'):t('tmdbKeyRemoved'));
 });
 document.getElementById('tmdb-clear').addEventListener('click',()=>{
   tmdbKey=null;lsSet('mcu-tmdb-key','');
   tmdbInputEl.value='';
   tmdbModal.classList.remove('vis');
-  showToast('Clé TMDB retirée');
+  showToast(t('tmdbKeyRemoved'));
 });
 
 document.getElementById('exp-btn').addEventListener('click',()=>{
@@ -108,7 +108,7 @@ document.getElementById('exp-btn').addEventListener('click',()=>{
   const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download=`mcu-marathon-${new Date().toISOString().slice(0,10)}.json`;a.click();
-  URL.revokeObjectURL(url);showToast('↓ Progression exportée');
+  URL.revokeObjectURL(url);showToast(t('exportedMsg'));
 });
 document.getElementById('imp-inp').addEventListener('change',ev=>{
   const file=ev.target.files[0];if(!file)return;
@@ -125,8 +125,8 @@ document.getElementById('imp-inp').addEventListener('change',ev=>{
       }
       if(data.ratings)ratings=data.ratings;
       if(data.mode){mode=data.mode;syncModeToggle();}
-      render();save();showToast('✓ Progression importée !');
-    }catch(_){showToast('⚠ Fichier invalide');}
+      render();save();showToast(t('importedMsg'));
+    }catch(_){showToast(t('invalidFileMsg'));}
   };
   reader.readAsText(file);
   ev.target.value='';
@@ -147,9 +147,9 @@ document.getElementById('colAll').addEventListener('click',()=>{[0,1,2,3].forEac
 let armed=false;
 const rst=document.getElementById('rst');
 rst.addEventListener('click',()=>{
-  if(!armed){armed=true;rst.classList.add('armed');rst.textContent='Confirmer la réinitialisation ?';setTimeout(()=>{armed=false;rst.classList.remove('armed');rst.textContent='Réinitialiser ma progression';},3000);return;}
+  if(!armed){armed=true;rst.classList.add('armed');rst.textContent=t('resetConfirm');setTimeout(()=>{armed=false;rst.classList.remove('armed');rst.textContent=t('resetBtn');},3000);return;}
   ratings={};watchDates={};armed=false;
-  rst.classList.remove('armed');rst.textContent='Réinitialiser ma progression';
+  rst.classList.remove('armed');rst.textContent=t('resetBtn');
   render();save();
 });
 
@@ -209,6 +209,12 @@ function updateHH(){
   document.documentElement.style.setProperty('--hh',h+'px');
 }
 window.addEventListener('resize',updateHH);
+
+// ── THÈME & LANGUE ────────────────────────────────────────
+document.getElementById('theme-btn').addEventListener('click',toggleTheme);
+document.getElementById('lang-btn').addEventListener('click',toggleLang);
+initTheme();
+initLang();
 
 boot().then(()=>{updateHH();});
 setupPWAIcon();

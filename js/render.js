@@ -21,21 +21,21 @@ document.addEventListener('click',ev=>{
 // ── TOAST ──────────────────────────────────────────────
 let toastTimer=null;
 function showToast(msg){
-  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
-  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),3000);
+  const toastEl=document.getElementById('toast');toastEl.textContent=msg;toastEl.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>toastEl.classList.remove('show'),3000);
 }
 
 // ── UPDATE STATS ─────────────────────────────────────────
 function updateStats(){
-  const{t,w,r,ps,remUnits}=totals();const pct=t>0?Math.round(w/t*100):0;
+  const{t:tot,w,r,ps,remUnits}=totals();const pct=tot>0?Math.round(w/tot*100):0;
   const f=document.getElementById('fill');
   f.style.width=pct+'%';f.classList.toggle('glow',pct>0&&pct<100);
   const rh=Math.floor(r/60),rm=r%60;
   document.getElementById('sv').textContent=rh;
   document.getElementById('su').textContent=rm>0?`h${String(rm).padStart(2,'0')}`:'h';
-  document.getElementById('c1').innerHTML=`<b>${Math.floor(w/60)}h</b> vues`;
-  document.getElementById('c2').innerHTML=`<b>${pct}%</b> terminé`;
-  document.getElementById('c3').innerHTML=`≈<b>${estimateEvenings(remUnits,150)}</b> soirées`;
+  document.getElementById('c1').innerHTML=`<b>${Math.floor(w/60)}h</b> ${t('hoursWatchedSuffix')}`;
+  document.getElementById('c2').innerHTML=`<b>${pct}%</b> ${t('completedSuffix')}`;
+  document.getElementById('c3').innerHTML=`≈<b>${estimateEvenings(remUnits,150)}</b> ${t('eveningsSuffix')}`;
   ps.forEach((s,i)=>{const el=document.getElementById(`cb${i}`);if(el)el.textContent=`${s.d}/${s.n} · ${fmt(s.t-s.w)}`;});
   updateCountdown(r);
 }
@@ -62,15 +62,15 @@ function updateCountdown(rem){
     if(fp>0){
       // Tout ce qui est disponible est vu, mais du contenu pas encore sorti reste à voir
       // plus tard — on évite d'annoncer un "prêt pour Doomsday" techniquement faux.
-      txt.innerHTML=`Tout vu de disponible <span class="ok">✓</span> · <b>${fp}</b> titre${fp>1?'s':''} pas encore sorti${fp>1?'s':''} restant${fp>1?'s':''}`;
+      txt.innerHTML=trAllWatchedFuturePending(fp);
     }else{
-      txt.innerHTML=`Marathon terminé ! Prêt pour Doomsday. <span class="ok">✓</span>`;
+      txt.innerHTML=trMarathonDoneReady();
     }
     return;
   }
-  if(days<=0){txt.innerHTML=`<b>Doomsday est là !</b> 🎬`;return;}
+  if(days<=0){txt.innerHTML=trDoomsdayHere();return;}
   const h=rem/days,cls=h>120?'warn':'ok';
-  txt.innerHTML=`Doomsday — 18 déc 2026 · <b>${fmt(Math.ceil(h))}/jour</b> pour finir <span class="${cls}">${h>120?'⚡':'✓'}</span>`;
+  txt.innerHTML=trDoomsdayPace(fmt(Math.ceil(h)),cls,h>120?'⚡':'✓');
 }
 
 // ── PROCHAIN ─────────────────────────────────────────────
@@ -79,18 +79,18 @@ function updateProchain(){
   const next=nextItem();
   if(!next){
     const fp=futurePendingCount();
-    const msg=fp>0?`🎬 Tout est vu de disponible — ${fp} titre${fp>1?'s':''} pas encore sorti${fp>1?'s':''}`:'🎬 Marathon terminé — bravo !';
+    const msg=fp>0?trUpNextEmptyFuture(fp):t('marathonDoneNoFuture');
     el.innerHTML=`<div style="padding:12px 0"><div class="prox done">${msg}</div></div>`;return;
   }
   let title,sub,dur,btn,nm=0;
-  if(next.type==='f'){title=next.title;sub=next.y?`(${next.y})`:'';dur=fmt(next.m);btn='Marquer vu';nm=next.m;}
-  else{const idx=next.epMins.findIndex((_,i)=>!isWatched(`${next.id}-e${i+1}`));title=next.title;sub=`S${next.season}·E${idx+1}`;dur=fmtE(next.epMins[idx]);btn='Épisode vu';nm=next.epMins[idx];}
+  if(next.type==='f'){title=next.title;sub=next.y?`(${next.y})`:'';dur=fmt(next.m);btn=t('markWatchedBtn');nm=next.m;}
+  else{const idx=next.epMins.findIndex((_,i)=>!isWatched(`${next.id}-e${i+1}`));title=next.title;sub=`S${next.season}·E${idx+1}`;dur=fmtE(next.epMins[idx]);btn=t('episodeWatchedBtn');nm=next.epMins[idx];}
   const fits=tonightMin>0&&nm<=tonightMin;
   el.innerHTML=`<div style="padding:12px 0 0"><div class="prox">
     <div class="prox-l">
-      <div class="prox-eye">Prochain à voir</div>
+      <div class="prox-eye">${t('upNextLbl')}</div>
       <div class="prox-title">${title}</div>
-      <div class="prox-sub">${sub?sub+' · ':''}${dur}${fits?` · <span style="color:var(--green);font-size:10px">ce soir ✓</span>`:''}</div>
+      <div class="prox-sub">${sub?sub+' · ':''}${dur}${fits?` · <span style="color:var(--green);font-size:10px">${t('tonightFitsInline')}</span>`:''}</div>
     </div>
     <button class="prox-btn" id="prox-go">${btn}</button>
   </div></div>`;
@@ -152,7 +152,7 @@ function render(){
     const body=document.createElement('div');body.className='ch-body';
     entries.forEach(e=>{
       const tnFit=fitsTonight(e);const platInfo=PLAT[e.id];const future=isFuture(e);
-      const opt=e.opt?`<span class="opt-badge">optionnel</span>`:'';
+      const opt=e.opt?`<span class="opt-badge">${t('optionalBadge')}</span>`:'';
       const plat=platInfo?`<span class="plat-tag ${platInfo.c}">${platInfo.l} · ${platInfo.date}</span>`:'';
       if(e.type==='f'){
         const isDone=isWatched(e.id);
@@ -173,7 +173,7 @@ function render(){
           </label>
           <button type="button" class="info-btn" data-info="${e.id}"><span>i</span></button>
           <span class="rt-d">${fmt(e.m)}</span>
-          <span class="tn-tag">ce soir</span>
+          <span class="tn-tag">${t('tonightTag')}</span>
         </div>${dpLink?`<div class="dp-row">${dpLink}</div>`:''}${starsHTML(e.id,false)}`;
         body.appendChild(div);
       }else{
@@ -188,7 +188,7 @@ function render(){
           <div class="sg-bulk"><label onclick="event.stopPropagation()"><input type="checkbox" class="sg-chk" data-sid="${e.id}"${all?' checked':''}${future?' disabled':''}><span class="sq"></span></label></div>
           <div class="sg-info">
             <div class="sg-name">${e.title}${opt}${plat}</div>
-            <div class="sg-sub">S${e.season} · ${e.count} éps · <span class="sg-remtxt" id="sr-${e.id}">${done}/${e.count} · ${fmt(sRem(e))}</span><span class="sg-tn-tag">ce soir</span></div>
+            <div class="sg-sub">S${e.season} · ${e.count} ${t('episodesAbbrev')} · <span class="sg-remtxt" id="sr-${e.id}">${done}/${e.count} · ${fmt(sRem(e))}</span><span class="sg-tn-tag">${t('tonightTag')}</span></div>
           </div>
           <button type="button" class="info-btn" data-info="${e.id}"><span>i</span></button>
           <span class="sg-arr"></span>
@@ -211,7 +211,7 @@ function render(){
         e.epMins.forEach((m,i)=>{
           const eid=`${e.id}-e${i+1}`;const li=document.createElement('li');
           li.className=`ep-li${isWatched(eid)?' done':''}`;li.id=`ep-${eid}`;
-          li.innerHTML=`<label><input type="checkbox" data-id="${eid}"${isWatched(eid)?' checked':''}${future?' disabled':''}><span class="sq s"></span><span class="ep-n">E${String(i+1).padStart(2,'0')}</span><span class="ep-t">Épisode ${i+1}</span><span class="ep-d">${fmtE(m)}</span></label>`;
+          li.innerHTML=`<label><input type="checkbox" data-id="${eid}"${isWatched(eid)?' checked':''}${future?' disabled':''}><span class="sq s"></span><span class="ep-n">E${String(i+1).padStart(2,'0')}</span><span class="ep-t">${t('episodeWord')} ${i+1}</span><span class="ep-d">${fmtE(m)}</span></label>`;
           ul.appendChild(li);
         });
         body.appendChild(sg);
@@ -220,7 +220,7 @@ function render(){
     ch.appendChild(hd);ch.appendChild(body);main.appendChild(ch);
   });
   main.querySelectorAll('input[type=checkbox]:not(.sg-chk)').forEach(cb=>cb.addEventListener('change',onCheck));
-  if(isSearching){srchCntEl.textContent=`${searchTotal} résultat${searchTotal!==1?'s':''}`;srchCntEl.classList.add('vis');}
+  if(isSearching){srchCntEl.textContent=trResultCount(searchTotal);srchCntEl.classList.add('vis');}
   updateStats();updateProchain();
 }
 

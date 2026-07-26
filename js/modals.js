@@ -44,9 +44,9 @@ async function fetchRealPoster(id,tmdbInfo){
   try{
     const res=await fetch(url,opts);
     if(!res.ok){
-      if(res.status===401)showToast('⚠ Clé TMDB invalide ou expirée');
-      else if(res.status===404)showToast('⚠ Titre introuvable sur TMDB');
-      else showToast(`⚠ Erreur TMDB (${res.status})`);
+      if(res.status===401)showToast(t('tmdbErrInvalidKey'));
+      else if(res.status===404)showToast(t('tmdbErrNotFound'));
+      else showToast(trTmdbErrGeneric(res.status));
       return;
     }
     const data=await res.json();
@@ -54,11 +54,11 @@ async function fetchRealPoster(id,tmdbInfo){
     posterCache[cacheKey]=posterUrl;
     lsSet('mcu-poster-cache',JSON.stringify(posterCache));
     if(posterUrl)applyPosterUrl(id,posterUrl);
-    else showToast('Pas d\'affiche disponible sur TMDB pour ce titre');
+    else showToast(t('tmdbNoPoster'));
   }catch(err){
     // Erreur réseau : hors-ligne, ou requête bloquée par l'environnement (CSP d'un
     // aperçu embarqué, par exemple). On informe plutôt que d'échouer en silence.
-    showToast('⚠ Impossible de contacter TMDB (réseau bloqué ou hors-ligne)');
+    showToast(t('tmdbErrNetwork'));
   }
 }
 function applyPosterUrl(id,url){
@@ -86,15 +86,15 @@ function applyPosterUrl(id,url){
 function openInfo(id){
   const e=E.find(x=>x.id===id);if(!e)return;
   const info=INFO[id];const platInfo=PLAT[id];
-  const durTxt=e.type==='f'?fmt(e.m):`${e.count} épisode${e.count>1?'s':''} · ${fmt(e.epMins.reduce((a,b)=>a+b,0))}`;
+  const durTxt=e.type==='f'?fmt(e.m):`${trEpisodeCount(e.count)} · ${fmt(e.epMins.reduce((a,b)=>a+b,0))}`;
   const yearTxt=e.type==='f'&&e.y?e.y:'';
   const panel=document.getElementById('info-panel');
   // Chiffres : budget/box-office/notes — n'affiche que ce qui est réellement disponible
   const nums=[];
   if(info?.budget&&info.budget!=='N/A')nums.push(`<div class="num-card"><div class="num-v">${info.budget}</div><div class="num-l">Budget</div></div>`);
-  if(info?.box&&info.box!=='N/A')nums.push(`<div class="num-card"><div class="num-v">${info.box}</div><div class="num-l">${info.box.startsWith('TBD')?'Box-office':'Box-office mondial'}</div></div>`);
+  if(info?.box&&info.box!=='N/A')nums.push(`<div class="num-card"><div class="num-v">${info.box}</div><div class="num-l">${info.box.startsWith('TBD')?t('boxOfficeLbl'):t('boxOfficeWorldLbl')}</div></div>`);
   if(info?.rt)nums.push(`<div class="num-card num-rt"><div class="num-v">${info.rt}</div><div class="num-l">Rotten Tomatoes</div></div>`);
-  const trailerBtn=info?.yt&&info.yt.startsWith('http')?`<a class="trailer-btn" href="${info.yt}" target="_blank">▶ Bande-annonce</a>`:'';
+  const trailerBtn=info?.yt&&info.yt.startsWith('http')?`<a class="trailer-btn" href="${info.yt}" target="_blank">${t('trailerBtn')}</a>`:'';
   panel.innerHTML=`
     <div class="stat-top">
       ${renderPoster(e)}
@@ -104,19 +104,19 @@ function openInfo(id){
       </div>
       <button class="stat-close" id="info-close">✕</button>
     </div>
-    <div class="info-meta">${yearTxt?`<span>${yearTxt}</span>`:''}<span>${durTxt}</span>${platInfo?`<span class="plat-tag ${platInfo.c}">${platInfo.l} · ${platInfo.date}</span>`:''}${e.opt?`<span class="opt-badge">optionnel</span>`:''}</div>
+    <div class="info-meta">${yearTxt?`<span>${yearTxt}</span>`:''}<span>${durTxt}</span>${platInfo?`<span class="plat-tag ${platInfo.c}">${platInfo.l} · ${platInfo.date}</span>`:''}${e.opt?`<span class="opt-badge">${t('optionalBadge')}</span>`:''}</div>
     ${info?`
       <p class="info-synopsis">${info.synopsis}</p>
       ${nums.length?`<div class="num-grid">${nums.join('')}</div>`:''}
       ${trailerBtn}
       <div class="info-grid">
-        <div class="info-row"><span class="info-lbl">Réalisation</span><span>${info.director}</span></div>
-        <div class="info-row"><span class="info-lbl">Avec</span><span>${info.cast}</span></div>
-        ${info.pc?`<div class="info-row info-pc"><span class="info-lbl">🎬 Post-crédit</span><span>${info.pc}</span></div>`:e.type==='f'?`<div class="info-row"><span class="info-lbl">🎬 Post-crédit</span><span style="color:var(--faint)">Non confirmé pour ce titre</span></div>`:''}
-        ${info.triv?`<div class="info-row"><span class="info-lbl">📌 Anecdote</span><span>${info.triv}</span></div>`:''}
-        ${info.link?`<div class="info-row"><span class="info-lbl">🔗 Dans la saga</span><span>${info.link}</span></div>`:''}
+        <div class="info-row"><span class="info-lbl">${t('directorLbl')}</span><span>${info.director}</span></div>
+        <div class="info-row"><span class="info-lbl">${t('castLbl')}</span><span>${info.cast}</span></div>
+        ${info.pc?`<div class="info-row info-pc"><span class="info-lbl">${t('postCreditLbl')}</span><span>${info.pc}</span></div>`:e.type==='f'?`<div class="info-row"><span class="info-lbl">${t('postCreditLbl')}</span><span style="color:var(--faint)">${t('postCreditUnknown')}</span></div>`:''}
+        ${info.triv?`<div class="info-row"><span class="info-lbl">${t('triviaLbl')}</span><span>${info.triv}</span></div>`:''}
+        ${info.link?`<div class="info-row"><span class="info-lbl">${t('sagaLinkLbl')}</span><span>${info.link}</span></div>`:''}
       </div>
-    `:`<p class="info-synopsis" style="color:var(--faint)">Pas encore d'informations détaillées pour ce contenu.</p>`}
+    `:`<p class="info-synopsis" style="color:var(--faint)">${t('noInfoYet')}</p>`}
   `;
   infoModal.classList.add('vis');
   document.getElementById('info-close').addEventListener('click',()=>infoModal.classList.remove('vis'));
@@ -165,7 +165,7 @@ function computeChartGeom(series){
 }
 
 function renderChartSVG(geom){
-  if(!geom)return`<div class="chart-empty">Regarde et coche des contenus sur plusieurs jours différents pour voir ta courbe de progression ici.</div>`;
+  if(!geom)return`<div class="chart-empty">${t('chartEmptyMsg')}</div>`;
   const{w,h,pad,padB,pts}=geom;
   const lineStr=pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
   const areaPts=`${pad},${h-padB} ${lineStr} ${w-pad},${h-padB}`;
@@ -224,7 +224,7 @@ function wireChartInteraction(svgEl,tipEl,geom,totalMin){
 }
 
 function openStats(){
-  const{t,w,r,ps}=totals();const pct=t>0?Math.round(w/t*100):0;
+  const{t:tot,w,r,ps}=totals();const pct=tot>0?Math.round(w/tot*100):0;
   const allR=E.filter(e=>ratings[e.id]).map(e=>({title:e.title,r:ratings[e.id]}));
   const avg=allR.length?(allR.reduce((s,x)=>s+x.r,0)/allR.length).toFixed(1):null;
   const top=[...allR].sort((a,b)=>b.r-a.r).slice(0,5);
@@ -235,23 +235,23 @@ function openStats(){
   const geom=series.length>=2?computeChartGeom(series):null;
   const panel=document.getElementById('stat-panel');
   panel.innerHTML=`
-    <div class="stat-top"><span class="stat-h2">📊 Statistiques</span><button class="stat-close" id="stat-close">✕</button></div>
+    <div class="stat-top"><span class="stat-h2">${t('statsTitle')}</span><button class="stat-close" id="stat-close">✕</button></div>
     <div class="sgrid">
-      <div class="scard"><div class="scard-v">${Math.floor(w/60)}h</div><div class="scard-l">Temps visionné</div></div>
-      <div class="scard"><div class="scard-v">${pct}%</div><div class="scard-l">Complété</div></div>
-      <div class="scard"><div class="scard-v">${Math.floor(r/60)}h</div><div class="scard-l">Restant</div></div>
-      <div class="scard"><div class="scard-v">${thisWeek}</div><div class="scard-l">Cette semaine</div></div>
+      <div class="scard"><div class="scard-v">${Math.floor(w/60)}h</div><div class="scard-l">${t('timeWatchedLbl')}</div></div>
+      <div class="scard"><div class="scard-v">${pct}%</div><div class="scard-l">${t('completedLbl2')}</div></div>
+      <div class="scard"><div class="scard-v">${Math.floor(r/60)}h</div><div class="scard-l">${t('remainingLbl2')}</div></div>
+      <div class="scard"><div class="scard-v">${thisWeek}</div><div class="scard-l">${t('thisWeekLbl')}</div></div>
     </div>
-    <div class="ssec-title">Progression cumulée ${geom?'<span style="font-weight:400;text-transform:none;color:var(--faint)">— survole ou touche la courbe</span>':''}</div>
+    <div class="ssec-title">${t('cumulativeProgressLbl')} ${geom?`<span style="font-weight:400;text-transform:none;color:var(--faint)">${t('hoverChartHint')}</span>`:''}</div>
     <div class="chart-wrap">${renderChartSVG(geom)}</div>
-    <div class="ssec-title">Progression par chapitre</div>
+    <div class="ssec-title">${t('progressByChapterLbl')}</div>
     ${ps.map((s,i)=>{const p=s.t>0?Math.round(s.w/s.t*100):0;return`<div class="srow"><div class="srow-hd"><span class="srow-n">${SEC[i]}</span><span class="srow-p">${p}% · ${fmt(s.w)}</span></div><div class="sbar"><div class="sbar-f" style="width:${p}%"></div></div></div>`;}).join('')}
     ${allR.length>0?`
-      <div class="sttitle">⭐ Meilleures notes · Moyenne ${avg}/5 (${allR.length} noté${allR.length>1?'s':''})</div>
+      <div class="sttitle">${trAvgRated(avg,allR.length)}</div>
       ${top.map((x,i)=>`<div class="stop-row"><span class="stop-rank">${i+1}</span><span class="stop-title">${x.title}</span><span class="stop-stars">${starsStr(x.r)}</span></div>`).join('')}
-    `:`<div class="s-empty">Note les contenus après les avoir cochés pour voir tes stats ici.</div>`}
+    `:`<div class="s-empty">${t('rateHint')}</div>`}
   `;
   statModal.classList.add('vis');
   document.getElementById('stat-close').addEventListener('click',()=>statModal.classList.remove('vis'));
-  if(geom)wireChartInteraction(document.getElementById('cum-chart-svg'),document.getElementById('chart-tip'),geom,t);
+  if(geom)wireChartInteraction(document.getElementById('cum-chart-svg'),document.getElementById('chart-tip'),geom,tot);
 }

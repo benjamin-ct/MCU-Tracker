@@ -2,7 +2,7 @@
 
 ## Quoi
 
-Un tracker de visionnage MCU en **vanilla JS, sans framework, sans build**. Ordre chronologique interne (pas ordre de sortie), de Captain America: First Avenger (1942 in-universe) jusqu'à Avengers: Doomsday (18 déc. 2026). Fonctionne comme app locale, PWA installable ("Ajouter à l'écran d'accueil").
+Un tracker de visionnage MCU en **vanilla JS, sans framework, sans build**. Ordre chronologique interne (pas ordre de sortie), de Captain America: First Avenger (1942 in-universe) jusqu'à Avengers: Doomsday (18 déc. 2026). Fonctionne comme app locale, PWA installable ("Ajouter à l'écran d'accueil"). Bilingue FR/EN et thème clair/sombre, tous deux commutables dans l'UI (voir "Thème & langue" ci-dessous).
 
 **Utilisateur cible** : Benjamin (@benjamin-ct sur GitHub), qui suit un marathon MCU complet avant la sortie d'Avengers: Doomsday.
 
@@ -16,13 +16,20 @@ Un tracker de visionnage MCU en **vanilla JS, sans framework, sans build**. Ordr
 ## Structure des fichiers
 
 ```
-index.html       squelette HTML uniquement (markup + <link>/<script> tags)
-css/style.css    tous les styles
-js/data.js       catalogue E[], INFO, PLAT, constructeurs fil()/ser()/serE(), constantes (ROMANS, SEC, DOOM, MONTHS)
+index.html       squelette HTML uniquement (markup + <link>/<script> tags), attributs data-i18n*
+css/style.css    tous les styles ; variables de thème dans :root + :root[data-theme="light"]
+js/data.js       catalogue E[] (contenu FR/neutre), INFO, PLAT, constructeurs fil()/ser()/serE(),
+                 constantes (ROMANS, SEC, DOOM, MONTHS), frMoney()/frRT() (transfo FR→EN générique),
+                 + instantanés FR (TITLE_FR/INFO_FR_SNAPSHOT/PLAT_FR_SNAPSHOT/SEC_FR/MONTHS_FR)
+js/data-en.js    overrides anglais : TITLE_EN, INFO_EN (uniquement les champs en prose libre +
+                 cas particuliers budget/box/rt), SEC_EN, MONTHS_EN
 js/platform.js   détection plateforme (_getPlatform/PLATFORM) + lien profond Disney+ (DP_HREF)
 js/state.js      état (watchDates/mode/ratings/tmdbKey/posterCache/viewFilter/tonightMin/searchQuery),
                  isWatched/markWatched/markUnwatched, persistance localStorage (lsSet/lsGet/save),
                  migration/boot() (reconcileLegacyChecked, syncModeToggle)
+js/theme.js      thème clair/sombre (initTheme/applyTheme/toggleTheme), persisté seul (mcu-theme)
+js/i18n.js       langue FR/EN : STRINGS{fr,en} + t()/tr*() pour tout le texte d'UI, et
+                 applyLangToContent() qui mute E[].title/INFO/SEC/MONTHS/PLAT en place
 js/compute.js    calculs dérivés purs, pas de DOM (cnt, sDone, sRem, fitsTonight, matchSearch,
                  nextItem, daysLeft, estimateEvenings, totals)
 js/render.js     render() principal (liste des chapitres/films/séries), onCheck, étoiles,
@@ -30,7 +37,7 @@ js/render.js     render() principal (liste des chapitres/films/séries), onCheck
 js/modals.js     modale info ("i"), modale statistiques + graphique cumulé (SVG), génération
                  d'affiches (dégradé + initiales ou vraie affiche TMDB)
 js/app.js        bootstrap : câble tous les écouteurs DOM (filtres, recherche, surprise, toggle,
-                 TMDB, export/import, reset), icône PWA, appelle boot() au chargement
+                 thème, langue, TMDB, export/import, reset), icône PWA, appelle boot() au chargement
 ```
 
 Ordre de chargement des `<script>` = ordre ci-dessus (`data.js` en premier, `app.js` en dernier). Comme ce sont des scripts classiques (pas des modules), tous les fichiers partagent la même portée globale — l'ordre importe pour que chaque fichier puisse référencer ce que les précédents ont déjà défini, exactement comme quand tout était dans un seul `<script>`.
@@ -59,6 +66,15 @@ const E = [
 
 **`INFO`** — dictionnaire par id avec les champs pour la modale "i" : `synopsis`, `director`, `cast`, `pc` (scène post-crédit), `budget`, `box` (box-office), `rt` (score Rotten Tomatoes), `triv` (anecdote), `link` (connexion à la saga), `yt` (URL bande-annonce), `tmdb: {id, type}` (pour fetch API), `poster` (chemin d'affiche statique vérifié, pour les quelques titres où on a une vraie image sans avoir besoin de clé API).
 
+## Thème & langue
+
+- **Thème clair/sombre** : bouton ☀️/🌙 dans le header (`#theme-btn`). État = attribut `data-theme` sur `<html>` (`"dark"` ou `"light"`), lu par les variables CSS dans `css/style.css`. Au tout premier chargement (rien en `localStorage`), part de `prefers-color-scheme` système ; ensuite le choix manuel (persisté dans `mcu-theme`) a toujours priorité et n'est plus jamais écrasé par le système. Toute nouvelle couleur ajoutée au CSS doit passer par une variable (`--xxx`) définie dans les deux blocs `:root`/`:root[data-theme="light"]`, jamais une couleur en dur, sinon elle ne s'adapte pas au thème clair.
+- **Langue FR/EN** : bouton `#lang-btn` dans le header (affiche la langue *vers laquelle* basculer, pas la langue actuelle). État = variable globale `lang` (`js/i18n.js`), persistée dans `mcu-lang` (pas de sync via `window.storage` — c'est une préférence d'affichage locale, comme la clé TMDB, pas une donnée de progression). **Aucune chaîne visible par l'utilisateur ne doit être écrite en dur ailleurs que dans `js/i18n.js`** (STRINGS + fonctions `tr*()`) et `js/data.js`/`js/data-en.js` (contenu du catalogue) — toute nouvelle chaîne d'UI passe par `t('cléExistante')` ou une nouvelle entrée dans `STRINGS`.
+  - Le contenu (`E[].title`, champs de `INFO`, `SEC`, `MONTHS`, `PLAT[id].l`/`.date`) n'est **pas dupliqué par langue dans le reste du code** : `applyLangToContent()` mute ces mêmes objets en place quand la langue change (exactement comme `mode`/`watchDates` sont mutés en place ailleurs), donc `render.js`/`modals.js`/`app.js` continuent de lire `e.title`, `INFO[id].synopsis`, `SEC[i]` sans changement, quelle que soit la langue active.
+  - `js/data.js` ne contient QUE le français (+ les champs neutres `director`/`cast`/`yt`/`tmdb`/`poster`, qui ne sont jamais dupliqués côté anglais). `js/data-en.js` ne contient QUE ce qui diffère en anglais. Pour `budget`/`box`/`rt`, la transformation FR→EN est automatique par défaut (`frMoney()`/`frRT()` dans `data.js`, gèrent `Md$`→`B`, `M$`→`$…M`, `critique/public`→`critics/audience`, `pas encore sorti`→`not yet released`) ; n'ajouter un override dans `INFO_EN` que si le texte français contient un mot qui ne rentre pas dans ce moule (ex. "au total", "épisode", "record pour une série...").
+  - **Piège vérifié en prod** : `totals()` retourne un champ nommé `t` (minutes totales) — ne jamais le destructurer sous ce nom (`const{t,...}=totals()`) dans une fonction qui appelle aussi `t('clé')` (la fonction i18n globale), ça masque la fonction et casse silencieusement tout `t(...)` dans la portée (bug réel rencontré dans `updateStats()`/`openStats()`, corrigé en renommant en `tot`).
+  - Toute nouvelle entrée dans `E`/`INFO` doit avoir un pendant anglais dans `data-en.js` : `TITLE_EN[id]` seulement si le titre anglais diffère du titre FR affiché (sinon fallback automatique), et `INFO_EN[id]` avec au minimum `synopsis`/`triv`/`link` (+ `pc` si le film en a un, + `cast` si le champ FR contient de la prose descriptive comme "voix"/"narrateur" plutôt que des noms propres).
+
 ## Décisions d'architecture importantes (ne pas régresser dessus)
 
 1. **`watchDates` est l'unique source de vérité** pour "vu ou pas" (`isWatched(id)` = `id in watchDates`). Il n'y a **pas** de Set `checked` séparé — ça a existé avant et causait des incohérences (stats "vu cette semaine" fausses). `markWatched(id)` / `markUnwatched(id)` sont les seuls points d'entrée. (`js/state.js`)
@@ -86,6 +102,8 @@ const E = [
 - Intégration TMDB optionnelle (clé v3 ou v4 auto-détectée) pour affiches réelles, avec cache localStorage
 - Lien profond Disney+ (Universal Link iOS)
 - Icône PWA générée dynamiquement (canvas, badge hexagonal vert/or)
+- Thème clair/sombre (bouton, respecte la préférence système au premier lancement, puis persisté)
+- Langue FR/EN (bouton, persisté) — traduction complète : interface **et** contenu (titres, synopsis, anecdotes, connexions de saga des 90 films/séries)
 
 ## Ce qui NE marche PAS dans l'aperçu Claude (mais marche en dehors)
 
@@ -105,4 +123,4 @@ const E = [
 - Films MCU mainline : nom court en un mot (`cap1`, `ironman2`, `avengers4`, `thor3`...)
 - Séries avec plusieurs saisons : même id de base + suffixe (`dd_s1`/`dd_s2`/`dd_s3` pour Daredevil Netflix, `loki1`/`loki2`, `whatif1`/`2`/`3`)
 - Fox X-Men : noms descriptifs (`xfirstclass`, `xdofp`, `xapocalypse`...)
-- Tout nouvel ajout doit suivre ces conventions et être inséré au bon endroit chronologique dans `E`, avec une entrée `INFO` complète (tous les champs, y compris `tmdb` si applicable).
+- Tout nouvel ajout doit suivre ces conventions et être inséré au bon endroit chronologique dans `E`, avec une entrée `INFO` complète (tous les champs, y compris `tmdb` si applicable) **et** son pendant dans `js/data-en.js` (voir "Thème & langue" ci-dessus) — sinon le nouveau titre reste en français quand l'utilisateur est en mode anglais.

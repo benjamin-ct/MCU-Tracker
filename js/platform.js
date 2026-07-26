@@ -24,8 +24,8 @@ document.addEventListener('click',ev=>{
   if(!link)return;
   // PAS de preventDefault() — le <a href> doit naviguer normalement pour que
   // l'Universal Link iOS se déclenche
-  const t=link.dataset.dp;
-  navigator.clipboard?.writeText(t).catch(()=>{});
-  const short=t.length>26?t.slice(0,25)+'…':t;
-  showToast(`📋 "${short}" copié — cherche dans Disney+`);
+  const title=link.dataset.dp;
+  navigator.clipboard?.writeText(title).catch(()=>{});
+  const short=title.length>26?title.slice(0,25)+'…':title;
+  showToast(trCopiedForDisney(short));
 });

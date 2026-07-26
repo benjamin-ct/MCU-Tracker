@@ -7,15 +7,33 @@ const MONTHS=['jan.','fév.','mars','avr.','mai','juin','juil.','août','sep.','
 // Wonder Man, Daredevil S2, Punisher: One Last Kill et X-Men '97 S2 (dans PLAT
 // auparavant) sont en réalité déjà sortis — retirés d'ici après vérification.
 const PLAT={
-  brandnewday:{l:'Cinéma',c:'cin',date:'31 juil. 2026'},
-  yfns2:{l:'Bientôt',c:'soon',date:'automne 2026'},
-  visionquest:{l:'Bientôt',c:'soon',date:'14 oct. 2026'},
-  doomsday:{l:'Cinéma',c:'cin',date:'18 déc. 2026'}
+  brandnewday:{l:'Cinéma',c:'cin',date:'31 juil. 2026',l_en:'In Theaters',date_en:'Jul 31, 2026'},
+  yfns2:{l:'Bientôt',c:'soon',date:'automne 2026',l_en:'Coming Soon',date_en:'Fall 2026'},
+  visionquest:{l:'Bientôt',c:'soon',date:'14 oct. 2026',l_en:'Coming Soon',date_en:'Oct 14, 2026'},
+  doomsday:{l:'Cinéma',c:'cin',date:'18 déc. 2026',l_en:'In Theaters',date_en:'Dec 18, 2026'}
 };
 // Un item présent dans PLAT = pas encore sorti = on ne peut pas le regarder maintenant.
 // Cette fonction sert de source unique pour : exclure des totaux/soirées/countdown,
 // désactiver sa case à cocher, masquer son lien Disney+, l'ignorer pour "prochain à voir" et "ce soir".
 function isFuture(e){return!!PLAT[e.id];}
+
+// ── Transformation générique FR→EN pour budget/box/rt ─────────────────────
+// La plupart des valeurs budget/box/rt ne contiennent que des chiffres et deux
+// tournures françaises reconnaissables ("Md$"/"M$" et "critique"/"public"/"pas
+// encore sorti") : on les transforme automatiquement plutôt que de retaper les 90
+// entrées à la main. Les quelques cas avec du texte français additionnel (ex.
+// "au total", "épisode") ont un override explicite dans INFO_EN (data-en.js).
+function frMoney(s){
+  if(!s)return s;
+  if(/pas encore sorti/.test(s))return s.replace('pas encore sorti','not yet released');
+  return s.replace(/(~?)(\d[\d.,]*(?:-\d[\d.,]*)?)\s?Md\$/g,(_,tilde,num)=>`${tilde}$${num}B`)
+          .replace(/(~?)(\d[\d.,]*(?:-\d[\d.,]*)?)\s?M\$/g,(_,tilde,num)=>`${tilde}$${num}M`);
+}
+function frRT(s){
+  if(!s)return s;
+  if(/pas encore sorti/.test(s))return s.replace('pas encore sorti','not yet released');
+  return s.replace(/\bcritique\b/g,'critics').replace(/\bpublic\b/g,'audience');
+}
 
 // Infos complémentaires (synopsis, réalisation, casting) pour la modale "i"
 const INFO={
@@ -212,3 +230,17 @@ const E=[
   ser('visionquest','VisionQuest',3,1,8,320,1),
   fil('doomsday','Avengers : Doomsday',3,150),
 ];
+
+// ── Instantanés FR (pour i18n.js) ─────────────────────────────────────────
+// Capturés une seule fois ici, juste après la définition de E/INFO/PLAT/SEC/MONTHS
+// (donc avant toute mutation par applyLangToContent()) — évite de retaper le
+// contenu français une deuxième fois quelque part pour pouvoir y revenir depuis
+// l'anglais.
+const TITLE_FR={};
+E.forEach(e=>{TITLE_FR[e.id]=e.title;});
+const INFO_FR_SNAPSHOT={};
+Object.keys(INFO).forEach(id=>{INFO_FR_SNAPSHOT[id]={...INFO[id]};});
+const PLAT_FR_SNAPSHOT={};
+Object.keys(PLAT).forEach(id=>{PLAT_FR_SNAPSHOT[id]={...PLAT[id]};});
+const SEC_FR=SEC.slice();
+const MONTHS_FR=MONTHS.slice();
