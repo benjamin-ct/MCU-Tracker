@@ -27,7 +27,7 @@ function showToast(msg){
 
 // ── UPDATE STATS ─────────────────────────────────────────
 function updateStats(){
-  const{t:tot,w,r,ps,remUnits}=totals();const pct=tot>0?Math.round(w/tot*100):0;
+  const{t:tot,w,r,remUnits}=totals();const pct=tot>0?Math.round(w/tot*100):0;
   const f=document.getElementById('fill');
   f.style.width=pct+'%';f.classList.toggle('glow',pct>0&&pct<100);
   const rh=Math.floor(r/60),rm=r%60;
@@ -36,7 +36,6 @@ function updateStats(){
   document.getElementById('c1').innerHTML=`<b>${Math.floor(w/60)}h</b> ${t('hoursWatchedSuffix')}`;
   document.getElementById('c2').innerHTML=`<b>${pct}%</b> ${t('completedSuffix')}`;
   document.getElementById('c3').innerHTML=`≈<b>${estimateEvenings(remUnits,150)}</b> ${t('eveningsSuffix')}`;
-  ps.forEach((s,i)=>{const el=document.getElementById(`cb${i}`);if(el)el.textContent=`${s.d}/${s.n} · ${fmt(s.t-s.w)}`;});
   updateCountdown(r);
 }
 
@@ -124,13 +123,52 @@ function applyTonightHL(){
 const TN=[0,30,60,90,120,150,180,240];
 function tnDisp(m){return m===0?'off':m<60?m+'m':fmt(m);}
 
+// ── GROUPING (onglet Chronologique / Ordre de sortie) ─────
+// sortMode détermine comment le catalogue est découpé en "chapitres" repliables :
+// - 'chrono' (par défaut) : les 4 chapitres narratifs (SEC), dans l'ordre de E[].
+// - 'release' : un chapitre par année de sortie RÉELLE (RELEASE_DATE), trié par
+//   vraie date de sortie — ordre différent de l'ordre chronologique interne (ex.
+//   Black Widow sorti après Endgame alors qu'il se déroule après Civil War).
+// Les deux modes partagent le même Set de replis (cGroup, clé préfixée par mode
+// pour ne jamais collisionner) et le même moteur de rendu ci-dessous — seul ce
+// qui construit les groupes change.
+function groupsFor(){
+  if(sortMode==='release'){
+    const years=[...new Set(E.map(e=>releaseYear(e.id)))].sort((a,b)=>a-b);
+    return years.map(y=>({
+      key:`release-${y}`,
+      headHTML:`<span class="ch-name">${y}</span>`,
+      entries:E.filter(e=>releaseYear(e.id)===y).sort((a,b)=>RELEASE_DATE[a.id].localeCompare(RELEASE_DATE[b.id])),
+    }));
+  }
+  return[0,1,2,3].map(si=>({
+    key:`chrono-${si}`,
+    headHTML:`<span class="ch-rom">${ROMANS[si]}</span><span class="ch-name">${SEC[si]}</span>`,
+    entries:E.filter(e=>e.sec===si),
+  }));
+}
+// Clé de groupe pour une entrée donnée, dans le mode COURANT — utilisée pour rouvrir
+// automatiquement le bon chapitre (ex. depuis "Film surprise") quel que soit l'onglet actif.
+function groupKeyFor(e){return sortMode==='release'?`release-${releaseYear(e.id)}`:`chrono-${e.sec}`;}
+// "d/n · reste" pour un groupe : même calcul que dans totals() (Essentiel + pas-encore-sorti
+// exclus, séries comptées par épisode) mais par groupe plutôt que par chapitre narratif fixe.
+function groupBadge(entries){
+  let n=0,d=0,rem=0;
+  entries.forEach(e=>{
+    if(!cnt(e)||isFuture(e))return;
+    if(e.type==='f'){n++;if(isWatched(e.id))d++;else rem+=e.m;}
+    else{n+=e.count;d+=sDone(e);rem+=sRem(e);}
+  });
+  return`${d}/${n} · ${fmt(rem)}`;
+}
+
 // ── RENDER ───────────────────────────────────────────────
 function render(){
   const main=document.getElementById('main');main.innerHTML='';
   const isSearching=searchQuery.length>0;
   let searchTotal=0;
-  [0,1,2,3].forEach(si=>{
-    const entries=E.filter(e=>e.sec===si&&cnt(e)&&matchSearch(e));
+  groupsFor().forEach(grp=>{
+    const entries=grp.entries.filter(e=>cnt(e)&&matchSearch(e));
     if(isSearching&&entries.length===0)return;
     // En mode "À voir" : si plus rien ne reste à voir dans ce chapitre (les items pas
     // encore sortis comptent toujours comme "restants"), on masque le chapitre en
@@ -145,10 +183,10 @@ function render(){
     }
     searchTotal+=visible.length;
     const ch=document.createElement('div');
-    ch.className='ch'+(cSec.has(si)?'':' open');ch.id=`ch${si}`;
+    ch.className='ch'+(cGroup.has(grp.key)?'':' open');ch.id=`ch-${grp.key}`;
     const hd=document.createElement('div');hd.className='ch-hd';
-    hd.innerHTML=`<span class="ch-rom">${ROMANS[si]}</span><span class="ch-name">${SEC[si]}</span><span class="ch-badge" id="cb${si}"></span><span class="arr"></span>`;
-    hd.addEventListener('click',()=>{ch.classList.toggle('open');if(ch.classList.contains('open'))cSec.delete(si);else cSec.add(si);});
+    hd.innerHTML=`${grp.headHTML}<span class="ch-badge">${groupBadge(grp.entries)}</span><span class="arr"></span>`;
+    hd.addEventListener('click',()=>{ch.classList.toggle('open');if(ch.classList.contains('open'))cGroup.delete(grp.key);else cGroup.add(grp.key);});
     const body=document.createElement('div');body.className='ch-body';
     entries.forEach(e=>{
       const tnFit=fitsTonight(e);const platInfo=PLAT[e.id];const future=isFuture(e);

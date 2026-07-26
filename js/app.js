@@ -7,6 +7,13 @@ const fltAllBtn=document.getElementById('flt-all'),fltTodoBtn=document.getElemen
 fltAllBtn.addEventListener('click',()=>{viewFilter='all';fltAllBtn.classList.add('on');fltTodoBtn.classList.remove('on');document.body.classList.remove('view-todo');render();});
 fltTodoBtn.addEventListener('click',()=>{viewFilter='todo';fltTodoBtn.classList.add('on');fltAllBtn.classList.remove('on');document.body.classList.add('view-todo');render();});
 
+// ── SORT (Chronologique / Ordre de sortie) ────────────────
+// Onglet indépendant du filtre Tout/À voir et du mode Essentiel/Tout regarder ci-dessus :
+// change uniquement comment groupsFor() (js/render.js) découpe le catalogue en chapitres.
+const sortChronoBtn=document.getElementById('sort-chrono'),sortReleaseBtn=document.getElementById('sort-release');
+sortChronoBtn.addEventListener('click',()=>{sortMode='chrono';syncSortToggle();cGroup.clear();render();save();});
+sortReleaseBtn.addEventListener('click',()=>{sortMode='release';syncSortToggle();cGroup.clear();render();save();});
+
 // ── SEARCH ──────────────────────────────────────────────
 const srchEl=document.getElementById('srch');
 const srchClrBtn=document.getElementById('srch-clr');
@@ -16,7 +23,7 @@ srchEl.addEventListener('input',()=>{
   const q=srchEl.value.trim();
   // N'auto-déplie qu'au tout début d'une recherche, pas à chaque frappe —
   // ainsi l'utilisateur peut replier manuellement une série pendant qu'il cherche.
-  if(q&&!wasSearching){cSec.clear();cSer.clear();}
+  if(q&&!wasSearching){cGroup.clear();cSer.clear();}
   searchQuery=q;wasSearching=q.length>0;
   srchClrBtn.classList.toggle('vis',q.length>0);
   render();
@@ -37,9 +44,10 @@ document.getElementById('surprise-btn').addEventListener('click',()=>{
   });
   if(!pool.length){showToast(t('surpriseNoneLeft'));return;}
   const pick=pool[Math.floor(Math.random()*pool.length)];
-  // Open chapter
-  const chEl=document.getElementById(`ch${pick.sec}`);
-  if(chEl&&!chEl.classList.contains('open')){chEl.classList.add('open');cSec.delete(pick.sec);}
+  // Open chapter (clé du groupe dans le mode de tri courant, chrono ou release)
+  const gKey=groupKeyFor(pick);
+  const chEl=document.getElementById(`ch-${gKey}`);
+  if(chEl&&!chEl.classList.contains('open')){chEl.classList.add('open');cGroup.delete(gKey);}
   if(pick.type==='s'){const sg=document.getElementById(`sg-${pick.id}`);if(sg&&!sg.classList.contains('open')){sg.classList.add('open');cSer.delete(pick.id);}}
   // Dismiss search if active
   if(searchQuery){searchQuery='';srchEl.value='';wasSearching=false;srchClrBtn.classList.remove('vis');srchCntEl.classList.remove('vis');render();}
@@ -141,8 +149,8 @@ togEl.querySelectorAll('button').forEach(btn=>{
     render();save();
   });
 });
-document.getElementById('expAll').addEventListener('click',()=>{cSec.clear();cSer.clear();render();});
-document.getElementById('colAll').addEventListener('click',()=>{[0,1,2,3].forEach(si=>cSec.add(si));E.filter(e=>e.type==='s').forEach(e=>cSer.add(e.id));render();});
+document.getElementById('expAll').addEventListener('click',()=>{cGroup.clear();cSer.clear();render();});
+document.getElementById('colAll').addEventListener('click',()=>{groupsFor().forEach(g=>cGroup.add(g.key));E.filter(e=>e.type==='s').forEach(e=>cSer.add(e.id));render();});
 
 let armed=false;
 const rst=document.getElementById('rst');

@@ -2,7 +2,7 @@
 
 ## Quoi
 
-Un tracker de visionnage MCU en **vanilla JS, sans framework, sans build**. Ordre chronologique interne (pas ordre de sortie), de Captain America: First Avenger (1942 in-universe) jusqu'à Avengers: Doomsday (18 déc. 2026). Fonctionne comme app locale, PWA installable ("Ajouter à l'écran d'accueil"). Bilingue FR/EN et thème clair/sombre, tous deux commutables dans l'UI (voir "Thème & langue" ci-dessous).
+Un tracker de visionnage MCU en **vanilla JS, sans framework, sans build**. Deux façons de parcourir le catalogue, commutables par onglet : ordre chronologique interne (par défaut — de Captain America: First Avenger, 1942 in-universe, jusqu'à Avengers: Doomsday, 18 déc. 2026) ou ordre de sortie réelle. Fonctionne comme app locale, PWA installable ("Ajouter à l'écran d'accueil"). Bilingue FR/EN et thème clair/sombre, tous deux commutables dans l'UI (voir "Thème & langue" ci-dessous).
 
 **Utilisateur cible** : Benjamin (@benjamin-ct sur GitHub), qui suit un marathon MCU complet avant la sortie d'Avengers: Doomsday.
 
@@ -18,22 +18,26 @@ Un tracker de visionnage MCU en **vanilla JS, sans framework, sans build**. Ordr
 ```
 index.html       squelette HTML uniquement (markup + <link>/<script> tags), attributs data-i18n*
 css/style.css    tous les styles ; variables de thème dans :root + :root[data-theme="light"]
-js/data.js       catalogue E[] (contenu FR/neutre), INFO, PLAT, constructeurs fil()/ser()/serE(),
-                 constantes (ROMANS, SEC, DOOM, MONTHS), frMoney()/frRT() (transfo FR→EN générique),
-                 + instantanés FR (TITLE_FR/INFO_FR_SNAPSHOT/PLAT_FR_SNAPSHOT/SEC_FR/MONTHS_FR)
+js/data.js       catalogue E[] (contenu FR/neutre), INFO, PLAT, RELEASE_DATE (dates de sortie
+                 réelles, pour l'onglet "Ordre de sortie" — indépendant de l'ordre de E[]),
+                 constructeurs fil()/ser()/serE(), constantes (ROMANS, SEC, DOOM, MONTHS),
+                 frMoney()/frRT() (transfo FR→EN générique), + instantanés FR
+                 (TITLE_FR/INFO_FR_SNAPSHOT/PLAT_FR_SNAPSHOT/SEC_FR/MONTHS_FR)
 js/data-en.js    overrides anglais : TITLE_EN, INFO_EN (uniquement les champs en prose libre +
                  cas particuliers budget/box/rt), SEC_EN, MONTHS_EN
 js/platform.js   détection plateforme (_getPlatform/PLATFORM) + lien profond Disney+ (DP_HREF)
-js/state.js      état (watchDates/mode/ratings/tmdbKey/posterCache/viewFilter/tonightMin/searchQuery),
-                 isWatched/markWatched/markUnwatched, persistance localStorage (lsSet/lsGet/save),
-                 migration/boot() (reconcileLegacyChecked, syncModeToggle)
+js/state.js      état (watchDates/mode/sortMode/ratings/tmdbKey/posterCache/viewFilter/tonightMin/
+                 searchQuery), isWatched/markWatched/markUnwatched, persistance localStorage
+                 (lsSet/lsGet/save), migration/boot() (reconcileLegacyChecked, syncModeToggle,
+                 syncSortToggle)
 js/theme.js      thème clair/sombre (initTheme/applyTheme/toggleTheme), persisté seul (mcu-theme)
 js/i18n.js       langue FR/EN : STRINGS{fr,en} + t()/tr*() pour tout le texte d'UI, et
                  applyLangToContent() qui mute E[].title/INFO/SEC/MONTHS/PLAT en place
 js/compute.js    calculs dérivés purs, pas de DOM (cnt, sDone, sRem, fitsTonight, matchSearch,
                  nextItem, daysLeft, estimateEvenings, totals)
-js/render.js     render() principal (liste des chapitres/films/séries), onCheck, étoiles,
-                 updateStats/updateCountdown/updateProchain/advanceNext, stepper "ce soir"
+js/render.js     render() principal (liste des chapitres/films/séries), groupsFor()/groupBadge()/
+                 groupKeyFor() (regroupement générique Chronologique/Ordre de sortie), onCheck,
+                 étoiles, updateStats/updateCountdown/updateProchain/advanceNext, stepper "ce soir"
 js/modals.js     modale info ("i"), modale statistiques + graphique cumulé (SVG), génération
                  d'affiches (dégradé + initiales ou vraie affiche TMDB)
 js/app.js        bootstrap : câble tous les écouteurs DOM (filtres, recherche, surprise, toggle,
@@ -66,6 +70,16 @@ const E = [
 
 **`INFO`** — dictionnaire par id avec les champs pour la modale "i" : `synopsis`, `director`, `cast`, `pc` (scène post-crédit), `budget`, `box` (box-office), `rt` (score Rotten Tomatoes), `triv` (anecdote), `link` (connexion à la saga), `yt` (URL bande-annonce), `tmdb: {id, type}` (pour fetch API), `poster` (chemin d'affiche statique vérifié, pour les quelques titres où on a une vraie image sans avoir besoin de clé API).
 
+**`RELEASE_DATE`** — dictionnaire par id, date de sortie **réelle** au format ISO (`'YYYY-MM-DD'`), pour les 90 entrées. Sert uniquement à l'onglet "Ordre de sortie" (tri + regroupement par année) — n'a aucun effet sur le marathon en ordre chronologique interne. Dates confirmées pour tout ce qui est déjà sorti ; approximatives (mais dans le bon ordre relatif) pour le très récent/annoncé sans date figée. `releaseYear(id)` en extrait l'année pour le regroupement.
+
+## Onglets Chronologique / Ordre de sortie
+
+- Deux boutons dans la barre de filtres (`#sort-chrono`/`#sort-release`, au-dessus de Tout/À voir) commutent `sortMode` (`'chrono'` par défaut, ou `'release'`), persisté comme `mode`. Le choix Essentiel/Tout regarder (`mode`) et le filtre Tout/À voir (`viewFilter`) s'appliquent **identiquement dans les deux onglets** — ce sont des axes indépendants du sort.
+- `groupsFor()` (`js/render.js`) est le seul endroit qui sait comment découper `E` en chapitres repliables selon `sortMode` : 4 chapitres narratifs (`SEC`) en mode `chrono`, un par année de sortie réelle (triés par `RELEASE_DATE`) en mode `release`. `render()` ne fait qu'itérer ce que `groupsFor()` renvoie — pour ajouter un futur 3ᵉ mode de tri, il suffit d'ajouter un cas dans `groupsFor()`.
+- Les deux modes partagent un seul Set de replis, `cGroup` (ex-`cSec`), avec des clés préfixées (`chrono-0`, `release-2016`...) pour ne jamais collisionner entre les deux modes ; changer d'onglet vide `cGroup` (on repart toujours sur un affichage tout déplié dans le nouvel onglet).
+- Le bouton "Film surprise" doit ouvrir le bon chapitre quel que soit l'onglet actif : `groupKeyFor(e)` calcule la clé de groupe de l'entrée **dans le mode courant**, à ne jamais remplacer par un accès direct à `e.sec`.
+- `nextItem()`/`updateProchain()`/le countdown restent basés sur l'ordre chronologique interne (`E[]`) **quel que soit l'onglet affiché** — le marathon recommandé ("prochain à voir") est un concept indépendant de l'onglet de navigation actif, volontairement.
+
 ## Thème & langue
 
 - **Thème clair/sombre** : bouton ☀️/🌙 dans le header (`#theme-btn`). État = attribut `data-theme` sur `<html>` (`"dark"` ou `"light"`), lu par les variables CSS dans `css/style.css`. Au tout premier chargement (rien en `localStorage`), part de `prefers-color-scheme` système ; ensuite le choix manuel (persisté dans `mcu-theme`) a toujours priorité et n'est plus jamais écrasé par le système. Toute nouvelle couleur ajoutée au CSS doit passer par une variable (`--xxx`) définie dans les deux blocs `:root`/`:root[data-theme="light"]`, jamais une couleur en dur, sinon elle ne s'adapte pas au thème clair.
@@ -90,7 +104,8 @@ const E = [
 ## Fonctionnalités déjà en place
 
 - Suivi coché/décoché par film et par épisode, mode Essentiel/Tout regarder
-- Recherche (titre FR + VO via `ORIG_TITLE`)
+- Deux onglets de navigation : Chronologique (interne) / Ordre de sortie (réelle), voir section dédiée ci-dessus
+- Recherche (titre affiché + VO via `TITLE_EN`, quelle que soit la langue active)
 - Filtre "À voir" (masque les items/chapitres/séries entièrement vus)
 - "Ce soir" (stepper de minutes dispo, highlight les contenus qui rentrent)
 - "Film surprise" (aléatoire parmi le non-vu, exclut le pas-sorti)

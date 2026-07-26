@@ -5,6 +5,10 @@ const ST=typeof window.storage!=='undefined'&&window.storage!==null;
 // diverger (ex : une date qui reste pour un truc décoché), ce qui faussait des
 // stats comme "vu cette semaine". Un seul objet, pas de risque d'incohérence.
 let watchDates={},mode='tout',ratings={};
+// sortMode : 'chrono' (ordre chronologique interne, par défaut) ou 'release' (ordre de
+// sortie réelle) — détermine comment render() regroupe le catalogue, voir groupsFor()
+// dans js/render.js. Le choix Essentiel/Tout (`mode`) s'applique dans les deux cas.
+let sortMode='chrono';
 // ── TMDB (affiches réelles) ──────────────────────────────
 // Clé API fournie par l'utilisateur (gratuite sur themoviedb.org) — jamais embarquée
 // en dur dans le fichier. Sans clé, ou hors ligne, ou en cas d'échec réseau : on
@@ -12,7 +16,7 @@ let watchDates={},mode='tout',ratings={};
 let tmdbKey=null;
 let posterCache={}; // "movie:1726" -> URL de l'image, ou null si vérifié absent
 let viewFilter='all',tonightMin=0,searchQuery='';
-let cSec=new Set(),cSer=new Set(E.filter(x=>x.type==='s').map(x=>x.id));
+let cGroup=new Set(),cSer=new Set(E.filter(x=>x.type==='s').map(x=>x.id));
 
 function isWatched(id){return Object.prototype.hasOwnProperty.call(watchDates,id);}
 function markWatched(id){watchDates[id]=new Date().toISOString();}
@@ -41,12 +45,19 @@ function syncModeToggle(){
   togEl.setAttribute('data-m',mode);
   togEl.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-m')===mode));
 }
+// Resynchronise l'onglet Chronologique/Ordre de sortie — même besoin que
+// syncModeToggle() ci-dessus (chargement initial + import éventuel futur).
+function syncSortToggle(){
+  sortChronoBtn.classList.toggle('on',sortMode==='chrono');
+  sortReleaseBtn.classList.toggle('on',sortMode==='release');
+}
 async function save(){
   // mcu6-c n'est plus écrit : watchDates (mcu6-wd) est l'unique source de vérité.
-  lsSet('mcu6-m',mode);
+  lsSet('mcu6-m',mode);lsSet('mcu6-sort',sortMode);
   lsSet('mcu6-r',JSON.stringify(ratings));lsSet('mcu6-wd',JSON.stringify(watchDates));
   if(ST){
     try{await window.storage.set('mcu6-m',mode);}catch(_){}
+    try{await window.storage.set('mcu6-sort',sortMode);}catch(_){}
     try{await window.storage.set('mcu6-r',JSON.stringify(ratings));}catch(_){}
     try{await window.storage.set('mcu6-wd',JSON.stringify(watchDates));}catch(_){}
   }
@@ -62,6 +73,7 @@ async function boot(){
     try{const r=await window.storage.get('mcu6-wd');if(r?.value){loadedWD=JSON.parse(r.value);fromST=true;}}catch(_){}
     if(fromST){
       try{const r=await window.storage.get('mcu6-m');if(r?.value)mode=r.value;}catch(_){}
+      try{const r=await window.storage.get('mcu6-sort');if(r?.value)sortMode=r.value;}catch(_){}
       try{const r=await window.storage.get('mcu6-r');if(r?.value)ratings=JSON.parse(r.value);}catch(_){}
       try{const r=await window.storage.get('mcu6-c');if(r?.value)legacyChecked=JSON.parse(r.value);}catch(_){}
     }
@@ -75,6 +87,7 @@ async function boot(){
       if(c5)try{legacyChecked=JSON.parse(c5);}catch(_){}
     }
     const m=lsGet('mcu6-m')||lsGet('mcu5-m');if(m)mode=m;
+    const sm=lsGet('mcu6-sort');if(sm)sortMode=sm;
     const r=lsGet('mcu6-r')||lsGet('mcu5-r');if(r)try{ratings=JSON.parse(r);}catch(_){}
   }
   // Migration/nettoyage : si un ancien tableau "checked" existe (d'avant l'unification
@@ -87,6 +100,7 @@ async function boot(){
     watchDates=loadedWD||{};
   }
   syncModeToggle();
+  syncSortToggle();
   if(viewFilter==='todo')document.body.classList.add('view-todo');
   render();
   E.filter(e=>e.type==='s').forEach(e=>{
