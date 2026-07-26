@@ -169,7 +169,11 @@ function render(){
   let searchTotal=0;
   groupsFor().forEach(grp=>{
     const entries=grp.entries.filter(e=>cnt(e)&&matchSearch(e));
-    if(isSearching&&entries.length===0)return;
+    // Masquer le groupe s'il n'a plus aucune entrée — pas seulement pendant une recherche :
+    // en mode "Essentiel", une année de sortie entièrement composée de contenu optionnel
+    // (ex. 2000/2003/2006, uniquement des X-Men Fox) ne doit pas laisser un en-tête vide
+    // "0/0 · 0m" flotter sans rien dessous.
+    if(entries.length===0)return;
     // En mode "À voir" : si plus rien ne reste à voir dans ce chapitre (les items pas
     // encore sortis comptent toujours comme "restants"), on masque le chapitre en
     // entier plutôt que de laisser un en-tête vide flotter sans aucun contenu dessous.
