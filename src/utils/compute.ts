@@ -28,6 +28,11 @@ export function sRem(entry: SeriesEntry, watchDates: WatchDates): number {
   );
 }
 
+// Index of the first unwatched episode, or -1 if every episode is watched.
+export function nextUnwatchedEpisodeIndex(entry: SeriesEntry, watchDates: WatchDates): number {
+  return entry.epMins.findIndex((_, i) => !isWatched(watchDates, `${entry.id}-e${i + 1}`));
+}
+
 export function fitsTonight(entry: CatalogEntry, watchDates: WatchDates, tonightMin: number): boolean {
   if (tonightMin <= 0 || isFuture(entry.id)) return false;
   if (entry.type === 'f') return !isWatched(watchDates, entry.id) && entry.m <= tonightMin;
