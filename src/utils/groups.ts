@@ -2,11 +2,11 @@
 // The original built an HTML string (headHTML) for each chapter header; here we return
 // plain data instead — a future <ChapterGroup> component renders the header as JSX,
 // picking the localized section/year label itself via getSectionNames()/the year number.
-import type { CatalogEntry, SectionIndex, SortMode } from '../data/types';
+import type { CatalogEntry, SectionIndex, SortMode, ViewFilter } from '../data/types';
 import { RELEASE_DATE, releaseYear } from '../data/releaseDates';
 import { isFuture } from '../data/platform';
 import type { Mode } from '../data/types';
-import { cnt, isWatched, sDone, sRem, type WatchDates } from './compute';
+import { cnt, isWatched, matchSearch, sDone, sRem, type WatchDates } from './compute';
 import { fmt } from './format';
 
 export interface ChronoGroup {
@@ -75,4 +75,52 @@ export function groupBadge(entries: CatalogEntry[], watchDates: WatchDates, mode
     }
   });
   return `${d}/${n} · ${fmt(rem)}`;
+}
+
+export interface VisibleGroup {
+  group: CatalogGroup;
+  // Entries actually rendered for this group: mode + search + (in "todo" view) not-
+  // yet-watched. groupBadge() is computed from group.entries (unfiltered) instead, so
+  // the chapter's progress badge stays stable while searching/filtering.
+  visibleEntries: CatalogEntry[];
+}
+
+export interface VisibleGroupsResult {
+  groups: VisibleGroup[];
+  totalVisibleCount: number;
+}
+
+// Ported from the entries-filtering half of render() (legacy js/render.js): a group
+// disappears entirely once it has no matching entries (e.g. an Essential-mode chapter
+// made up entirely of optional content), and in "todo" view a group with nothing left
+// to watch disappears too, rather than leaving an empty header floating with nothing
+// under it.
+export function visibleGroups(
+  catalog: CatalogEntry[],
+  sortMode: SortMode,
+  mode: Mode,
+  searchQuery: string,
+  viewFilter: ViewFilter,
+  watchDates: WatchDates,
+): VisibleGroupsResult {
+  let totalVisibleCount = 0;
+  const groups: VisibleGroup[] = [];
+
+  groupsFor(catalog, sortMode).forEach((group) => {
+    const matched = group.entries.filter((entry) => cnt(entry, mode) && matchSearch(entry, searchQuery));
+    if (matched.length === 0) return;
+
+    let visibleEntries = matched;
+    if (viewFilter === 'todo') {
+      visibleEntries = matched.filter((entry) =>
+        entry.type === 'f' ? !isWatched(watchDates, entry.id) : sDone(entry, watchDates) < entry.count,
+      );
+      if (visibleEntries.length === 0) return;
+    }
+
+    totalVisibleCount += visibleEntries.length;
+    groups.push({ group, visibleEntries });
+  });
+
+  return { groups, totalVisibleCount };
 }
