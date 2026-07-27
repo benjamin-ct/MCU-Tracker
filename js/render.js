@@ -217,6 +217,11 @@ function render(){
         const div=document.createElement('div');
         div.className=`row${isDone?' done':''}${tnFit?' tn-fit':''}${future?' future':''}`;div.id=`r-${e.id}`;
         const yr=e.y?`<span class="rt-yr">(${e.y})</span>`:'';
+        // opt/plat toujours sur leur propre ligne sous le titre (jamais dans .rt-t) : les
+        // laisser dans .rt-t faisait flotter le badge juste après le titre quand les deux
+        // tenaient sur la même ligne (titre court), le collant visuellement au bouton "i"
+        // à droite — au lieu de passer à la ligne comme pour un titre long. Un .rt-badges
+        // séparé donne un emplacement fixe, indépendant de la longueur du titre.
         // Le bouton 'i' est un vrai FRÈRE du <label> (pas un enfant dedans) : sur mobile,
         // un tap imprécis dans un <label> déclenche quand même la checkbox associée même
         // avec stopPropagation. En le sortant complètement du <label>, il n'y a plus
@@ -224,7 +229,7 @@ function render(){
         // Placé juste après le titre (pas après la durée), comme demandé.
         div.innerHTML=`<div class="row-top">
           <label><input type="checkbox" data-id="${e.id}"${isDone?' checked':''}${future?' disabled':''}><span class="sq"></span>
-            <span class="rt"><span class="rt-t">${e.title}${yr}${opt}${plat}</span><span class="watch-date">${isDone?fmtDate(watchDates[e.id]):''}</span></span>
+            <span class="rt"><span class="rt-t">${e.title}${yr}</span>${(opt||plat)?`<span class="rt-badges">${opt}${plat}</span>`:''}<span class="watch-date">${isDone?fmtDate(watchDates[e.id]):''}</span></span>
           </label>
           <button type="button" class="info-btn" data-info="${e.id}"><span>i</span></button>
           <span class="rt-d">${fmt(e.m)}</span>
@@ -242,8 +247,8 @@ function render(){
         sg.innerHTML=`<div class="sg-hd">
           <div class="sg-bulk"><label onclick="event.stopPropagation()"><input type="checkbox" class="sg-chk" data-sid="${e.id}"${all?' checked':''}${future?' disabled':''}><span class="sq"></span></label></div>
           <div class="sg-info">
-            <div class="sg-name">${e.title}${opt}${plat}</div>
-            <div class="sg-sub">S${e.season} · ${e.count} ${t('episodesAbbrev')} · <span class="sg-remtxt" id="sr-${e.id}">${done}/${e.count} · ${fmt(sRem(e))}</span><span class="sg-tn-tag">${t('tonightTag')}</span></div>
+            <div class="sg-name">${e.title}</div>
+            <div class="sg-sub">${opt}${plat}S${e.season} · ${e.count} ${t('episodesAbbrev')} · <span class="sg-remtxt" id="sr-${e.id}">${done}/${e.count} · ${fmt(sRem(e))}</span><span class="sg-tn-tag">${t('tonightTag')}</span></div>
           </div>
           <button type="button" class="info-btn" data-info="${e.id}"><span>i</span></button>
           <span class="sg-arr"></span>

@@ -155,6 +155,7 @@ input[type=checkbox]:indeterminate+.sq::before{content:'';position:absolute;left
 .rt{flex:1;min-width:0;}
 .rt-t{font-size:14px;font-weight:500;color:var(--text);line-height:1.35;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .rt-yr{font-family:var(--m);font-size:10.5px;color:var(--faint);}
+.rt-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
 .rt-d{font-family:var(--m);font-size:11px;color:var(--dim);white-space:nowrap;}
 .row.done .rt-t{color:var(--faint);}
 .watch-date{font-family:var(--m);font-size:9.5px;color:var(--faint);margin-top:2px;display:none;}
