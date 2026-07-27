@@ -4,6 +4,8 @@ import {
   useCatalogFilters,
   useCollapseState,
   useLanguage,
+  usePlatformDeepLink,
+  usePwaIcon,
   useTheme,
   useTmdbPoster,
   useToast,
@@ -35,16 +37,13 @@ import { SearchBox } from './components/Search';
 import { Footer } from './components/Footer';
 import { Toast } from './components/Toast';
 
-// Placeholder until task #26 builds the real platform-detection hook (Android intent://
-// vs iOS/desktop HTTPS Universal Link) — this is the non-Android default from the
-// legacy js/platform.js, so the link still works everywhere in the meantime.
-const DISNEY_PLUS_HREF = 'https://www.disneyplus.com/fr-fr/';
-
 const SERIES_IDS = CATALOG.filter(isSeries).map((entry) => entry.id);
 
 function App() {
   const { lang, toggleLang } = useLanguage();
   const { theme, toggleTheme } = useTheme();
+  const disneyPlusHref = usePlatformDeepLink();
+  usePwaIcon();
   const {
     mode,
     setMode,
@@ -213,7 +212,7 @@ function App() {
             onToggleChapter={chapterCollapse.toggle}
             isSeriesCollapsed={seriesCollapse.isCollapsed}
             onToggleSeries={seriesCollapse.toggle}
-            disneyPlusHrefFor={() => DISNEY_PLUS_HREF}
+            disneyPlusHrefFor={() => disneyPlusHref}
             onSetWatched={setWatched}
             onRate={toggleRating}
             onOpenInfo={setOpenInfoEntryId}

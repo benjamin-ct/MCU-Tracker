@@ -13,3 +13,5 @@ export { useCollapseState } from './useCollapseState';
 export type { UseCollapseStateResult } from './useCollapseState';
 export { useToast } from './useToast';
 export type { UseToastResult } from './useToast';
+export { usePlatformDeepLink } from './usePlatformDeepLink';
+export { usePwaIcon } from './usePwaIcon';
