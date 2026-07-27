@@ -143,7 +143,14 @@ input[type=checkbox]:indeterminate+.sq::before{content:'';position:absolute;left
 .row:last-child{border-bottom:none;}
 .row-top{display:flex;align-items:flex-start;gap:6px;padding-right:2px;}
 .row-top label{flex:0 1 auto;min-width:0;max-width:100%;}
-.row-top .rt-d{margin-left:auto;padding-left:8px;}
+/* .row label a 11px de padding-top avant que le titre commence (voir plus bas) : avec
+   align-items:flex-start, le bouton "i"/la durée/le tag "ce soir" s'alignent sinon sur
+   le bord du conteneur, au-dessus du titre, qu'il tienne sur 1 ou 2 lignes. Ces marges
+   les recentrent sur la PREMIÈRE ligne du titre (mesuré : padding-top 11px + moitié de
+   la line-height du titre - moitié de la hauteur de chaque élément). */
+.row-top .info-btn{margin-top:6px;}
+.row-top .rt-d{margin-left:auto;padding-left:8px;margin-top:14px;}
+.row-top .tn-tag{margin-top:13px;}
 .row label{display:flex;align-items:center;gap:11px;padding:11px 0;cursor:pointer;}
 .rt{flex:1;min-width:0;}
 .rt-t{font-size:14px;font-weight:500;color:var(--text);line-height:1.35;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
