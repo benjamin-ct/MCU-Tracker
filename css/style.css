@@ -149,8 +149,8 @@ input[type=checkbox]:indeterminate+.sq::before{content:'';position:absolute;left
    les recentrent sur la PREMIÈRE ligne du titre (mesuré : padding-top 11px + moitié de
    la line-height du titre - moitié de la hauteur de chaque élément). */
 .row-top .info-btn{margin-top:6px;}
-.row-top .rt-d{margin-left:auto;padding-left:8px;margin-top:14px;}
-.row-top .tn-tag{margin-top:13px;}
+.row-top .rt-d{margin-left:auto;padding-left:8px;margin-top:14.5px;}
+.row-top .tn-tag{margin-top:13.5px;}
 /* align-items:flex-start (pas center) : centrer sur toute la hauteur du label faisait
    descendre visiblement la case à cocher quand la ligne "vu le..." apparaît en cochant
    (le label devient plus haut, donc son centre descend) — la case se décale nettement
@@ -158,12 +158,31 @@ input[type=checkbox]:indeterminate+.sq::before{content:'';position:absolute;left
    la première ligne du titre à la place, qui ne bouge jamais. */
 .row label{display:flex;align-items:flex-start;gap:11px;padding:11px 0;cursor:pointer;}
 .rt{flex:1;min-width:0;}
-.rt-t{font-size:14px;font-weight:500;color:var(--text);line-height:1.35;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+/* line-height fixée en px (pas 1.35 relatif à la police) : un multiplicateur relatif
+   donne une hauteur de ligne fractionnaire (18.9px) que chaque moteur de rendu peut
+   arrondir différemment, ce qui contribuait au dernier ~1px d'écart résiduel entre
+   coché/décoché malgré .watch-date/.dp-link déjà fixés en px (revu le 27/07/2026).
+   20px (pas 19px) et non 1.35 relatif : doit égaler exactement la hauteur de .sq
+   (checkbox, 20px) — sinon avant de cocher, c'est .sq qui détermine la hauteur du
+   <label> (19 < 20), alors qu'après cocher c'est .rt qui grossit et prend le dessus ;
+   ce changement d'élément "le plus grand" fausse le calcul de croissance de 1px
+   (13px mesurés au lieu des 14px attendus), peu importe à quel point .watch-date est
+   lui-même fixé au pixel près. */
+.rt-t{font-size:14px;font-weight:500;color:var(--text);line-height:20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .rt-yr{font-family:var(--m);font-size:10.5px;color:var(--faint);}
 .rt-badges{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
 .rt-d{font-family:var(--m);font-size:11px;color:var(--dim);white-space:nowrap;}
 .row.done .rt-t{color:var(--faint);}
-.watch-date{font-family:var(--m);font-size:9.5px;color:var(--faint);margin-top:2px;display:none;}
+/* height fixe (pas line-height) : line-height dépend encore des métriques de police du
+   moteur de rendu (Chromium/WebKit/Firefox calculent tous "normal" différemment), donc
+   restait sujet à 1-2px d'écart selon l'appareil malgré un premier essai en line-height
+   fixe (signalé de nouveau le 27/07/2026 sur iPhone/Safari après un correctif validé
+   seulement sur Chromium). Une hauteur de boîte explicite (height + overflow:hidden)
+   est, elle, garantie identique par la spec CSS quel que soit le moteur — la croissance
+   que cette ligne ajoute à row-top quand elle apparaît (margin-top 2px + height 12px =
+   14px, TOUJOURS, sur tout navigateur) peut alors être compensée exactement par .stars
+   plus bas, au pixel près, partout. */
+.watch-date{font-family:var(--m);font-size:9.5px;height:12px;overflow:hidden;color:var(--faint);margin-top:2px;display:none;}
 .row.done .watch-date{display:block;}
 .opt-badge{font-family:var(--m);font-size:9px;letter-spacing:.04em;text-transform:uppercase;color:var(--purple);background:var(--purple-soft);border:1px solid rgba(200,148,26,.22);border-radius:4px;padding:1.5px 5px;white-space:nowrap;}
 .plat-tag{font-family:var(--m);font-size:9px;letter-spacing:.04em;text-transform:uppercase;border-radius:4px;padding:1.5px 5px;white-space:nowrap;}
@@ -180,7 +199,11 @@ input[type=checkbox]:indeterminate+.sq::before{content:'';position:absolute;left
    desktop, l'override .dp-row du media query (plus loin dans le fichier, même
    spécificité) gagnait la cascade et la série héritait à tort du retrait des films. */
 .dp-row.dp-row-sg{padding:9px 14px;}
-.dp-link{border:1px solid rgba(56,191,80,.35);border-radius:6px;background:rgba(56,191,80,.10);font-family:var(--m);font-size:10px;font-weight:600;color:var(--dp-text);padding:5px 11px;white-space:nowrap;transition:background .15s;display:inline-flex;align-items:center;gap:5px;letter-spacing:.02em;text-decoration:none;-webkit-tap-highlight-color:rgba(56,191,80,.2);}
+/* height fixe (pas line-height, même raison que .watch-date ci-dessus) : .dp-row (9/9
+   ou 10/10 de padding + cette hauteur de contenu) doit avoir une hauteur totale
+   garantie IDENTIQUE sur tout moteur de rendu, pour que .stars/.sg-stars la matchent
+   exactement partout (pas seulement sur le navigateur utilisé pour tester le fix). */
+.dp-link{border:1px solid rgba(56,191,80,.35);border-radius:6px;background:rgba(56,191,80,.10);font-family:var(--m);font-size:10px;height:23px;overflow:hidden;font-weight:600;color:var(--dp-text);padding:5px 11px;white-space:nowrap;transition:background .15s;display:inline-flex;align-items:center;gap:5px;letter-spacing:.02em;text-decoration:none;-webkit-tap-highlight-color:rgba(56,191,80,.2);}
 .info-btn{appearance:none;flex:none;width:30px;height:30px;margin:-5px -6px -5px 0;border-radius:50%;border:none;background:transparent;color:var(--dim);font-family:var(--m);font-size:11px;font-style:italic;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;position:relative;}
 .info-btn::before{content:'';position:absolute;width:19px;height:19px;border-radius:50%;border:1px solid var(--ln2);background:var(--raised);transition:border-color .15s,background .15s;}
 .info-btn span{position:relative;z-index:1;}
@@ -190,12 +213,16 @@ input[type=checkbox]:indeterminate+.sq::before{content:'';position:absolute;left
 body.view-todo .row.done~.dp-row{display:none;}
 
 /* ── STARS ── */
-.stars{display:flex;align-items:center;gap:3px;max-height:0;overflow:hidden;padding:0 0 0 31px;opacity:0;pointer-events:none;transition:max-height .22s ease .06s,opacity .2s ease .06s,padding .22s ease .06s;}
-/* padding-bottom 6px (pas 10px) : calé pour que la hauteur totale de la ligne soit la
-   même cochée/décochée (row-top qui grandit de la ligne "vu le" doit être compensé par
-   .stars qui rétrécit d'autant par rapport à .dp-row) — sans ça, cocher/décocher décale
-   tout le contenu en dessous de quelques pixels (mesuré et signalé le 27/07/2026). */
-.row.done .stars{max-height:30px;padding:3px 0 6px 31px;opacity:1;pointer-events:auto;}
+.stars{display:flex;align-items:center;gap:3px;height:0;overflow:hidden;padding:0 0 0 31px;opacity:0;pointer-events:none;transition:height .22s ease .06s,opacity .2s ease .06s;}
+/* height fixe en px (27px), pas dérivée du padding+contenu : doit matcher EXACTEMENT
+   .dp-row (41px mobile) moins ce que .watch-date ajoute à row-top (14px, lui aussi fixé
+   en px ci-dessus) pour que cocher/décocher ne décale rien du tout, au pixel près —
+   toute valeur dérivée des métriques de police du navigateur (ex. padding autour d'un
+   contenu à line-height "normal") varie légèrement selon l'appareil, d'où les 1-2px de
+   décalage résiduel malgré un ajustement au pixel près sur ce navigateur (signalé de
+   nouveau le 27/07/2026 après un premier correctif approximatif). Réajustée à 29px en
+   desktop (media query plus bas), .dp-row y étant lui aussi plus grand (43px). */
+.row.done .stars{height:27px;opacity:1;pointer-events:auto;}
 .star{font-size:16px;color:var(--faint);cursor:pointer;line-height:1;padding:2px;}
 .star.lit{color:var(--amber);}
 .stars:hover .star{color:var(--amber);}
@@ -217,14 +244,14 @@ body.view-todo .row.done~.dp-row{display:none;}
 .row.future,.sg.future{opacity:.5;}
 .row.future .sq,.sg.future .sg-bulk .sq{cursor:not-allowed;}
 .row.future label,.sg.future .sg-hd{cursor:default;}
-.sg-stars{display:flex;align-items:center;gap:3px;max-height:0;overflow:hidden;padding:0 14px;opacity:0;pointer-events:none;transition:max-height .22s ease .06s,opacity .2s ease .06s,padding .22s ease .06s;}
-/* padding-bottom 17px (pas 10px) : contrairement à .stars pour un film, .sg-hd ne
-   grandit pas quand une série est marquée vue (pas de ligne "vu le" pour une série
-   entière), donc .sg-stars doit compenser TOUTE la différence avec .dp-row.dp-row-sg
-   pour que la hauteur totale de la ligne ne bouge pas (cf. .stars ci-dessus, même
-   décalage signalé le 27/07/2026). Réajusté en desktop (media query plus bas) car
-   .dp-row.dp-row-sg y est aussi plus grand (padding 10px au lieu de 9px). */
-.sg.sg-done .sg-stars{max-height:45px;padding:6px 14px 17px;opacity:1;pointer-events:auto;}
+.sg-stars{display:flex;align-items:center;gap:3px;height:0;overflow:hidden;padding:0 14px;opacity:0;pointer-events:none;transition:height .22s ease .06s,opacity .2s ease .06s;}
+/* height fixe 41px (pas dérivée de padding+contenu) : .sg-hd ne grandit pas quand une
+   série est marquée vue (pas de ligne "vu le" au niveau série), donc .sg-stars doit
+   matcher EXACTEMENT la hauteur de .dp-row.dp-row-sg (41px mobile, .dp-link ayant une
+   line-height fixée en px plus haut) pour ne rien décaler du tout — même principe que
+   .stars ci-dessus. Réajustée à 43px en desktop (media query plus bas), .dp-row-sg y
+   étant aussi plus grand. */
+.sg.sg-done .sg-stars{height:41px;opacity:1;pointer-events:auto;}
 .sg-stars .star{font-size:15px;}
 .ep-list{list-style:none;display:none;}
 .sg.open .ep-list{display:block;}
@@ -363,13 +390,21 @@ body.view-todo .sg.sg-done{display:none;}
   main{padding:10px 32px 0 24px;}
   /* Lignes de contenu */
   .row label{padding:13px 0;}
+  /* .row label a 13px de padding-top ici (pas 11px) et .rt-t une line-height de 20px
+     (voir plus haut) : le point d'ancrage de la 1ère ligne du titre change, donc les
+     marges de compensation de .info-btn/.rt-d/.tn-tag doivent être recalculées pour ce
+     breakpoint plutôt que de réutiliser les valeurs mobiles telles quelles. */
+  .row-top .info-btn{margin-top:8px;}
+  .row-top .rt-d{margin-top:16.5px;}
+  .row-top .tn-tag{margin-top:15.5px;}
   .sg-hd{padding:14px 16px;}
   .sg-name{font-size:15px;}
   .dp-row{padding:10px 0 10px 36px;}
   .dp-row.dp-row-sg{padding:10px 16px;}
-  .sg.sg-done .sg-stars{padding:6px 14px 19px;}
+  .row.done .stars{height:29px;}
+  .sg.sg-done .sg-stars{height:43px;}
   .ch-hd{padding:16px 0;}
-  .rt-t{font-size:15px;}
+  .rt-t{font-size:15px;line-height:20px;}
   /* Modal stats centrée */
   .stat-modal{align-items:center;}
   .stat-panel{border-radius:16px;max-width:680px;margin:20px auto;border-bottom-left-radius:16px;border-bottom-right-radius:16px;}
