@@ -9,6 +9,11 @@ export function fmtE(minutes: number): string {
   return minutes < 60 ? `${minutes}m` : fmt(minutes);
 }
 
+// Display label for the "tonight" time-budget stepper (off / 45m / 2h…).
+export function tnDisp(minutes: number): string {
+  return minutes === 0 ? 'off' : minutes < 60 ? `${minutes}m` : fmt(minutes);
+}
+
 // Day + localized month abbreviation only — no "watched on"/"vu le" prefix here (the
 // old vanilla app hardcoded "vu le " directly inside this function, which meant a
 // watched-date pill kept reading "vu le 27 juil." even in English mode; the month

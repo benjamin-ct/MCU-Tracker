@@ -30,7 +30,11 @@ export default [
       ...tseslint.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', ignoreRestSiblings: true }],
+      // tsc already catches genuinely undefined identifiers; no-undef produces false
+      // positives on TS-only ambient types (RequestInit, HTMLElement, etc.) that never
+      // exist as runtime values.
+      'no-undef': 'off',
     },
   },
   {
