@@ -186,7 +186,11 @@ body.view-todo .row.done~.dp-row{display:none;}
 
 /* ── STARS ── */
 .stars{display:flex;align-items:center;gap:3px;max-height:0;overflow:hidden;padding:0 0 0 31px;opacity:0;pointer-events:none;transition:max-height .22s ease .06s,opacity .2s ease .06s,padding .22s ease .06s;}
-.row.done .stars{max-height:34px;padding:3px 0 10px 31px;opacity:1;pointer-events:auto;}
+/* padding-bottom 6px (pas 10px) : calé pour que la hauteur totale de la ligne soit la
+   même cochée/décochée (row-top qui grandit de la ligne "vu le" doit être compensé par
+   .stars qui rétrécit d'autant par rapport à .dp-row) — sans ça, cocher/décocher décale
+   tout le contenu en dessous de quelques pixels (mesuré et signalé le 27/07/2026). */
+.row.done .stars{max-height:30px;padding:3px 0 6px 31px;opacity:1;pointer-events:auto;}
 .star{font-size:16px;color:var(--faint);cursor:pointer;line-height:1;padding:2px;}
 .star.lit{color:var(--amber);}
 .stars:hover .star{color:var(--amber);}
@@ -209,7 +213,13 @@ body.view-todo .row.done~.dp-row{display:none;}
 .row.future .sq,.sg.future .sg-bulk .sq{cursor:not-allowed;}
 .row.future label,.sg.future .sg-hd{cursor:default;}
 .sg-stars{display:flex;align-items:center;gap:3px;max-height:0;overflow:hidden;padding:0 14px;opacity:0;pointer-events:none;transition:max-height .22s ease .06s,opacity .2s ease .06s,padding .22s ease .06s;}
-.sg.sg-done .sg-stars{max-height:34px;padding:6px 14px 10px;opacity:1;pointer-events:auto;}
+/* padding-bottom 17px (pas 10px) : contrairement à .stars pour un film, .sg-hd ne
+   grandit pas quand une série est marquée vue (pas de ligne "vu le" pour une série
+   entière), donc .sg-stars doit compenser TOUTE la différence avec .dp-row.dp-row-sg
+   pour que la hauteur totale de la ligne ne bouge pas (cf. .stars ci-dessus, même
+   décalage signalé le 27/07/2026). Réajusté en desktop (media query plus bas) car
+   .dp-row.dp-row-sg y est aussi plus grand (padding 10px au lieu de 9px). */
+.sg.sg-done .sg-stars{max-height:45px;padding:6px 14px 17px;opacity:1;pointer-events:auto;}
 .sg-stars .star{font-size:15px;}
 .ep-list{list-style:none;display:none;}
 .sg.open .ep-list{display:block;}
@@ -352,6 +362,7 @@ body.view-todo .sg.sg-done{display:none;}
   .sg-name{font-size:15px;}
   .dp-row{padding:10px 0 10px 36px;}
   .dp-row.dp-row-sg{padding:10px 16px;}
+  .sg.sg-done .sg-stars{padding:6px 14px 19px;}
   .ch-hd{padding:16px 0;}
   .rt-t{font-size:15px;}
   /* Modal stats centrée */
