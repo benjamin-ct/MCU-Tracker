@@ -151,7 +151,12 @@ input[type=checkbox]:indeterminate+.sq::before{content:'';position:absolute;left
 .row-top .info-btn{margin-top:6px;}
 .row-top .rt-d{margin-left:auto;padding-left:8px;margin-top:14px;}
 .row-top .tn-tag{margin-top:13px;}
-.row label{display:flex;align-items:center;gap:11px;padding:11px 0;cursor:pointer;}
+/* align-items:flex-start (pas center) : centrer sur toute la hauteur du label faisait
+   descendre visiblement la case à cocher quand la ligne "vu le..." apparaît en cochant
+   (le label devient plus haut, donc son centre descend) — la case se décale nettement
+   de haut en bas à chaque coche/décoche (signalé le 27/07/2026). flex-start l'ancre sur
+   la première ligne du titre à la place, qui ne bouge jamais. */
+.row label{display:flex;align-items:flex-start;gap:11px;padding:11px 0;cursor:pointer;}
 .rt{flex:1;min-width:0;}
 .rt-t{font-size:14px;font-weight:500;color:var(--text);line-height:1.35;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
 .rt-yr{font-family:var(--m);font-size:10.5px;color:var(--faint);}
