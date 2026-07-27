@@ -1,5 +1,13 @@
 # Marathon MCU — Résumé du projet
 
+> **Note (migration React, juillet 2026)** : ce document décrit l'architecture **vanilla JS
+> d'origine** (fichiers `index.html`/`css/`/`js/` à la racine, sans build). L'app a depuis été
+> migrée vers React + TypeScript (voir `README.md` pour la nouvelle structure, `DEPLOY.md` pour
+> le déploiement). La plupart des décisions ci-dessous restent valables en principe (modèle de
+> données, `watchDates` comme source unique de vérité, jamais de secret côté client, etc.) même
+> si leur implémentation a changé — gardé comme référence historique du modèle de données et des
+> contraintes, pas comme description du code actuel.
+
 ## Quoi
 
 Un tracker de visionnage MCU en **vanilla JS, sans framework, sans build**. Deux façons de parcourir le catalogue, commutables par onglet : ordre chronologique interne (par défaut — de Captain America: First Avenger, 1942 in-universe, jusqu'à Avengers: Doomsday, 18 déc. 2026) ou ordre de sortie réelle. Fonctionne comme app locale, PWA installable ("Ajouter à l'écran d'accueil"). Bilingue FR/EN et thème clair/sombre, tous deux commutables dans l'UI (voir "Thème & langue" ci-dessous).

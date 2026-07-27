@@ -2,17 +2,27 @@
 
 Un tracker de visionnage pour suivre un marathon complet du Marvel Cinematic Universe dans l'**ordre chronologique interne** (pas l'ordre de sortie) — de *Captain America: First Avenger* (1942 in-universe) jusqu'à *Avengers: Doomsday* (18 déc. 2026).
 
-Vanilla JS, sans framework, sans étape de build. Fonctionne hors-ligne, installable comme PWA ("Ajouter à l'écran d'accueil").
+React + TypeScript (Vite). Installable comme PWA ("Ajouter à l'écran d'accueil").
 
-## Utilisation
+## Développement
 
-Ouvre `index.html` dans un navigateur — en local (double-clic) ou via un hébergement statique. Aucune installation ni build requis.
+```
+npm install
+npm run dev        # serveur de dev (http://localhost:5173)
+npm run build      # build de prod dans dist/ (tsc -b && vite build)
+npm run preview    # sert le build de dist/ en local
+npm run typecheck  # tsc --noEmit
+npm run lint       # eslint .
+```
+
+Voir `DEPLOY.md` pour le déploiement.
 
 ## Fonctionnalités
 
 - Suivi coché/décoché par film et par épisode de série
 - Deux modes : **Essentiel** (MCU mainline uniquement) ou **Tout regarder** (inclut les X-Men Fox et les séries Netflix Defenders)
-- Recherche (titres FR et VO)
+- Deux ordres de navigation : Chronologique (interne) ou Ordre de sortie (réelle)
+- Recherche (titres FR et VO, casting, réalisation)
 - Filtre "À voir"
 - "Ce soir" : indique ce qui rentre dans le temps dispo
 - "Film surprise" aléatoire parmi le non-vu
@@ -28,20 +38,29 @@ Ouvre `index.html` dans un navigateur — en local (double-clic) ou via un hébe
 ## Structure du projet
 
 ```
-index.html                        squelette HTML
-css/style.css                     styles
-js/data.js                        catalogue des films/séries, infos détaillées
-js/platform.js                    détection plateforme + lien profond Disney+
-js/state.js                       état, persistance (localStorage), migration
-js/compute.js                     calculs dérivés (totaux, filtres, recherche...)
-js/render.js                      rendu de la liste principale
-js/modals.js                      modale infos, modale statistiques, graphique
-js/app.js                         câblage des événements, démarrage de l'app
-worker/index.js                   Cloudflare Worker : sert le site + proxy TMDB (clé côté serveur)
-wrangler.jsonc                    config du Worker (nom, assets statiques, point d'entrée)
+src/
+  data/          catalogue typé (90 films/séries), infos détaillées, sélecteurs de
+                 localisation purs (types.ts, catalog.ts, info.ts, localize.ts, ...)
+  i18n/          chaînes FR/EN (strings.ts) + helpers pluriel/interpolation (translate.ts)
+  utils/         calculs dérivés purs (compute.ts, groups.ts, stats.ts, format.ts, links.ts)
+  hooks/         état + effets réutilisables (useWatchProgress, useCatalogFilters,
+                 useTheme, useLanguage, useTmdbPoster, useCollapseState, useToast, ...)
+  components/
+    Header/      bandeau du haut (marque, progression, stats, countdown, toggle mode)
+    Sidebar/      "prochain à voir", actions, filtres, stepper "ce soir"
+    Catalog/      chapitres/films/séries, étoiles, lien Disney+, badges
+    Modals/       modale infos, modale statistiques + graphique, modale clé TMDB
+    Search/       barre de recherche + compteur de résultats
+    Footer/       reset, export/import, note TMDB
+    Toast/        notification éphémère
+  App.tsx        assemble tout ce qui précède
+  main.tsx       point d'entrée Vite
+worker/index.js  Cloudflare Worker : sert le site (dist/) + proxy TMDB
+wrangler.jsonc   config du Worker (nom, assets, environnement de prévisualisation)
+.github/workflows/  CI (typecheck/lint/build) + déploiement (prod + prévisualisation)
 ```
 
-Voir `PROJET-MCU-TRACKER.md` pour le détail de l'architecture et les décisions à ne pas régresser.
+Voir `PROJET-MCU-TRACKER.md` pour le détail des décisions d'architecture originales (modèle de données, contraintes — la plupart s'appliquent encore après la migration React) et `DEPLOY.md` pour le pipeline de build/déploiement actuel.
 
 ## TMDB
 
