@@ -110,7 +110,6 @@ function advanceNext(){
     // Auto-replie la série une fois son dernier épisode coché
     if(sDone(next)===next.count)cSer.add(next.id);
   }
-  autoCollapseIfGroupDone(next);
   render();save();
 }
 
@@ -161,24 +160,6 @@ function groupBadge(entries){
     else{n+=e.count;d+=sDone(e);rem+=sRem(e);}
   });
   return`${d}/${n} · ${fmt(rem)}`;
-}
-// Un groupe (chapitre chrono ou année de sortie) est "terminé" quand tout ce qui compte
-// dans le mode courant (Essentiel/Tout, hors pas-encore-sorti) est vu — même filtre que
-// groupBadge(), pour rester cohérent avec ce que le badge affiche. Sert à replier
-// automatiquement un chapitre qui vient d'être fini (voir onCheck()/sgChk ci-dessous).
-function groupIsDone(entries){
-  const relevant=entries.filter(e=>cnt(e)&&!isFuture(e));
-  if(!relevant.length)return false;
-  return relevant.every(e=>e.type==='f'?isWatched(e.id):sDone(e)===e.count);
-}
-// Replie automatiquement le groupe contenant `e` s'il vient d'être entièrement terminé
-// dans le mode/onglet courant — appelé uniquement au moment où une case est cochée
-// (jamais décochée), pour ne pas re-replier un chapitre déjà fini que l'utilisateur
-// aurait volontairement rouvert pour le consulter.
-function autoCollapseIfGroupDone(e){
-  const key=groupKeyFor(e);
-  const grp=groupsFor().find(g=>g.key===key);
-  if(grp&&groupIsDone(grp.entries))cGroup.add(key);
 }
 // render() reconstruit tout le DOM (décision d'architecture #2) : si la hauteur de la
 // ligne cochée change (lien Disney+ qui disparaît, date + étoiles qui apparaissent), tout
@@ -278,10 +259,7 @@ function render(){
             const eid=`${e.id}-e${i+1}`;
             if(should)markWatched(eid);else markUnwatched(eid);
           });
-          if(should){
-            cSer.add(e.id); // auto-replie la série une fois tout coché
-            autoCollapseIfGroupDone(e);
-          }
+          if(should)cSer.add(e.id); // auto-replie la série une fois tout coché
           const anchorId=ev.target.closest('[id]')?.id;
           renderKeepingAnchor(anchorId);save();
         });
@@ -315,9 +293,6 @@ function onCheck(ev){
   const m=id.match(/^(.+)-e\d+$/);
   const ent=m?E.find(x=>x.id===m[1]&&x.type==='s'):E.find(x=>x.id===id);
   if(m&&ent&&sDone(ent)===ent.count)cSer.add(ent.id);
-  // Et si c'est le dernier truc du chapitre entier (chrono ou année de sortie selon
-  // l'onglet actif) à être vu, on replie aussi le chapitre — jamais au décochage.
-  if(ev.target.checked&&ent)autoCollapseIfGroupDone(ent);
   const anchorId=ev.target.closest('[id]')?.id;
   renderKeepingAnchor(anchorId);save();
 }

@@ -141,7 +141,7 @@ input[type=checkbox]:indeterminate+.sq::before{content:'';position:absolute;left
 /* ── FILM ROWS ── */
 .row{border-bottom:1px solid var(--ln);}
 .row:last-child{border-bottom:none;}
-.row-top{display:flex;align-items:center;gap:6px;padding-right:2px;}
+.row-top{display:flex;align-items:flex-start;gap:6px;padding-right:2px;}
 .row-top label{flex:0 1 auto;min-width:0;max-width:100%;}
 .row-top .rt-d{margin-left:auto;padding-left:8px;}
 .row label{display:flex;align-items:center;gap:11px;padding:11px 0;cursor:pointer;}
