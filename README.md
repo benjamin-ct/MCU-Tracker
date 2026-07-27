@@ -37,7 +37,8 @@ js/compute.js                     calculs dérivés (totaux, filtres, recherche.
 js/render.js                      rendu de la liste principale
 js/modals.js                      modale infos, modale statistiques, graphique
 js/app.js                         câblage des événements, démarrage de l'app
-functions/api/tmdb/[[path]].js    Cloudflare Pages Function : proxy TMDB (clé côté serveur)
+worker/index.js                   Cloudflare Worker : sert le site + proxy TMDB (clé côté serveur)
+wrangler.jsonc                    config du Worker (nom, assets statiques, point d'entrée)
 ```
 
 Voir `PROJET-MCU-TRACKER.md` pour le détail de l'architecture et les décisions à ne pas régresser.
@@ -46,10 +47,12 @@ Voir `PROJET-MCU-TRACKER.md` pour le détail de l'architecture et les décisions
 
 This product uses the TMDB API but is not endorsed or certified by TMDB.
 
-Sur le déploiement Cloudflare Pages (mcuwatchtimeline.com), les affiches réelles marchent pour tout le monde sans configuration grâce à une Pages Function serveur (`functions/api/tmdb/[[path]].js`) qui garde la clé côté serveur. Pour l'activer sur ton propre déploiement Cloudflare Pages :
+Sur le déploiement Cloudflare Worker (mcuwatchtimeline.com), les affiches réelles marchent pour tout le monde sans configuration grâce à `worker/index.js`, qui garde la clé côté serveur. Pour l'activer sur ton propre déploiement Cloudflare Worker :
 
 1. Génère une clé (gratuite) sur [themoviedb.org/settings/api](https://www.themoviedb.org/settings/api) — clé v3 ou jeton v4, les deux marchent.
-2. Dans le dashboard Cloudflare Pages du projet : **Settings → Environment variables**, ajoute une variable `TMDB_KEY` (Production **et** Preview) avec cette valeur. Elle n'est jamais exposée au navigateur.
-3. Redéploie (ou attends le prochain déploiement) pour que la fonction la prenne en compte.
+2. Dans le dashboard Cloudflare du Worker : **Settings → Variables et secrets → Ajouter**, type **Secret** (pas "Variable" — un secret n'est jamais réaffiché en clair dans le dashboard une fois enregistré, contrairement à une variable), nom `TMDB_KEY`, valeur = ta clé.
+3. Redéploie (ou attends le prochain déploiement déclenché par un push sur `main`) pour que le Worker la prenne en compte.
 
-Sans cette variable configurée (ou sur un hébergement sans Pages Functions, ou en ouvrant `index.html` en local via `file://`), l'app retombe automatiquement sur une clé TMDB personnelle collée dans le bouton "🔑 Affiches TMDB", ou sinon sur l'affiche générée (dégradé + initiales) — jamais de crash.
+Sans cette variable configurée (ou sur un hébergement qui n'exécute pas `worker/index.js`, ou en ouvrant `index.html` en local via `file://`), l'app retombe automatiquement sur une clé TMDB personnelle collée dans le bouton "🔑 Affiches TMDB", ou sinon sur l'affiche générée (dégradé + initiales) — jamais de crash.
+
+⚠️ Si une clé a déjà été saisie en type "Variable" (visible en clair dans le dashboard), considère-la comme compromise : régénère-la sur TMDB et ressaisis la nouvelle valeur en type **Secret**.

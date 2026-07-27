@@ -1,0 +1,16 @@
+{
+  // Le nom doit rester "mcutimeline" pour que "npx wrangler deploy" mette à jour
+  // le Worker existant (mcuwatchtimeline.com) plutôt que d'en créer un nouveau.
+  "name": "mcutimeline",
+  // Toujours mettre la date du jour lors d'une mise à jour de cette valeur.
+  "compatibility_date": "2026-07-26",
+  // Point d'entrée : gère uniquement /api/tmdb/*, délègue tout le reste (index.html,
+  // css/, js/) au binding ASSETS ci-dessous. Voir worker/index.js.
+  "main": "worker/index.js",
+  "assets": {
+    // Racine du repo : mêmes fichiers statiques qu'avant l'ajout de ce Worker script,
+    // pour ne rien changer au site déjà en place (index.html/css/js à la racine).
+    "directory": "./",
+    "binding": "ASSETS"
+  }
+}

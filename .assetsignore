@@ -1,0 +1,10 @@
+worker/
+wrangler.jsonc
+.assetsignore
+PROJET-MCU-TRACKER.md
+README.md
+.git
+.github
+.gitignore
+node_modules
+.DS_Store
