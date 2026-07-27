@@ -1,0 +1,1239 @@
+// Auto-generated from the vanilla-JS catalogue during the React migration (27/07/2026).
+// 90 entries, chronological internal order (sec 0-3). See types.ts for the shape.
+import type { CatalogEntry } from './types';
+
+export const CATALOG: CatalogEntry[] = [
+  {
+    "type": "f",
+    "id": "cap1",
+    "title": "Captain America : First Avenger",
+    "sec": 0,
+    "m": 124,
+    "opt": false,
+    "y": "1942"
+  },
+  {
+    "type": "f",
+    "id": "capmarvel",
+    "title": "Captain Marvel",
+    "sec": 0,
+    "m": 124,
+    "opt": false,
+    "y": "1995"
+  },
+  {
+    "type": "f",
+    "id": "ironman1",
+    "title": "Iron Man",
+    "sec": 0,
+    "m": 126,
+    "opt": false,
+    "y": "2010"
+  },
+  {
+    "type": "f",
+    "id": "ironman2",
+    "title": "Iron Man 2",
+    "sec": 0,
+    "m": 124,
+    "opt": false,
+    "y": "2011"
+  },
+  {
+    "type": "f",
+    "id": "hulk",
+    "title": "L'Incroyable Hulk",
+    "sec": 0,
+    "m": 112,
+    "opt": false,
+    "y": "2011"
+  },
+  {
+    "type": "f",
+    "id": "thor1",
+    "title": "Thor",
+    "sec": 0,
+    "m": 115,
+    "opt": false,
+    "y": "2011"
+  },
+  {
+    "type": "f",
+    "id": "avengers1",
+    "title": "Avengers",
+    "sec": 1,
+    "m": 143,
+    "opt": false,
+    "y": "2012"
+  },
+  {
+    "type": "f",
+    "id": "thor2",
+    "title": "Thor : Le Monde des ténèbres",
+    "sec": 1,
+    "m": 112,
+    "opt": false,
+    "y": "2013"
+  },
+  {
+    "type": "f",
+    "id": "ironman3",
+    "title": "Iron Man 3",
+    "sec": 1,
+    "m": 130,
+    "opt": false,
+    "y": "2013"
+  },
+  {
+    "type": "f",
+    "id": "cap2",
+    "title": "Captain America : Le Soldat de l'hiver",
+    "sec": 1,
+    "m": 136,
+    "opt": false,
+    "y": "2014"
+  },
+  {
+    "type": "f",
+    "id": "gotg1",
+    "title": "Les Gardiens de la Galaxie",
+    "sec": 1,
+    "m": 121,
+    "opt": false,
+    "y": "2014"
+  },
+  {
+    "type": "f",
+    "id": "gotg2",
+    "title": "Les Gardiens de la Galaxie Vol. 2",
+    "sec": 1,
+    "m": 137,
+    "opt": false,
+    "y": "2014"
+  },
+  {
+    "type": "f",
+    "id": "avengers2",
+    "title": "Avengers : L'Ère d'Ultron",
+    "sec": 1,
+    "m": 141,
+    "opt": false,
+    "y": "2015"
+  },
+  {
+    "type": "s",
+    "id": "dd_s1",
+    "title": "Daredevil",
+    "sec": 1,
+    "season": 1,
+    "count": 13,
+    "epMins": [
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "jj_s1",
+    "title": "Jessica Jones",
+    "sec": 1,
+    "season": 1,
+    "count": 13,
+    "epMins": [
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "antman1",
+    "title": "Ant-Man",
+    "sec": 1,
+    "m": 117,
+    "opt": false,
+    "y": "2015"
+  },
+  {
+    "type": "f",
+    "id": "cap3",
+    "title": "Captain America : Civil War",
+    "sec": 1,
+    "m": 147,
+    "opt": false,
+    "y": "2016"
+  },
+  {
+    "type": "s",
+    "id": "dd_s2",
+    "title": "Daredevil",
+    "sec": 1,
+    "season": 2,
+    "count": 13,
+    "epMins": [
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "lc_s1",
+    "title": "Luke Cage",
+    "sec": 1,
+    "season": 1,
+    "count": 13,
+    "epMins": [
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "blackwidow",
+    "title": "Black Widow",
+    "sec": 1,
+    "m": 134,
+    "opt": false,
+    "y": "2016"
+  },
+  {
+    "type": "f",
+    "id": "blackpanther1",
+    "title": "Black Panther",
+    "sec": 1,
+    "m": 134,
+    "opt": false,
+    "y": "2016-17"
+  },
+  {
+    "type": "f",
+    "id": "spiderman1",
+    "title": "Spider-Man : Homecoming",
+    "sec": 1,
+    "m": 133,
+    "opt": false,
+    "y": "2016"
+  },
+  {
+    "type": "f",
+    "id": "drstrange1",
+    "title": "Doctor Strange",
+    "sec": 1,
+    "m": 115,
+    "opt": false,
+    "y": "2016-17"
+  },
+  {
+    "type": "f",
+    "id": "thor3",
+    "title": "Thor : Ragnarok",
+    "sec": 1,
+    "m": 130,
+    "opt": false,
+    "y": "2017"
+  },
+  {
+    "type": "s",
+    "id": "if_s1",
+    "title": "Iron Fist",
+    "sec": 1,
+    "season": 1,
+    "count": 13,
+    "epMins": [
+      57,
+      57,
+      57,
+      57,
+      57,
+      57,
+      57,
+      57,
+      57,
+      57,
+      57,
+      57,
+      57
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "defenders",
+    "title": "The Defenders",
+    "sec": 1,
+    "season": 1,
+    "count": 8,
+    "epMins": [
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "pun_s1",
+    "title": "The Punisher (Netflix)",
+    "sec": 1,
+    "season": 1,
+    "count": 13,
+    "epMins": [
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "avengers3",
+    "title": "Avengers : Infinity War",
+    "sec": 1,
+    "m": 149,
+    "opt": false,
+    "y": "2018"
+  },
+  {
+    "type": "s",
+    "id": "jj_s2",
+    "title": "Jessica Jones",
+    "sec": 1,
+    "season": 2,
+    "count": 13,
+    "epMins": [
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "lc_s2",
+    "title": "Luke Cage",
+    "sec": 1,
+    "season": 2,
+    "count": 13,
+    "epMins": [
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54,
+      54
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "if_s2",
+    "title": "Iron Fist",
+    "sec": 1,
+    "season": 2,
+    "count": 10,
+    "epMins": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "dd_s3",
+    "title": "Daredevil",
+    "sec": 1,
+    "season": 3,
+    "count": 13,
+    "epMins": [
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52,
+      52
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "antman2",
+    "title": "Ant-Man et la Guêpe",
+    "sec": 1,
+    "m": 118,
+    "opt": false,
+    "y": "2018"
+  },
+  {
+    "type": "s",
+    "id": "pun_s2",
+    "title": "The Punisher (Netflix)",
+    "sec": 1,
+    "season": 2,
+    "count": 13,
+    "epMins": [
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56,
+      56
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "jj_s3",
+    "title": "Jessica Jones",
+    "sec": 1,
+    "season": 3,
+    "count": 13,
+    "epMins": [
+      46,
+      46,
+      46,
+      46,
+      46,
+      46,
+      46,
+      46,
+      46,
+      46,
+      46,
+      46,
+      46
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "avengers4",
+    "title": "Avengers : Endgame",
+    "sec": 1,
+    "m": 181,
+    "opt": false,
+    "y": "2018→2023"
+  },
+  {
+    "type": "s",
+    "id": "wandavision",
+    "title": "WandaVision",
+    "sec": 2,
+    "season": 1,
+    "count": 9,
+    "epMins": [
+      36,
+      36,
+      36,
+      36,
+      36,
+      35,
+      35,
+      35,
+      35
+    ],
+    "opt": false
+  },
+  {
+    "type": "s",
+    "id": "falcon",
+    "title": "Falcon et le Soldat de l'hiver",
+    "sec": 2,
+    "season": 1,
+    "count": 6,
+    "epMins": [
+      50,
+      50,
+      50,
+      50,
+      50,
+      50
+    ],
+    "opt": false
+  },
+  {
+    "type": "s",
+    "id": "loki1",
+    "title": "Loki",
+    "sec": 2,
+    "season": 1,
+    "count": 6,
+    "epMins": [
+      50,
+      50,
+      50,
+      50,
+      50,
+      50
+    ],
+    "opt": false
+  },
+  {
+    "type": "s",
+    "id": "whatif1",
+    "title": "What If…?",
+    "sec": 2,
+    "season": 1,
+    "count": 9,
+    "epMins": [
+      35,
+      35,
+      35,
+      35,
+      35,
+      35,
+      35,
+      35,
+      35
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "farfromhome",
+    "title": "Spider-Man : Far From Home",
+    "sec": 2,
+    "m": 129,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "s",
+    "id": "hawkeye",
+    "title": "Hawkeye",
+    "sec": 2,
+    "season": 1,
+    "count": 6,
+    "epMins": [
+      45,
+      45,
+      45,
+      45,
+      45,
+      45
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "moonknight",
+    "title": "Moon Knight",
+    "sec": 2,
+    "season": 1,
+    "count": 6,
+    "epMins": [
+      50,
+      50,
+      50,
+      50,
+      50,
+      50
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "eternals",
+    "title": "Les Éternels",
+    "sec": 2,
+    "m": 156,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "s",
+    "id": "msmarvel",
+    "title": "Ms. Marvel",
+    "sec": 2,
+    "season": 1,
+    "count": 6,
+    "epMins": [
+      35,
+      35,
+      35,
+      35,
+      35,
+      35
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "nowayhome",
+    "title": "Spider-Man : No Way Home",
+    "sec": 2,
+    "m": 148,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "f",
+    "id": "drstrange2",
+    "title": "Doctor Strange in the Multiverse of Madness",
+    "sec": 2,
+    "m": 126,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "f",
+    "id": "thor4",
+    "title": "Thor : Love and Thunder",
+    "sec": 2,
+    "m": 119,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "s",
+    "id": "shehulk",
+    "title": "She-Hulk : Avocate",
+    "sec": 2,
+    "season": 1,
+    "count": 9,
+    "epMins": [
+      35,
+      35,
+      35,
+      35,
+      35,
+      35,
+      35,
+      35,
+      35
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "wakandaforever",
+    "title": "Black Panther : Wakanda Forever",
+    "sec": 2,
+    "m": 161,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "s",
+    "id": "secretinvasion",
+    "title": "Secret Invasion",
+    "sec": 2,
+    "season": 1,
+    "count": 6,
+    "epMins": [
+      45,
+      45,
+      45,
+      45,
+      45,
+      45
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "loki2",
+    "title": "Loki",
+    "sec": 2,
+    "season": 2,
+    "count": 6,
+    "epMins": [
+      50,
+      50,
+      50,
+      50,
+      50,
+      50
+    ],
+    "opt": false
+  },
+  {
+    "type": "s",
+    "id": "whatif2",
+    "title": "What If…?",
+    "sec": 2,
+    "season": 2,
+    "count": 9,
+    "epMins": [
+      35,
+      35,
+      35,
+      35,
+      35,
+      35,
+      35,
+      35,
+      35
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "quantumania",
+    "title": "Ant-Man et la Guêpe : Quantumania",
+    "sec": 2,
+    "m": 125,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "f",
+    "id": "gotg3",
+    "title": "Les Gardiens de la Galaxie Vol. 3",
+    "sec": 2,
+    "m": 150,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "f",
+    "id": "marvels",
+    "title": "The Marvels",
+    "sec": 2,
+    "m": 105,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "s",
+    "id": "echo",
+    "title": "Echo",
+    "sec": 2,
+    "season": 1,
+    "count": 5,
+    "epMins": [
+      43,
+      43,
+      43,
+      43,
+      43
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "xmen97-1",
+    "title": "X-Men '97",
+    "sec": 2,
+    "season": 1,
+    "count": 10,
+    "epMins": [
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "xmen1",
+    "title": "X-Men",
+    "sec": 2,
+    "m": 104,
+    "opt": true,
+    "y": "2000"
+  },
+  {
+    "type": "f",
+    "id": "x2",
+    "title": "X2 : X-Men United",
+    "sec": 2,
+    "m": 134,
+    "opt": true,
+    "y": "2003"
+  },
+  {
+    "type": "f",
+    "id": "xlaststand",
+    "title": "X-Men : L'Affrontement final",
+    "sec": 2,
+    "m": 104,
+    "opt": true,
+    "y": "2006"
+  },
+  {
+    "type": "f",
+    "id": "xorigins",
+    "title": "X-Men Origins : Wolverine",
+    "sec": 2,
+    "m": 107,
+    "opt": true,
+    "y": "2009"
+  },
+  {
+    "type": "f",
+    "id": "xfirstclass",
+    "title": "X-Men : Le Commencement",
+    "sec": 2,
+    "m": 132,
+    "opt": true,
+    "y": "2011"
+  },
+  {
+    "type": "f",
+    "id": "thewolverine",
+    "title": "Wolverine : Le Combat de l'immortel",
+    "sec": 2,
+    "m": 126,
+    "opt": true,
+    "y": "2013"
+  },
+  {
+    "type": "f",
+    "id": "xdofp",
+    "title": "X-Men : Days of Future Past",
+    "sec": 2,
+    "m": 131,
+    "opt": true,
+    "y": "2014"
+  },
+  {
+    "type": "f",
+    "id": "dp1",
+    "title": "Deadpool",
+    "sec": 2,
+    "m": 108,
+    "opt": true,
+    "y": "2016"
+  },
+  {
+    "type": "f",
+    "id": "xapocalypse",
+    "title": "X-Men : Apocalypse",
+    "sec": 2,
+    "m": 144,
+    "opt": true,
+    "y": "2016"
+  },
+  {
+    "type": "f",
+    "id": "logan",
+    "title": "Logan",
+    "sec": 2,
+    "m": 137,
+    "opt": true,
+    "y": "2017"
+  },
+  {
+    "type": "f",
+    "id": "dp2",
+    "title": "Deadpool 2",
+    "sec": 2,
+    "m": 119,
+    "opt": true,
+    "y": "2018"
+  },
+  {
+    "type": "f",
+    "id": "darkphoenix",
+    "title": "Dark Phoenix",
+    "sec": 2,
+    "m": 113,
+    "opt": true,
+    "y": "2019"
+  },
+  {
+    "type": "f",
+    "id": "newmutants",
+    "title": "Les Nouveaux Mutants",
+    "sec": 2,
+    "m": 94,
+    "opt": true,
+    "y": "2020"
+  },
+  {
+    "type": "f",
+    "id": "deadpoolwolverine",
+    "title": "Deadpool & Wolverine",
+    "sec": 2,
+    "m": 128,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "s",
+    "id": "agatha",
+    "title": "Agatha All Along",
+    "sec": 2,
+    "season": 1,
+    "count": 9,
+    "epMins": [
+      45,
+      45,
+      45,
+      45,
+      45,
+      45,
+      45,
+      45,
+      45
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "whatif3",
+    "title": "What If…?",
+    "sec": 2,
+    "season": 3,
+    "count": 8,
+    "epMins": [
+      35,
+      35,
+      35,
+      35,
+      35,
+      35,
+      35,
+      35
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "yfns1",
+    "title": "Votre Fidèle Serviteur Spider-Man",
+    "sec": 2,
+    "season": 1,
+    "count": 10,
+    "epMins": [
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "bravenewworld",
+    "title": "Captain America : Brave New World",
+    "sec": 3,
+    "m": 119,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "s",
+    "id": "daredevil1",
+    "title": "Daredevil : Born Again",
+    "sec": 3,
+    "season": 1,
+    "count": 9,
+    "epMins": [
+      58,
+      47,
+      40,
+      40,
+      40,
+      40,
+      40,
+      40,
+      57
+    ],
+    "opt": false
+  },
+  {
+    "type": "f",
+    "id": "thunderbolts",
+    "title": "Thunderbolts*",
+    "sec": 3,
+    "m": 127,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "s",
+    "id": "ironheart",
+    "title": "Ironheart",
+    "sec": 3,
+    "season": 1,
+    "count": 6,
+    "epMins": [
+      45,
+      45,
+      45,
+      45,
+      45,
+      45
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "fantasticfour",
+    "title": "Les Quatre Fantastiques : Premiers pas",
+    "sec": 3,
+    "m": 120,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "s",
+    "id": "eyesofwakanda",
+    "title": "Eyes of Wakanda",
+    "sec": 3,
+    "season": 1,
+    "count": 4,
+    "epMins": [
+      30,
+      30,
+      30,
+      30
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "marvelzombies",
+    "title": "Marvel Zombies",
+    "sec": 3,
+    "season": 1,
+    "count": 4,
+    "epMins": [
+      35,
+      31,
+      30,
+      29
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "wonderman",
+    "title": "Wonder Man",
+    "sec": 3,
+    "season": 1,
+    "count": 8,
+    "epMins": [
+      29,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "daredevil2",
+    "title": "Daredevil : Born Again",
+    "sec": 3,
+    "season": 2,
+    "count": 8,
+    "epMins": [
+      45,
+      45,
+      45,
+      45,
+      45,
+      45,
+      45,
+      45
+    ],
+    "opt": false
+  },
+  {
+    "type": "f",
+    "id": "punisher",
+    "title": "The Punisher : One Last Kill",
+    "sec": 3,
+    "m": 48,
+    "opt": true,
+    "y": null
+  },
+  {
+    "type": "s",
+    "id": "xmen97-2",
+    "title": "X-Men '97",
+    "sec": 3,
+    "season": 2,
+    "count": 9,
+    "epMins": [
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "brandnewday",
+    "title": "Spider-Man : Brand New Day",
+    "sec": 3,
+    "m": 130,
+    "opt": false,
+    "y": null
+  },
+  {
+    "type": "s",
+    "id": "yfns2",
+    "title": "Votre Fidèle Serviteur Spider-Man",
+    "sec": 3,
+    "season": 2,
+    "count": 10,
+    "epMins": [
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28,
+      28
+    ],
+    "opt": true
+  },
+  {
+    "type": "s",
+    "id": "visionquest",
+    "title": "VisionQuest",
+    "sec": 3,
+    "season": 1,
+    "count": 8,
+    "epMins": [
+      40,
+      40,
+      40,
+      40,
+      40,
+      40,
+      40,
+      40
+    ],
+    "opt": true
+  },
+  {
+    "type": "f",
+    "id": "doomsday",
+    "title": "Avengers : Doomsday",
+    "sec": 3,
+    "m": 150,
+    "opt": false,
+    "y": null
+  }
+];
