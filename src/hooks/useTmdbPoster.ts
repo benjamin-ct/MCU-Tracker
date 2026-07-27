@@ -11,8 +11,12 @@ const TMDB_KEY_STORAGE_KEY = 'mcu-tmdb-key';
 const POSTER_CACHE_STORAGE_KEY = 'mcu-poster-cache';
 const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w342';
 
+// `source` distinguishes a definitive "checked, no poster exists" (proxy or
+// personal-key) from a silent bail-out (cache hit reusing a past answer, or no way to
+// even check) — only the former should surface a "no poster available" message,
+// matching the legacy fetchRealPoster()'s exact toast conditions.
 export type PosterFetchResult =
-  | { ok: true; url: string | null }
+  | { ok: true; url: string | null; source: 'cache' | 'proxy' | 'personal-key' | 'none' }
   | { ok: false; error: 'invalid-key' | 'not-found' | 'network' }
   | { ok: false; error: 'http'; httpStatus: number };
 
@@ -56,17 +60,17 @@ export function useTmdbPoster(): UseTmdbPosterResult {
     async (tmdbInfo: TmdbRef): Promise<PosterFetchResult> => {
       const cacheKey = `${tmdbInfo.type}:${tmdbInfo.id}`;
       if (cacheKey in posterCache) {
-        return { ok: true, url: posterCache[cacheKey] };
+        return { ok: true, url: posterCache[cacheKey], source: 'cache' };
       }
 
       const proxied = await fetchPosterViaProxy(tmdbInfo);
       if (proxied !== undefined) {
         setPosterCache((prev) => ({ ...prev, [cacheKey]: proxied }));
-        return { ok: true, url: proxied };
+        return { ok: true, url: proxied, source: 'proxy' };
       }
 
       // Proxy unavailable: fall back to a personal TMDB key pasted locally, if any.
-      if (!tmdbKey) return { ok: true, url: null };
+      if (!tmdbKey) return { ok: true, url: null, source: 'none' };
 
       // TMDB offers two different key formats on their settings page, a frequent
       // source of confusion: a 32-char hex "API Key (v3 auth)" (passed as ?api_key=)
@@ -88,7 +92,7 @@ export function useTmdbPoster(): UseTmdbPosterResult {
         const data = (await res.json()) as { poster_path?: string | null };
         const posterUrl = data.poster_path ? `${TMDB_IMAGE_BASE}${data.poster_path}` : null;
         setPosterCache((prev) => ({ ...prev, [cacheKey]: posterUrl }));
-        return { ok: true, url: posterUrl };
+        return { ok: true, url: posterUrl, source: 'personal-key' };
       } catch {
         // Network error: offline, or the request was blocked by the hosting
         // environment (e.g. a sandboxed preview's CSP).

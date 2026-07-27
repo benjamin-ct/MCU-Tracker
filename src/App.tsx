@@ -1,7 +1,8 @@
-// Scaffold for visual verification (search/toast/modals still land in later tasks —
-// see PROJET-MCU-TRACKER.md migration plan). Wires the hooks and components built so
-// far: Header, Sidebar, and now Catalog.
-import { useCatalogFilters, useCollapseState, useLanguage, useTheme, useWatchProgress } from './hooks';
+// Scaffold for visual verification (search/toast still land in task #25 — see
+// PROJET-MCU-TRACKER.md migration plan). Wires the hooks and components built so far:
+// Header, Sidebar, Catalog, and now the modals.
+import { useState } from 'react';
+import { useCatalogFilters, useCollapseState, useLanguage, useTheme, useTmdbPoster, useWatchProgress } from './hooks';
 import { CATALOG, DOOMSDAY_DATE } from './data';
 import {
   daysLeft,
@@ -17,6 +18,7 @@ import type { CatalogEntry, SeriesEntry, SortMode } from './data/types';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { Catalog } from './components/Catalog';
+import { InfoModal, StatsModal, TmdbKeyModal } from './components/Modals';
 
 // Placeholder until task #26 builds the real platform-detection hook (Android intent://
 // vs iOS/desktop HTTPS Universal Link) — this is the non-Android default from the
@@ -31,11 +33,17 @@ function App() {
   const { mode, setMode, sortMode, setSortMode, viewFilter, setViewFilter, searchQuery, tonightMin, stepTonightUp, stepTonightDown } =
     useCatalogFilters();
   const { watchDates, ratings, setWatched, toggleRating } = useWatchProgress();
+  const { tmdbKey, setTmdbKey, clearTmdbKey, fetchPoster } = useTmdbPoster();
 
   // Chapters start open, series start collapsed — matches cGroup/cSer's initial state
   // in the legacy js/state.js.
   const chapterCollapse = useCollapseState();
   const seriesCollapse = useCollapseState(SERIES_IDS);
+
+  const [openInfoEntryId, setOpenInfoEntryId] = useState<string | null>(null);
+  const [statsModalOpen, setStatsModalOpen] = useState(false);
+  const [tmdbModalOpen, setTmdbModalOpen] = useState(false);
+  const openInfoEntry = openInfoEntryId ? CATALOG.find((entry) => entry.id === openInfoEntryId) ?? null : null;
 
   const stats = totals(CATALOG, watchDates, mode);
   const percentComplete = stats.t > 0 ? Math.round((stats.w / stats.t) * 100) : 0;
@@ -104,9 +112,9 @@ function App() {
           sortMode={sortMode}
           viewFilter={viewFilter}
           onMarkNext={handleMarkNext}
-          // TODO(#25): wire up the surprise-pick and stats-modal actions once those exist.
+          // TODO(#25): wire up the surprise-pick action once the toast system exists.
           onSurprise={() => {}}
-          onOpenStats={() => {}}
+          onOpenStats={() => setStatsModalOpen(true)}
           onSortChange={handleSortChange}
           onViewFilterChange={setViewFilter}
           onTonightStepUp={stepTonightUp}
@@ -132,14 +140,42 @@ function App() {
             disneyPlusHrefFor={() => DISNEY_PLUS_HREF}
             onSetWatched={setWatched}
             onRate={toggleRating}
-            // TODO(#24): wire up the info modal once it exists.
-            onOpenInfo={() => {}}
+            onOpenInfo={setOpenInfoEntryId}
             // TODO(#25): wire up the toast system once it exists.
             onCopiedForDisney={() => {}}
             onBulkToggleSeries={handleBulkToggleSeries}
           />
         </div>
       </div>
+      <InfoModal
+        entry={openInfoEntry}
+        lang={lang}
+        onClose={() => setOpenInfoEntryId(null)}
+        fetchPoster={fetchPoster}
+        // TODO(#25): wire up the toast system once it exists.
+        onPosterError={() => {}}
+      />
+      <StatsModal
+        open={statsModalOpen}
+        onClose={() => setStatsModalOpen(false)}
+        catalog={CATALOG as CatalogEntry[]}
+        watchDates={watchDates}
+        ratings={ratings}
+        mode={mode}
+        lang={lang}
+      />
+      <TmdbKeyModal
+        open={tmdbModalOpen}
+        tmdbKey={tmdbKey}
+        lang={lang}
+        onClose={() => setTmdbModalOpen(false)}
+        onSave={setTmdbKey}
+        onClear={clearTmdbKey}
+      />
+      {/* Temporary trigger for visual verification — the real io-row footer button lands in task #25. */}
+      <button type="button" style={{ position: 'fixed', bottom: 8, right: 8 }} onClick={() => setTmdbModalOpen(true)}>
+        TMDB
+      </button>
     </div>
   );
 }
