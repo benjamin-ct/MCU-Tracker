@@ -41,7 +41,7 @@ async function handleTmdbProxy(url,env){
   let res;
   try{
     res=await fetch(tmdbUrl,opts);
-  }catch(_){
+  }catch{
     return json({error:'network'},502);
   }
   // Un 404 TMDB veut dire "pas d'affiche pour ce titre", pas une panne du proxy — on le
