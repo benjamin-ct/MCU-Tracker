@@ -20,5 +20,15 @@
     // mais c'est la config Cloudflare Assets standard pour ce type de build et
     // coûte rien à avoir dès maintenant.
     "not_found_handling": "single-page-application"
+  },
+  // Environnement de prévisualisation : un Worker CLOUDFLARE SÉPARÉ ("mcutimeline-
+  // preview"), jamais le Worker de prod — déployé automatiquement par la CI sur la
+  // branche de migration/les PR (voir .github/workflows/preview.yml) pour tester le
+  // build React en conditions réelles avant de fusionner vers main. "wrangler deploy"
+  // (sans --env) continue de cibler mcutimeline (prod) comme avant.
+  "env": {
+    "preview": {
+      "name": "mcutimeline-preview"
+    }
   }
 }
