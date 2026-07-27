@@ -75,7 +75,7 @@ const E = [
 
 **`IMDB_ID`** — dictionnaire par id, tt-id IMDb vérifié à la main pour les 90 entrées (jamais dérivé de l'API TMDB, voir décision #5 ci-dessous). Les séries splitées en plusieurs saisons partagent le même tt-id (IMDb n'a pas de fiche par saison). `imdbUrl(e)` (`js/modals.js`) construit le lien direct `https://www.imdb.com/title/${tt-id}/` ; repli sur une recherche IMDb seulement si un id venait à manquer pour un futur ajout pas encore mis à jour dans `IMDB_ID`.
 
-**`CAST_EXTRA`** — dictionnaire par id, casting étendu (rôles secondaires/apparitions non affichés dans `INFO[id].cast` faute de place) consulté uniquement par `matchSearch()` (`js/compute.js`) pour que la recherche par acteur trouve un rôle même s'il n'apparaît pas dans la fiche.
+**`CAST_EXTRA`** — dictionnaire par id, casting bien plus complet que `INFO[id].cast` (souvent 10-30 noms selon l'ampleur du film/série — casting principal + secondaire, pas seulement 2-3 apparitions notables comme la version initiale du 27/07/2026 matin), jamais rendu à l'écran, consulté uniquement par `matchSearch()` (`js/compute.js`) pour que la recherche par acteur trouve un rôle même minoritaire, sans pour autant alourdir la fiche "i" qui garde volontairement 2-3 noms.
 
 **`TRAILER_FR`** — dictionnaire par id, URL YouTube de la bande-annonce française officielle (quand trouvée — 86/90 ; les 4 titres 2026 pas encore promus en France retombent sur la bande-annonce anglaise). Appliqué à `INFO[id].yt` par `applyLangToContent()` quand `lang==='fr'`.
 
