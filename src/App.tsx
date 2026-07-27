@@ -1,24 +1,39 @@
-// Scaffold for visual verification (search/toast still land in task #25 — see
-// PROJET-MCU-TRACKER.md migration plan). Wires the hooks and components built so far:
-// Header, Sidebar, Catalog, and now the modals.
-import { useState } from 'react';
-import { useCatalogFilters, useCollapseState, useLanguage, useTheme, useTmdbPoster, useWatchProgress } from './hooks';
-import { CATALOG, DOOMSDAY_DATE } from './data';
+// Assembles the full app: Header, Sidebar, Catalog, Search, Modals, Toast, Footer.
+import { useRef, useState } from 'react';
 import {
+  useCatalogFilters,
+  useCollapseState,
+  useLanguage,
+  useTheme,
+  useTmdbPoster,
+  useToast,
+  useWatchProgress,
+} from './hooks';
+import { CATALOG, DOOMSDAY_DATE } from './data';
+import { getTitle } from './data/localize';
+import { isFuture } from './data/platform';
+import {
+  cnt,
   daysLeft,
   estimateEvenings,
   futurePendingCount,
+  isWatched,
   nextItem,
   nextUnwatchedEpisodeIndex,
+  sDone,
   totals,
 } from './utils/compute';
-import { groupsFor } from './utils/groups';
+import { groupKeyFor, groupsFor, visibleGroups } from './utils/groups';
 import { isSeries } from './data/types';
 import type { CatalogEntry, SeriesEntry, SortMode } from './data/types';
+import { t, trCopiedForDisney } from './i18n';
 import { Header } from './components/Header';
 import { Sidebar } from './components/Sidebar';
 import { Catalog } from './components/Catalog';
 import { InfoModal, StatsModal, TmdbKeyModal } from './components/Modals';
+import { SearchBox } from './components/Search';
+import { Footer } from './components/Footer';
+import { Toast } from './components/Toast';
 
 // Placeholder until task #26 builds the real platform-detection hook (Android intent://
 // vs iOS/desktop HTTPS Universal Link) — this is the non-Android default from the
@@ -30,10 +45,22 @@ const SERIES_IDS = CATALOG.filter(isSeries).map((entry) => entry.id);
 function App() {
   const { lang, toggleLang } = useLanguage();
   const { theme, toggleTheme } = useTheme();
-  const { mode, setMode, sortMode, setSortMode, viewFilter, setViewFilter, searchQuery, tonightMin, stepTonightUp, stepTonightDown } =
-    useCatalogFilters();
-  const { watchDates, ratings, setWatched, toggleRating } = useWatchProgress();
+  const {
+    mode,
+    setMode,
+    sortMode,
+    setSortMode,
+    viewFilter,
+    setViewFilter,
+    searchQuery,
+    setSearchQuery,
+    tonightMin,
+    stepTonightUp,
+    stepTonightDown,
+  } = useCatalogFilters();
+  const { watchDates, ratings, setWatched, toggleRating, resetProgress, importProgress } = useWatchProgress();
   const { tmdbKey, setTmdbKey, clearTmdbKey, fetchPoster } = useTmdbPoster();
+  const { message: toastMessage, visible: toastVisible, showToast } = useToast();
 
   // Chapters start open, series start collapsed — matches cGroup/cSer's initial state
   // in the legacy js/state.js.
@@ -45,11 +72,17 @@ function App() {
   const [tmdbModalOpen, setTmdbModalOpen] = useState(false);
   const openInfoEntry = openInfoEntryId ? CATALOG.find((entry) => entry.id === openInfoEntryId) ?? null : null;
 
+  // Tracks whether a search was already active, so chapters/series only auto-expand
+  // at the MOMENT a search starts (not on every keystroke) — matches wasSearching in
+  // the legacy js/app.js.
+  const wasSearchingRef = useRef(false);
+
   const stats = totals(CATALOG, watchDates, mode);
   const percentComplete = stats.t > 0 ? Math.round((stats.w / stats.t) * 100) : 0;
   const eveningsRemaining = estimateEvenings(stats.remUnits, 150);
   const days = daysLeft(DOOMSDAY_DATE);
   const pendingCount = futurePendingCount(CATALOG, watchDates, mode);
+  const { totalVisibleCount } = visibleGroups(CATALOG, sortMode, mode, searchQuery, viewFilter, watchDates);
 
   const next = nextItem(CATALOG, watchDates, mode);
   const nextEpisodeIndex = next && isSeries(next) ? nextUnwatchedEpisodeIndex(next, watchDates) : -1;
@@ -85,6 +118,49 @@ function App() {
     if (watched) seriesCollapse.setKeyCollapsed(entry.id, true);
   };
 
+  const handleSearchChange = (rawQuery: string) => {
+    const isSearchingNow = rawQuery.trim().length > 0;
+    if (isSearchingNow && !wasSearchingRef.current) {
+      chapterCollapse.expandAll();
+      seriesCollapse.expandAll();
+    }
+    wasSearchingRef.current = isSearchingNow;
+    setSearchQuery(rawQuery);
+  };
+
+  const handleCopiedForDisney = (title: string) => {
+    const short = title.length > 26 ? `${title.slice(0, 25)}…` : title;
+    showToast(trCopiedForDisney(lang, short));
+  };
+
+  const handleSurprise = () => {
+    const pool = CATALOG.filter((entry) => {
+      if (!cnt(entry, mode) || isFuture(entry.id)) return false;
+      return entry.type === 'f' ? !isWatched(watchDates, entry.id) : sDone(entry, watchDates) < entry.count;
+    });
+    if (!pool.length) {
+      showToast(t(lang, 'surpriseNoneLeft'));
+      return;
+    }
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    chapterCollapse.setKeyCollapsed(groupKeyFor(pick, sortMode), false);
+    if (pick.type === 's') seriesCollapse.setKeyCollapsed(pick.id, false);
+    if (searchQuery.trim()) {
+      wasSearchingRef.current = false;
+      setSearchQuery('');
+    }
+    const elementId = pick.type === 'f' ? `r-${pick.id}` : `sg-${pick.id}`;
+    window.setTimeout(() => {
+      const el = document.getElementById(elementId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('highlight-pulse');
+        window.setTimeout(() => el.classList.remove('highlight-pulse'), 3600);
+      }
+    }, 120);
+    showToast(`🎲 ${getTitle(pick, lang)}`);
+  };
+
   return (
     <div className="w">
       <Header
@@ -112,8 +188,7 @@ function App() {
           sortMode={sortMode}
           viewFilter={viewFilter}
           onMarkNext={handleMarkNext}
-          // TODO(#25): wire up the surprise-pick action once the toast system exists.
-          onSurprise={() => {}}
+          onSurprise={handleSurprise}
           onOpenStats={() => setStatsModalOpen(true)}
           onSortChange={handleSortChange}
           onViewFilterChange={setViewFilter}
@@ -123,6 +198,7 @@ function App() {
           onCollapseAll={handleCollapseAll}
         />
         <div className="mcol">
+          <SearchBox searchQuery={searchQuery} resultCount={totalVisibleCount} lang={lang} onSearchChange={handleSearchChange} />
           <Catalog
             catalog={CATALOG as CatalogEntry[]}
             lang={lang}
@@ -141,9 +217,21 @@ function App() {
             onSetWatched={setWatched}
             onRate={toggleRating}
             onOpenInfo={setOpenInfoEntryId}
-            // TODO(#25): wire up the toast system once it exists.
-            onCopiedForDisney={() => {}}
+            onCopiedForDisney={handleCopiedForDisney}
             onBulkToggleSeries={handleBulkToggleSeries}
+          />
+          <Footer
+            lang={lang}
+            watchDates={watchDates}
+            ratings={ratings}
+            mode={mode}
+            onResetProgress={resetProgress}
+            onImportData={(data) => {
+              importProgress(data);
+              if (data.mode) setMode(data.mode);
+            }}
+            onOpenTmdbModal={() => setTmdbModalOpen(true)}
+            onToast={showToast}
           />
         </div>
       </div>
@@ -152,8 +240,7 @@ function App() {
         lang={lang}
         onClose={() => setOpenInfoEntryId(null)}
         fetchPoster={fetchPoster}
-        // TODO(#25): wire up the toast system once it exists.
-        onPosterError={() => {}}
+        onPosterError={showToast}
       />
       <StatsModal
         open={statsModalOpen}
@@ -169,13 +256,16 @@ function App() {
         tmdbKey={tmdbKey}
         lang={lang}
         onClose={() => setTmdbModalOpen(false)}
-        onSave={setTmdbKey}
-        onClear={clearTmdbKey}
+        onSave={(key) => {
+          setTmdbKey(key);
+          showToast(t(lang, key ? 'tmdbKeySaved' : 'tmdbKeyRemoved'));
+        }}
+        onClear={() => {
+          clearTmdbKey();
+          showToast(t(lang, 'tmdbKeyRemoved'));
+        }}
       />
-      {/* Temporary trigger for visual verification — the real io-row footer button lands in task #25. */}
-      <button type="button" style={{ position: 'fixed', bottom: 8, right: 8 }} onClick={() => setTmdbModalOpen(true)}>
-        TMDB
-      </button>
+      <Toast message={toastMessage} visible={toastVisible} />
     </div>
   );
 }

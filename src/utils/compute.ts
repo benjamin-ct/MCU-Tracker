@@ -44,8 +44,8 @@ export function fitsTonight(entry: CatalogEntry, watchDates: WatchDates, tonight
 // extended cast list (CAST_EXTRA) for secondary roles/appearances not shown in the
 // info modal (limited space) but that should still be findable.
 export function matchSearch(entry: CatalogEntry, query: string): boolean {
-  if (!query) return true;
-  const q = query.toLowerCase();
+  if (!query.trim()) return true;
+  const q = query.trim().toLowerCase();
   if (entry.title.toLowerCase().includes(q)) return true;
   const original = TITLE_EN[entry.id];
   if (original && original.toLowerCase().includes(q)) return true;

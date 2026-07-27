@@ -11,3 +11,5 @@ export { useTmdbPoster } from './useTmdbPoster';
 export type { PosterFetchResult, UseTmdbPosterResult } from './useTmdbPoster';
 export { useCollapseState } from './useCollapseState';
 export type { UseCollapseStateResult } from './useCollapseState';
+export { useToast } from './useToast';
+export type { UseToastResult } from './useToast';
