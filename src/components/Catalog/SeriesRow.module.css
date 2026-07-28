@@ -98,6 +98,10 @@
 }
 
 /* ── Tout vu ── */
+.sg.sgDone .sgName {
+    color: var(--faint);
+}
+
 :global(body.view-todo) .sg.sgDone {
     display: none;
 }
