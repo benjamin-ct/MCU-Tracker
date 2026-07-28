@@ -103,7 +103,7 @@
 
 /* ── FUTURE ── */
 .row.future {
-    opacity: .5;
+    opacity: 0.5;
 }
 
 .row.future :global(.sq) {
@@ -128,7 +128,7 @@
 .dpRow {
     opacity: 0;
     pointer-events: none;
-    transition: opacity .2s ease;
+    transition: opacity 0.2s ease;
 }
 
 .row:not(.done):not(.future) .dpRow {
@@ -159,13 +159,14 @@
     padding: 0 0 0 31px;
     opacity: 0;
     pointer-events: none;
-    transition: height .22s ease .06s, opacity .2s ease .06s;
+    transition: height 0.22s ease 0.06s,
+    opacity 0.2s ease 0.06s;
 }
 
 .rowFooter .stars {
     height: auto;
     overflow: visible;
-    transition: opacity .2s ease .06s;
+    transition: opacity 0.2s ease 0.06s;
 }
 
 .row.done .rowFooter .stars {

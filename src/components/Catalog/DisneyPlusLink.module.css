@@ -1,26 +1,25 @@
 /* ── Disney+ Link ── */
 .dpLink {
-    border: 1px solid rgba(56, 191, 80, .35);
-    border-radius: 6px;
-    background: rgba(56, 191, 80, .10);
-    font-family: var(--m), sans-serif;
-    font-size: 10px;
-    height: 23px;
-    overflow: hidden;
-    font-weight: 600;
-    color: var(--dp-text);
-    padding: 5px 11px;
-    white-space: nowrap;
-    transition: background .15s;
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    letter-spacing: .02em;
-    text-decoration: none;
-    -webkit-tap-highlight-color: rgba(56, 191, 80, .2);
+  border: 1px solid rgba(56, 191, 80, 0.35);
+  border-radius: 6px;
+  background: rgba(56, 191, 80, 0.1);
+  font-family: var(--m), sans-serif;
+  font-size: 10px;
+  height: 23px;
+  overflow: hidden;
+  font-weight: 600;
+  color: var(--dp-text);
+  padding: 5px 11px;
+  white-space: nowrap;
+  transition: background 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  -webkit-tap-highlight-color: rgba(56, 191, 80, 0.2);
 }
 
 .dpLink:active {
-    background: rgba(56, 191, 80, .22);
+  background: rgba(56, 191, 80, 0.22);
 }
-

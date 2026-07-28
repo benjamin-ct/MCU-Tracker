@@ -1,4 +1,4 @@
-import type {Lang} from '../../data/types';
+import type {Lang} from '../../data';
 import {t, trResultCount} from '../../i18n';
 import styles from './SearchBox.module.css';
 

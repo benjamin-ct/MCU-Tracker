@@ -8,7 +8,7 @@
 }
 
 .sg.tnFit {
-    border-color: rgba(74, 222, 128, .3);
+    border-color: rgba(74, 222, 128, 0.3);
 }
 
 .sgHd {
@@ -72,7 +72,7 @@
     border-right: 1.6px solid var(--faint);
     border-bottom: 1.6px solid var(--faint);
     transform: rotate(-45deg);
-    transition: transform .2s;
+    transition: transform 0.2s;
 }
 
 .sg.open .sgArr {
@@ -86,7 +86,7 @@
 
 /* ── Future ── */
 .sg.future {
-    opacity: .5;
+    opacity: 0.5;
 }
 
 .sg.future .sgBulk :global(.sq) {
@@ -120,7 +120,7 @@
 .dpRow {
     opacity: 0;
     pointer-events: none;
-    transition: opacity .2s ease;
+    transition: opacity 0.2s ease;
 }
 
 .sg:not(.sgDone):not(.future) .dpRow {
@@ -144,13 +144,14 @@
     padding: 0 14px;
     opacity: 0;
     pointer-events: none;
-    transition: height .22s ease .06s, opacity .2s ease .06s;
+    transition: height 0.22s ease 0.06s,
+    opacity 0.2s ease 0.06s;
 }
 
 .sgFooter .sgStars {
     height: auto;
     overflow: visible;
-    transition: opacity .2s ease .06s;
+    transition: opacity 0.2s ease 0.06s;
 }
 
 .sg.sgDone .sgFooter .sgStars {
@@ -171,5 +172,4 @@
     .dpRowInner {
         padding: 10px 16px;
     }
-
 }

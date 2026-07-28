@@ -7,12 +7,12 @@ ce qui change, c'est qu'il y a maintenant une étape de build avant de déployer
 
 ## Ce qui a changé depuis la version vanilla JS
 
-| | Avant (vanilla JS) | Maintenant (React) |
-|---|---|---|
-| Fichiers servis | `index.html`/`css/`/`js/` à la racine du repo | `dist/` (généré par `npm run build`) |
-| `wrangler.jsonc` `assets.directory` | `"./"` | `"./dist"` |
-| Étape de build | Aucune | `npm ci && npm run build` avant de déployer |
-| Déploiement | `npx wrangler deploy` déclenché par Cloudflare sur push `main` (intégration git du dashboard) | GitHub Actions (`.github/workflows/deploy.yml`) — voir ci-dessous |
+|                                     | Avant (vanilla JS)                                                                            | Maintenant (React)                                                |
+|-------------------------------------|-----------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| Fichiers servis                     | `index.html`/`css/`/`js/` à la racine du repo                                                 | `dist/` (généré par `npm run build`)                              |
+| `wrangler.jsonc` `assets.directory` | `"./"`                                                                                        | `"./dist"`                                                        |
+| Étape de build                      | Aucune                                                                                        | `npm ci && npm run build` avant de déployer                       |
+| Déploiement                         | `npx wrangler deploy` déclenché par Cloudflare sur push `main` (intégration git du dashboard) | GitHub Actions (`.github/workflows/deploy.yml`) — voir ci-dessous |
 
 Le nom du Worker (`mcutimeline`), le point d'entrée (`worker/index.js`, proxy TMDB sur
 `/api/tmdb/*`) et la variable secrète `TMDB_KEY` restent identiques — rien à reconfigurer côté

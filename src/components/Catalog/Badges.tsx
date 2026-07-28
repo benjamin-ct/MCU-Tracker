@@ -3,8 +3,8 @@
 // "fits tonight" tag. Ported from the opt-badge/plat-tag/tn-tag markup in the legacy
 // js/render.js. tn-tag/sg-tn-tag are always rendered — visibility is CSS-driven by
 // the ancestor .row.tn-fit/.sg.tn-fit class, same as the original.
-import type {Lang, PlatformEntry} from '../../data/types';
-import {getPlatformLabel} from '../../data/localize';
+import type {Lang, PlatformEntry} from '../../data';
+import {getPlatformLabel} from '../../data';
 import {t} from '../../i18n';
 import styles from './Badges.module.css';
 
@@ -14,12 +14,17 @@ export function OptionalBadge({ lang }: { lang: Lang }) {
 
 export function PlatformBadge({ platform, lang }: { platform: PlatformEntry; lang: Lang }) {
   const { label, date } = getPlatformLabel(platform, lang);
-  const cls = platform.c === 'cin'
-    ? `${styles.platTag} ${styles.cin}`
-    : platform.c === 'soon'
-      ? `${styles.platTag} ${styles.soon}`
-      : styles.platTag;
-  return <span className={cls}>{label} · {date}</span>;
+  const cls =
+    platform.c === 'cin'
+      ? `${styles.platTag} ${styles.cin}`
+      : platform.c === 'soon'
+        ? `${styles.platTag} ${styles.soon}`
+        : styles.platTag;
+  return (
+    <span className={cls}>
+      {label} · {date}
+    </span>
+  );
 }
 
 export function TonightBadge({lang, visible}: { lang: Lang; visible?: boolean }) {

@@ -1,54 +1,53 @@
 /* ── Progress Strip ── */
 .strip {
-    margin-bottom: 14px;
-    border-radius: 3px;
-    overflow: hidden;
+  margin-bottom: 14px;
+  border-radius: 3px;
+  overflow: hidden;
 }
 
 .holes {
-    height: 13px;
-    background-color: var(--raised);
-    background-image: radial-gradient(circle, var(--bg) 4.5px, transparent 4.5px);
-    background-size: 18px 13px;
-    background-position: 3px center;
-    background-repeat: repeat-x;
+  height: 13px;
+  background-color: var(--raised);
+  background-image: radial-gradient(circle, var(--bg) 4.5px, transparent 4.5px);
+  background-size: 18px 13px;
+  background-position: 3px center;
+  background-repeat: repeat-x;
 }
 
 .bar {
-    height: 22px;
-    background: var(--groove);
-    position: relative;
-    overflow: hidden;
+  height: 22px;
+  background: var(--groove);
+  position: relative;
+  overflow: hidden;
 }
 
 .fill {
-    position: absolute;
-    inset: 0 auto 0 0;
-    background: linear-gradient(90deg, var(--red-deep), var(--red) 60%, #5DD97A);
-    transition: width .7s cubic-bezier(.4, 0, .2, 1);
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: linear-gradient(90deg, var(--red-deep), var(--red) 60%, #5dd97a);
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .fill::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: rgba(255, 255, 255, .4);
-    box-shadow: 0 0 8px 4px rgba(56, 191, 80, .6);
-    opacity: 0;
-    transition: opacity .3s;
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 8px 4px rgba(56, 191, 80, 0.6);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .fill.glow::after {
-    opacity: 1;
+  opacity: 1;
 }
 
 @media (min-width: 768px) {
-    .strip {
-        grid-area: strip;
-        margin: 0;
-    }
+  .strip {
+    grid-area: strip;
+    margin: 0;
+  }
 }
-

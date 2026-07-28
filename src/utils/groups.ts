@@ -2,12 +2,10 @@
 // The original built an HTML string (headHTML) for each chapter header; here we return
 // plain data instead — a future <ChapterGroup> component renders the header as JSX,
 // picking the localized section/year label itself via getSectionNames()/the year number.
-import type { CatalogEntry, SectionIndex, SortMode, ViewFilter } from '../data/types';
-import { RELEASE_DATE, releaseYear } from '../data/releaseDates';
-import { isFuture } from '../data/platform';
-import type { Mode } from '../data/types';
-import { cnt, isWatched, matchSearch, sDone, sRem, type WatchDates } from './compute';
-import { fmt } from './format';
+import type {CatalogEntry, Mode, SectionIndex, SortMode, ViewFilter} from '../data';
+import {isFuture, RELEASE_DATE, releaseYear} from '../data';
+import {cnt, isEntryFullyWatched, isWatched, matchSearch, sDone, sRem, type WatchDates} from './compute';
+import {fmt} from './format';
 
 export interface ChronoGroup {
   key: string;
@@ -29,9 +27,9 @@ const SECTION_INDICES: SectionIndex[] = [0, 1, 2, 3];
 
 export function groupsFor(catalog: CatalogEntry[], sortMode: SortMode): CatalogGroup[] {
   if (sortMode === 'release') {
-    const years = [
-      ...new Set(catalog.map((e) => releaseYear(e.id)).filter((y): y is number => y !== null)),
-    ].sort((a, b) => a - b);
+    const years = [...new Set(catalog.map((e) => releaseYear(e.id)).filter((y): y is number => y !== null))].sort(
+      (a, b) => a - b,
+    );
     return years.map((year) => ({
       key: `release-${year}`,
       kind: 'release',
@@ -112,9 +110,7 @@ export function visibleGroups(
 
     let visibleEntries = matched;
     if (viewFilter === 'todo') {
-      visibleEntries = matched.filter((entry) =>
-        entry.type === 'f' ? !isWatched(watchDates, entry.id) : sDone(entry, watchDates) < entry.count,
-      );
+      visibleEntries = matched.filter((entry) => !isEntryFullyWatched(entry, watchDates));
       if (visibleEntries.length === 0) return;
     }
 

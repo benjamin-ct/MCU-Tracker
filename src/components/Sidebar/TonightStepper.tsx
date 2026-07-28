@@ -17,9 +17,13 @@ export function TonightStepper({ tonightMin, lang, onStepUp, onStepDown }: Tonig
     <div className={styles.tnWrap}>
       <span className={styles.tnLbl}>{t(lang, 'tonightLbl')}</span>
       <div className={styles.tnStepper}>
-        <button type="button" className={styles.tnBtn} onClick={onStepDown}>−</button>
+        <button type="button" className={styles.tnBtn} onClick={onStepDown}>
+          −
+        </button>
         <span className={styles.tnVal}>{tnDisp(tonightMin)}</span>
-        <button type="button" className={styles.tnBtn} onClick={onStepUp}>+</button>
+        <button type="button" className={styles.tnBtn} onClick={onStepUp}>
+          +
+        </button>
       </div>
     </div>
   );

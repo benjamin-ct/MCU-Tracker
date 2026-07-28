@@ -4,14 +4,15 @@
 // by the caller (App.tsx) via useCollapseState, since the sidebar's expand/collapse-
 // all buttons and the "up next"/surprise-pick auto-expand need to reach the same
 // state — this component just reads it and reports toggles.
-import type { CatalogEntry, Lang, Mode, SeriesEntry, SortMode, ViewFilter } from '../../data/types';
-import { isFilm } from '../../data/types';
-import { PLAT, isFuture } from '../../data/platform';
-import { fitsTonight, isWatched, sDone, sRem, type WatchDates } from '../../utils/compute';
-import { groupBadge, visibleGroups } from '../../utils/groups';
-import { ChapterGroup } from './ChapterGroup';
-import { MovieRow } from './MovieRow';
-import { SeriesRow } from './SeriesRow';
+import {useMemo} from 'react';
+
+import type {CatalogEntry, Lang, Mode, SeriesEntry, SortMode, ViewFilter} from '../../data';
+import {isFilm, isFuture, PLAT} from '../../data';
+import {fitsTonight, isWatched, sDone, sRem, type WatchDates} from '../../utils/compute';
+import {groupBadge, visibleGroups} from '../../utils/groups';
+import {ChapterGroup} from './ChapterGroup';
+import {MovieRow} from './MovieRow';
+import {SeriesRow} from './SeriesRow';
 
 interface CatalogProps {
   catalog: CatalogEntry[];
@@ -56,7 +57,10 @@ export function Catalog({
   onCopiedForDisney,
   onBulkToggleSeries,
 }: CatalogProps) {
-  const { groups } = visibleGroups(catalog, sortMode, mode, searchQuery, viewFilter, watchDates);
+  const {groups} = useMemo(
+    () => visibleGroups(catalog, sortMode, mode, searchQuery, viewFilter, watchDates),
+    [catalog, sortMode, mode, searchQuery, viewFilter, watchDates],
+  );
 
   return (
     <main>

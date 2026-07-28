@@ -1,5 +1,15 @@
 // Assembles the full app: Header, Sidebar, Catalog, Search, Modals, Toast, Footer.
-import { useRef, useState } from 'react';
+import {useMemo, useRef, useState} from 'react';
+
+import {Catalog} from './components/Catalog';
+import {Footer} from './components/Footer';
+import {Header} from './components/Header';
+import {InfoModal, StatsModal, TmdbKeyModal} from './components/Modals';
+import {SearchBox} from './components/Search';
+import {Sidebar} from './components/Sidebar';
+import {Toast} from './components/Toast';
+import type {SeriesEntry, SortMode} from './data';
+import {CATALOG, DOOMSDAY_DATE, getTitle, isFuture, isSeries} from './data';
 import {
   useCatalogFilters,
   useCollapseState,
@@ -11,31 +21,18 @@ import {
   useToast,
   useWatchProgress,
 } from './hooks';
-import { CATALOG, DOOMSDAY_DATE } from './data';
-import { getTitle } from './data/localize';
-import { isFuture } from './data/platform';
+import {t, trCopiedForDisney} from './i18n';
 import {
   cnt,
   daysLeft,
   estimateEvenings,
   futurePendingCount,
-  isWatched,
+  isEntryFullyWatched,
   nextItem,
   nextUnwatchedEpisodeIndex,
-  sDone,
   totals,
 } from './utils/compute';
-import { groupKeyFor, groupsFor, visibleGroups } from './utils/groups';
-import { isSeries } from './data/types';
-import type { CatalogEntry, SeriesEntry, SortMode } from './data/types';
-import { t, trCopiedForDisney } from './i18n';
-import { Header } from './components/Header';
-import { Sidebar } from './components/Sidebar';
-import { Catalog } from './components/Catalog';
-import { InfoModal, StatsModal, TmdbKeyModal } from './components/Modals';
-import { SearchBox } from './components/Search';
-import { Footer } from './components/Footer';
-import { Toast } from './components/Toast';
+import {groupKeyFor, groupsFor, visibleGroups} from './utils/groups';
 
 const SERIES_IDS = CATALOG.filter(isSeries).map((entry) => entry.id);
 
@@ -69,29 +66,41 @@ function App() {
   const [openInfoEntryId, setOpenInfoEntryId] = useState<string | null>(null);
   const [statsModalOpen, setStatsModalOpen] = useState(false);
   const [tmdbModalOpen, setTmdbModalOpen] = useState(false);
-  const openInfoEntry = openInfoEntryId ? CATALOG.find((entry) => entry.id === openInfoEntryId) ?? null : null;
+  const openInfoEntry = openInfoEntryId ? (CATALOG.find((entry) => entry.id === openInfoEntryId) ?? null) : null;
 
   // Tracks whether a search was already active, so chapters/series only auto-expand
   // at the MOMENT a search starts (not on every keystroke) — matches wasSearching in
   // the legacy js/app.js.
   const wasSearchingRef = useRef(false);
 
-  const stats = totals(CATALOG, watchDates, mode);
-  const percentComplete = stats.t > 0 ? Math.round((stats.w / stats.t) * 100) : 0;
-  const eveningsRemaining = estimateEvenings(stats.remUnits, 150);
+  // Derived catalog computations only depend on watchDates/mode (and, for the visible
+  // count, the active sort/search/view filters) — memoized so a keystroke elsewhere or
+  // an unrelated re-render doesn't re-walk the whole catalog each time.
+  const stats = useMemo(() => totals(CATALOG, watchDates, mode), [watchDates, mode]);
+  const percentComplete = stats.totalMinutes > 0 ? Math.round((stats.watchedMinutes / stats.totalMinutes) * 100) : 0;
+  const eveningsRemaining = useMemo(
+    () => estimateEvenings(stats.remainingUnitDurations, 150),
+    [stats.remainingUnitDurations],
+  );
   const days = daysLeft(DOOMSDAY_DATE);
-  const pendingCount = futurePendingCount(CATALOG, watchDates, mode);
-  const { totalVisibleCount } = visibleGroups(CATALOG, sortMode, mode, searchQuery, viewFilter, watchDates);
+  const pendingCount = useMemo(() => futurePendingCount(CATALOG, watchDates, mode), [watchDates, mode]);
+  const totalVisibleCount = useMemo(
+    () => visibleGroups(CATALOG, sortMode, mode, searchQuery, viewFilter, watchDates).totalVisibleCount,
+    [sortMode, mode, searchQuery, viewFilter, watchDates],
+  );
 
-  const next = nextItem(CATALOG, watchDates, mode);
+  const next = useMemo(() => nextItem(CATALOG, watchDates, mode), [watchDates, mode]);
   const nextEpisodeIndex = next && isSeries(next) ? nextUnwatchedEpisodeIndex(next, watchDates) : -1;
 
   const handleMarkNext = () => {
     if (!next) return;
     if (isSeries(next)) {
-      if (nextEpisodeIndex < 0) return;
-      setWatched(`${next.id}-e${nextEpisodeIndex + 1}`, true);
-      if (nextEpisodeIndex === next.count - 1) seriesCollapse.setKeyCollapsed(next.id, true);
+      // Recompute from the current watchDates rather than trusting the render-time
+      // nextEpisodeIndex, so a rapid double-click can't mark a stale episode.
+      const episodeIndex = nextUnwatchedEpisodeIndex(next, watchDates);
+      if (episodeIndex < 0) return;
+      setWatched(`${next.id}-e${episodeIndex + 1}`, true);
+      if (episodeIndex === next.count - 1) seriesCollapse.setKeyCollapsed(next.id, true);
     } else {
       setWatched(next.id, true);
     }
@@ -135,7 +144,7 @@ function App() {
   const handleSurprise = () => {
     const pool = CATALOG.filter((entry) => {
       if (!cnt(entry, mode) || isFuture(entry.id)) return false;
-      return entry.type === 'f' ? !isWatched(watchDates, entry.id) : sDone(entry, watchDates) < entry.count;
+      return !isEntryFullyWatched(entry, watchDates);
     });
     if (!pool.length) {
       showToast(t(lang, 'surpriseNoneLeft'));
@@ -170,8 +179,8 @@ function App() {
         onToggleLang={toggleLang}
         onToggleTheme={toggleTheme}
         onModeChange={setMode}
-        remainingMinutes={stats.r}
-        watchedMinutes={stats.w}
+        remainingMinutes={stats.remainingMinutes}
+        watchedMinutes={stats.watchedMinutes}
         percentComplete={percentComplete}
         eveningsRemaining={eveningsRemaining}
         daysLeft={days}
@@ -197,9 +206,14 @@ function App() {
           onCollapseAll={handleCollapseAll}
         />
         <div className="mcol">
-          <SearchBox searchQuery={searchQuery} resultCount={totalVisibleCount} lang={lang} onSearchChange={handleSearchChange} />
+          <SearchBox
+            searchQuery={searchQuery}
+            resultCount={totalVisibleCount}
+            lang={lang}
+            onSearchChange={handleSearchChange}
+          />
           <Catalog
-            catalog={CATALOG as CatalogEntry[]}
+            catalog={CATALOG}
             lang={lang}
             sortMode={sortMode}
             mode={mode}
@@ -244,7 +258,7 @@ function App() {
       <StatsModal
         open={statsModalOpen}
         onClose={() => setStatsModalOpen(false)}
-        catalog={CATALOG as CatalogEntry[]}
+        catalog={CATALOG}
         watchDates={watchDates}
         ratings={ratings}
         mode={mode}

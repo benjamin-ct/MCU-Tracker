@@ -26,7 +26,7 @@
     white-space: nowrap;
     pointer-events: none;
     z-index: 3;
-    transition: opacity .12s;
+    transition: opacity 0.12s;
 }
 
 .chartTip b {
@@ -39,4 +39,3 @@
     display: block;
     touch-action: none;
 }
-

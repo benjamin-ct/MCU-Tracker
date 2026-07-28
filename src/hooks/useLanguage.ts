@@ -3,8 +3,9 @@
 // (applyLangToContent) and re-rendered the whole DOM by hand (applyLangToStaticDOM).
 // Here `lang` is just React state: components re-render declaratively from it, and
 // content localization goes through the pure selectors in data/localize.ts instead.
-import { useCallback, useEffect, useState } from 'react';
-import type { Lang } from '../data/types';
+import {useCallback, useEffect, useState} from 'react';
+
+import type {Lang} from '../data';
 
 const STORAGE_KEY = 'mcu-lang';
 

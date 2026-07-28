@@ -4,6 +4,7 @@
 // confirms it actually loads, so a bad URL/offline network never leaves a broken
 // image in its place.
 import {useEffect, useState} from 'react';
+
 import type {CatalogEntry, InfoEntry, Lang} from '../../data';
 import type {PosterFetchResult} from '../../hooks';
 import {t, trTmdbErrGeneric} from '../../i18n';
@@ -18,10 +19,29 @@ const CHAPTER_GRADIENTS: [string, string][] = [
 
 // Words that don't help identify a title (articles/conjunctions, FR+EN) — skipped
 // when picking the two "significant" initials shown on the generated poster.
-const STOP_WORDS = new Set(['le', 'la', 'les', 'de', 'du', 'des', 'et', 'à', 'a', 'the', 'of', 'and', 'an', 'un', 'une']);
+const STOP_WORDS = new Set([
+  'le',
+  'la',
+  'les',
+  'de',
+  'du',
+  'des',
+  'et',
+  'à',
+  'a',
+  'the',
+  'of',
+  'and',
+  'an',
+  'un',
+  'une',
+]);
 
 function posterInitials(title: string): string {
-  const words = title.replace(/[:().!'']/g, ' ').split(/\s+/).filter(Boolean);
+  const words = title
+    .replace(/[:().!'']/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
   const significant = words.filter((word) => !STOP_WORDS.has(word.toLowerCase()));
   const use = significant.length ? significant : words;
   if (use.length === 1) return use[0].slice(0, 2).toUpperCase();

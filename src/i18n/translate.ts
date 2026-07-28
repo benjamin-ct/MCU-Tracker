@@ -24,28 +24,6 @@ export function trTmdbErrGeneric(lang: Lang, status: number | string): string {
   return lang === 'en' ? `⚠ TMDB error (${status})` : `⚠ Erreur TMDB (${status})`;
 }
 
-export function trAllWatchedFuturePending(lang: Lang, fp: number): string {
-  return lang === 'en'
-    ? `Doomsday — Dec 18, 2026 · <b>${trTitleCount(lang, fp)}</b> not yet released`
-    : `Doomsday — 18 déc 2026 · <b>${trTitleCount(lang, fp)}</b> pas encore sorti${fp > 1 ? 's' : ''} restant${fp > 1 ? 's' : ''}`;
-}
-
-export function trMarathonDoneReady(lang: Lang): string {
-  return lang === 'en'
-    ? `Marathon complete! Ready for Doomsday. <span class="ok">✓</span>`
-    : `Marathon terminé ! Prêt pour Doomsday. <span class="ok">✓</span>`;
-}
-
-export function trDoomsdayHere(lang: Lang): string {
-  return lang === 'en' ? `<b>Doomsday is here!</b> 🎬` : `<b>Doomsday est là !</b> 🎬`;
-}
-
-export function trDoomsdayPace(lang: Lang, hPerDay: string | number, cls: string, icon: string): string {
-  return lang === 'en'
-    ? `Doomsday — Dec 18, 2026 · <b>${hPerDay}/day</b> to finish <span class="${cls}">${icon}</span>`
-    : `Doomsday — 18 déc 2026 · <b>${hPerDay}/jour</b> pour finir <span class="${cls}">${icon}</span>`;
-}
-
 export function trUpNextEmptyFuture(lang: Lang, fp: number): string {
   return lang === 'en'
     ? `🎬 Everything available is watched — ${trTitleCount(lang, fp)} not yet released`

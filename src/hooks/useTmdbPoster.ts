@@ -3,9 +3,11 @@
 // returns a typed result instead of showing a toast itself — the calling component
 // (the info modal) decides how to present ok/error states, keeping this hook free of
 // UI concerns.
-import { useCallback } from 'react';
-import type { TmdbRef } from '../data/types';
-import { useLocalStorageState } from './useLocalStorageState';
+import {useCallback} from 'react';
+
+import type {TmdbRef} from '../data';
+import {buildTmdbDetailsRequest} from '../utils/tmdb';
+import {useLocalStorageState} from './useLocalStorageState';
 
 const TMDB_KEY_STORAGE_KEY = 'mcu-tmdb-key';
 const POSTER_CACHE_STORAGE_KEY = 'mcu-poster-cache';
@@ -72,18 +74,10 @@ export function useTmdbPoster(): UseTmdbPosterResult {
       // Proxy unavailable: fall back to a personal TMDB key pasted locally, if any.
       if (!tmdbKey) return { ok: true, url: null, source: 'none' };
 
-      // TMDB offers two different key formats on their settings page, a frequent
-      // source of confusion: a 32-char hex "API Key (v3 auth)" (passed as ?api_key=)
-      // or a long "Read Access Token (v4 auth)" (150+ chars, contains dots, sent as an
-      // Authorization: Bearer header). Detected automatically so either works.
-      const isV4 = tmdbKey.length > 60 || tmdbKey.includes('.');
-      const url = isV4
-        ? `https://api.themoviedb.org/3/${tmdbInfo.type}/${tmdbInfo.id}?language=fr-FR`
-        : `https://api.themoviedb.org/3/${tmdbInfo.type}/${tmdbInfo.id}?api_key=${tmdbKey}&language=fr-FR`;
-      const opts: RequestInit = isV4 ? { headers: { Authorization: `Bearer ${tmdbKey}` } } : {};
+      const {url, init} = buildTmdbDetailsRequest(tmdbInfo, tmdbKey);
 
       try {
-        const res = await fetch(url, opts);
+        const res = await fetch(url, init);
         if (!res.ok) {
           if (res.status === 401) return { ok: false, error: 'invalid-key' };
           if (res.status === 404) return { ok: false, error: 'not-found' };

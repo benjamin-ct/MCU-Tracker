@@ -38,7 +38,8 @@
     white-space: nowrap;
     min-width: 34px;
     text-align: center;
-    transition: color .15s, background .15s;
+    transition: color 0.15s,
+    background 0.15s;
 }
 
 .epT {
@@ -59,5 +60,3 @@
 :global(body.view-todo) .epLi.done {
     display: none;
 }
-
-

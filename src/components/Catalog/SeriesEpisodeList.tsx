@@ -1,4 +1,4 @@
-import type {Lang} from '../../data/types';
+import type {Lang} from '../../data';
 import {t} from '../../i18n';
 import {fmtE} from '../../utils/format';
 import styles from './SeriesEpisodeList.module.css';
@@ -18,7 +18,7 @@ export function SeriesEpisodeList({
                                     isEpisodeWatched,
                                     future,
                                     lang,
-                                    onToggleEpisode
+                                    onToggleEpisode,
                                   }: SeriesEpisodeListProps) {
   return (
     <ul className={styles.epList}>
@@ -39,7 +39,9 @@ export function SeriesEpisodeList({
               />
               <span className="sq s" />
               <span className={styles.epN}>E{String(index + 1).padStart(2, '0')}</span>
-              <span className={styles.epT}>{t(lang, 'episodeWord')} {index + 1}</span>
+              <span className={styles.epT}>
+                {t(lang, 'episodeWord')} {index + 1}
+              </span>
               <span className={styles.epD}>{fmtE(minutes)}</span>
             </label>
           </li>

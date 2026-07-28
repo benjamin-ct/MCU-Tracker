@@ -25,7 +25,7 @@
 .scardL {
     font-family: var(--m), sans-serif;
     font-size: 9.5px;
-    letter-spacing: .1em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--faint);
     margin-top: 5px;
@@ -34,7 +34,7 @@
 .ssecTitle {
     font-family: var(--m), sans-serif;
     font-size: 10px;
-    letter-spacing: .1em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--faint);
     margin-bottom: 10px;
@@ -84,7 +84,7 @@
 .sttitle {
     font-family: var(--m), sans-serif;
     font-size: 10px;
-    letter-spacing: .1em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--faint);
     margin: 18px 0 10px;
@@ -140,4 +140,3 @@
     padding: 12px 12px 6px;
     overflow: visible;
 }
-

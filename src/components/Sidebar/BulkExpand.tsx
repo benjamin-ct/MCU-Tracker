@@ -1,4 +1,4 @@
-import type {Lang} from '../../data/types';
+import type {Lang} from '../../data';
 import {t} from '../../i18n';
 import styles from './BulkExpand.module.css';
 

@@ -1,6 +1,8 @@
 # MCU-Tracker — Marathon MCU
 
-Un tracker de visionnage pour suivre un marathon complet du Marvel Cinematic Universe dans l'**ordre chronologique interne** (pas l'ordre de sortie) — de *Captain America: First Avenger* (1942 in-universe) jusqu'à *Avengers: Doomsday* (18 déc. 2026).
+Un tracker de visionnage pour suivre un marathon complet du Marvel Cinematic Universe dans l'**ordre chronologique
+interne** (pas l'ordre de sortie) — de _Captain America: First Avenger_ (1942 in-universe) jusqu'à _Avengers:
+Doomsday_ (18 déc. 2026).
 
 React + TypeScript (Vite). Installable comme PWA ("Ajouter à l'écran d'accueil").
 
@@ -26,7 +28,7 @@ Voir `DEPLOY.md` pour le déploiement.
 - Filtre "À voir"
 - "Ce soir" : indique ce qui rentre dans le temps dispo
 - "Film surprise" aléatoire parmi le non-vu
-- Countdown vers *Avengers: Doomsday* avec rythme quotidien nécessaire
+- Countdown vers _Avengers: Doomsday_ avec rythme quotidien nécessaire
 - Statistiques : temps visionné, progression cumulée (graphique), progression par chapitre, meilleures notes
 - Notation 5 étoiles par titre
 - Export/Import JSON de la progression

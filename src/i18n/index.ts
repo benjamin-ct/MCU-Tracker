@@ -1,17 +1,20 @@
-export { STRINGS, t } from './strings';
-export type { StringKey } from './strings';
 export {
-  trResultCount,
-  trTitleCount,
-  trEpisodeCount,
-  trRatedCount,
-  trTmdbErrGeneric,
+  TmdbHelpText,
   trAllWatchedFuturePending,
-  trMarathonDoneReady,
   trDoomsdayHere,
   trDoomsdayPace,
-  trUpNextEmptyFuture,
-  trCopiedForDisney,
+  trMarathonDoneReady,
+} from './richText';
+export type { StringKey } from './strings';
+export {STRINGS, t} from './strings';
+export {
   trAvgRated,
+  trCopiedForDisney,
+  trEpisodeCount,
+  trRatedCount,
+  trResultCount,
+  trTitleCount,
+  trTmdbErrGeneric,
+  trUpNextEmptyFuture,
   trWatchedOn,
 } from './translate';

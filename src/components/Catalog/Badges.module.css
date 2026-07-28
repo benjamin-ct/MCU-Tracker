@@ -3,51 +3,50 @@
    .tonightTag : masqué par défaut, affiché par le parent (MovieRow/SeriesRow)
    via la prop visible. */
 .optBadge {
-    font-family: var(--m), sans-serif;
-    font-size: 9px;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    color: var(--purple);
-    background: var(--purple-soft);
-    border: 1px solid rgba(200, 148, 26, .22);
-    border-radius: 4px;
-    padding: 1.5px 5px;
-    white-space: nowrap;
+  font-family: var(--m), sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--purple);
+  background: var(--purple-soft);
+  border: 1px solid rgba(200, 148, 26, 0.22);
+  border-radius: 4px;
+  padding: 1.5px 5px;
+  white-space: nowrap;
 }
 
 .platTag {
-    font-family: var(--m), sans-serif;
-    font-size: 9px;
-    letter-spacing: .04em;
-    border-radius: 4px;
-    padding: 1.5px 5px;
-    white-space: nowrap;
+  font-family: var(--m), sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  border-radius: 4px;
+  padding: 1.5px 5px;
+  white-space: nowrap;
 }
 
 .platTag.cin {
-    text-transform: none;
-    color: var(--amber);
-    background: rgba(251, 191, 36, .1);
-    border: 1px solid rgba(251, 191, 36, .25);
+  text-transform: none;
+  color: var(--amber);
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.25);
 }
 
 .platTag.soon {
-    text-transform: none;
-    color: var(--dim);
-    background: var(--raised);
-    border: 1px solid var(--ln2);
+  text-transform: none;
+  color: var(--dim);
+  background: var(--raised);
+  border: 1px solid var(--ln2);
 }
 
 .tonightTag {
-    font-family: var(--m), sans-serif;
-    font-size: 9px;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    color: var(--green);
-    background: var(--green-soft);
-    border: 1px solid rgba(74, 222, 128, .25);
-    border-radius: 4px;
-    padding: 1.5px 5px;
-    white-space: nowrap;
+  font-family: var(--m), sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--green);
+  background: var(--green-soft);
+  border: 1px solid rgba(74, 222, 128, 0.25);
+  border-radius: 4px;
+  padding: 1.5px 5px;
+  white-space: nowrap;
 }
-

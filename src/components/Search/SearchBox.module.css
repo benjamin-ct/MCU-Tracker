@@ -1,85 +1,84 @@
 /* ── Search Box ── */
 .searchWrap {
-    padding: 14px 18px 0;
+  padding: 14px 18px 0;
 }
 
 .searchBox {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--raised);
-    border: 1px solid var(--ln2);
-    border-radius: 10px;
-    padding: 11px 14px;
-    transition: border-color .2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--raised);
+  border: 1px solid var(--ln2);
+  border-radius: 10px;
+  padding: 11px 14px;
+  transition: border-color 0.2s;
 }
 
 .searchBox:focus-within {
-    border-color: var(--red);
+  border-color: var(--red);
 }
 
 .searchIcon {
-    color: var(--dim);
-    font-size: 15px;
-    flex: none;
+  color: var(--dim);
+  font-size: 15px;
+  flex: none;
 }
 
 .searchInput {
-    flex: 1;
-    background: transparent;
-    border: none;
-    color: var(--text);
-    font-family: var(--g), sans-serif;
-    font-size: 14px;
-    outline: none;
-    -webkit-appearance: none;
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: var(--g), sans-serif;
+  font-size: 14px;
+  outline: none;
+  -webkit-appearance: none;
 }
 
 .searchInput::placeholder {
-    color: var(--faint);
+  color: var(--faint);
 }
 
 .searchInput::-webkit-search-cancel-button,
 .searchInput::-webkit-search-decoration {
-    -webkit-appearance: none;
-    appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 .searchClear {
-    appearance: none;
-    border: none;
-    background: transparent;
-    color: var(--dim);
-    font-size: 20px;
-    cursor: pointer;
-    padding: 0;
-    line-height: 1;
-    display: none;
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--dim);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  display: none;
 }
 
 .searchClear.vis {
-    display: block;
+  display: block;
 }
 
 .searchCount {
-    font-family: var(--m), sans-serif;
-    font-size: 10.5px;
-    color: var(--faint);
-    padding: 6px 18px 0;
-    display: none;
+  font-family: var(--m), sans-serif;
+  font-size: 10.5px;
+  color: var(--faint);
+  padding: 6px 18px 0;
+  display: none;
 }
 
 .searchCount.vis {
-    display: block;
+  display: block;
 }
 
 @media (min-width: 768px) {
-    .searchWrap {
-        padding: 16px 32px 0 24px;
-    }
+  .searchWrap {
+    padding: 16px 32px 0 24px;
+  }
 
-    .searchCount {
-        padding: 6px 32px 0 24px;
-    }
+  .searchCount {
+    padding: 6px 32px 0 24px;
+  }
 }
-

@@ -1,8 +1,8 @@
 import type {ReactNode} from 'react';
+
+import type {Lang} from '../../data';
+import {getSectionNames, ROMANS} from '../../data';
 import type {CatalogGroup} from '../../utils/groups';
-import type {Lang} from '../../data/types';
-import {ROMANS} from '../../data/sections';
-import {getSectionNames} from '../../data/localize';
 import styles from './ChapterGroup.module.css';
 
 interface ChapterGroupProps {

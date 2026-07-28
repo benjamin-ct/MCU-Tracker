@@ -2,7 +2,7 @@
 // through here — either t(lang, 'key') for plain text, or one of the tr*() helpers in
 // translate.ts for text with plurals/interpolated values. Never hardcode a display
 // string elsewhere in the app; add it here instead.
-import type { Lang } from '../data/types';
+import type {Lang} from '../data';
 
 const FR = {
   chronoOrder: 'Ordre Chronologique',
@@ -29,9 +29,8 @@ const FR = {
   optionalNote: 'sans impact sur le fil principal',
   footerNote1:
     'Ordre chronologique interne. Séries Netflix et univers Fox marqués optionnel. Durées non sorties = estimations.',
-  tmdbHelp1:
-    'Colle ta clé <b>ou</b> ton jeton TMDB — les deux fonctionnent, la page réglages en propose deux : <b>Clé API (v3 auth)</b> (32 caractères) ou <b>Jeton de lecture API (v4 auth)</b> (long jeton). Gratuit : crée un compte sur <a href="https://www.themoviedb.org/settings/api" target="_blank" style="color:var(--red)">themoviedb.org → Paramètres → API</a>.',
-  tmdbHelp2: "💡 Si l'affiche ne charge pas, un message d'erreur t'indiquera pourquoi (clé invalide, réseau bloqué, etc.).",
+  tmdbHelp2:
+    "💡 Si l'affiche ne charge pas, un message d'erreur t'indiquera pourquoi (clé invalide, réseau bloqué, etc.).",
   tmdbInputPlaceholder: 'Colle ta clé ici…',
   tmdbSave: 'Enregistrer',
   tmdbClear: 'Retirer la clé',
@@ -56,9 +55,8 @@ const FR = {
   postCreditUnknown: 'Non confirmé pour ce titre',
   triviaLbl: '📌 Anecdote',
   sagaLinkLbl: '🔗 Dans la saga',
-  noInfoYet: 'Pas encore d\'informations détaillées pour ce contenu.',
-  chartEmptyMsg:
-    'Regarde et coche des contenus sur plusieurs jours différents pour voir ta courbe de progression ici.',
+  noInfoYet: "Pas encore d'informations détaillées pour ce contenu.",
+  chartEmptyMsg: 'Regarde et coche des contenus sur plusieurs jours différents pour voir ta courbe de progression ici.',
   statsTitle: '📊 Statistiques',
   timeWatchedLbl: 'Temps visionné',
   completedLbl2: 'Complété',
@@ -110,8 +108,6 @@ const EN: Record<keyof typeof FR, string> = {
   optionalNote: 'no impact on the main storyline',
   footerNote1:
     'Internal chronological order. Netflix series and the Fox universe are marked optional. Unreleased runtimes are estimates.',
-  tmdbHelp1:
-    'Paste your TMDB key <b>or</b> token — both work, TMDB\'s settings page offers two: an <b>API Key (v3 auth)</b> (32 characters) or a <b>Read Access Token (v4 auth)</b> (long token). Free: create an account at <a href="https://www.themoviedb.org/settings/api" target="_blank" style="color:var(--red)">themoviedb.org → Settings → API</a>.',
   tmdbHelp2: "💡 If the poster doesn't load, an error message will tell you why (invalid key, blocked network, etc.).",
   tmdbInputPlaceholder: 'Paste your key here…',
   tmdbSave: 'Save',

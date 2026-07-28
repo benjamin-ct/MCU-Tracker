@@ -1,6 +1,5 @@
-import type {CatalogEntry, Lang} from '../../data/types';
-import {isFilm} from '../../data/types';
-import {getTitle} from '../../data/localize';
+import type {CatalogEntry, Lang} from '../../data';
+import {getTitle, isFilm} from '../../data';
 import {t, trUpNextEmptyFuture} from '../../i18n';
 import {fmt, fmtE} from '../../utils/format';
 import styles from './NextUpCard.module.css';
@@ -14,15 +13,20 @@ interface NextUpCardProps {
   onMarkNext: () => void;
 }
 
-export function NextUpCard({ next, nextEpisodeIndex, tonightMin, futurePendingCount, lang, onMarkNext }: NextUpCardProps) {
+export function NextUpCard({
+                             next,
+                             nextEpisodeIndex,
+                             tonightMin,
+                             futurePendingCount,
+                             lang,
+                             onMarkNext,
+                           }: NextUpCardProps) {
   let title: string;
   let sub: string | null = null;
   let button: string | null = null;
 
   if (!next) {
-    title = futurePendingCount > 0
-      ? trUpNextEmptyFuture(lang, futurePendingCount)
-      : t(lang, 'marathonDoneNoFuture');
+    title = futurePendingCount > 0 ? trUpNextEmptyFuture(lang, futurePendingCount) : t(lang, 'marathonDoneNoFuture');
   } else if (isFilm(next)) {
     title = getTitle(next, lang);
     sub = `${next.y ? `(${next.y}) · ` : ''}${fmt(next.m)}`;
@@ -33,8 +37,8 @@ export function NextUpCard({ next, nextEpisodeIndex, tonightMin, futurePendingCo
     button = t(lang, 'episodeWatchedBtn');
   }
 
-  const fitsTonight = next !== null && tonightMin > 0 &&
-    (isFilm(next) ? next.m : next.epMins[nextEpisodeIndex]) <= tonightMin;
+  const fitsTonight =
+    next !== null && tonightMin > 0 && (isFilm(next) ? next.m : next.epMins[nextEpisodeIndex]) <= tonightMin;
 
   return (
     <div className={styles.prochain}>
@@ -45,9 +49,7 @@ export function NextUpCard({ next, nextEpisodeIndex, tonightMin, futurePendingCo
           {sub && (
             <div className={styles.proxSub}>
               {sub}
-              {fitsTonight && (
-                <span className={styles.tonightHint}> · {t(lang, 'tonightFitsInline')}</span>
-              )}
+              {fitsTonight && <span className={styles.tonightHint}> · {t(lang, 'tonightFitsInline')}</span>}
             </div>
           )}
         </div>

@@ -1,11 +1,11 @@
 import type {Lang, Mode, SortMode} from '../../data';
 import type {Theme} from '../../hooks';
 import {BrandBar} from './BrandBar';
+import {DoomsdayCountdown} from './DoomsdayCountdown';
+import styles from './Header.module.css';
+import {ModeToggle} from './ModeToggle';
 import {ProgressStrip} from './ProgressStrip';
 import {StatsChips} from './StatsChips';
-import {DoomsdayCountdown} from './DoomsdayCountdown';
-import {ModeToggle} from './ModeToggle';
-import styles from './Header.module.css';
 
 interface HeaderProps {
   lang: Lang;
@@ -24,14 +24,29 @@ interface HeaderProps {
 }
 
 export function Header({
-                         lang, sortMode, theme, mode,
-                         onToggleLang, onToggleTheme, onModeChange,
-                         remainingMinutes, watchedMinutes, percentComplete,
-                         eveningsRemaining, daysLeft, futurePendingCount,
+                         lang,
+                         sortMode,
+                         theme,
+                         mode,
+                         onToggleLang,
+                         onToggleTheme,
+                         onModeChange,
+                         remainingMinutes,
+                         watchedMinutes,
+                         percentComplete,
+                         eveningsRemaining,
+                         daysLeft,
+                         futurePendingCount,
 }: HeaderProps) {
   return (
     <div className={styles.top}>
-      <BrandBar lang={lang} sortMode={sortMode} theme={theme} onToggleLang={onToggleLang} onToggleTheme={onToggleTheme} />
+      <BrandBar
+        lang={lang}
+        sortMode={sortMode}
+        theme={theme}
+        onToggleLang={onToggleLang}
+        onToggleTheme={onToggleTheme}
+      />
       <ProgressStrip percentComplete={percentComplete} />
       <div className={styles.hdRow}>
         <StatsChips

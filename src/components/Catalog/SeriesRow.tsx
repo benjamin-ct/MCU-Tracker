@@ -1,14 +1,15 @@
 import type {MouseEvent as ReactMouseEvent} from 'react';
 import {useEffect, useRef} from 'react';
+
 import type {Lang, PlatformEntry, SeriesEntry} from '../../data';
 import {getTitle} from '../../data';
 import {t} from '../../i18n';
 import {fmt} from '../../utils/format';
 import {OptionalBadge, PlatformBadge, SeriesTonightBadge} from './Badges';
 import {DisneyPlusLink} from './DisneyPlusLink';
-import {StarRating} from './StarRating';
 import {SeriesEpisodeList} from './SeriesEpisodeList';
 import styles from './SeriesRow.module.css';
+import {StarRating} from './StarRating';
 
 interface SeriesRowProps {
   entry: SeriesEntry;
@@ -31,9 +32,23 @@ interface SeriesRowProps {
 }
 
 export function SeriesRow({
-                            entry, lang, isEpisodeWatched, doneCount, remainingMinutes,
-                            isOpen, tonightFit, isFuture, platform, rating, disneyPlusHref,
-                            onToggleOpen, onToggleEpisode, onBulkToggle, onRate, onOpenInfo, onCopiedForDisney,
+                            entry,
+                            lang,
+                            isEpisodeWatched,
+                            doneCount,
+                            remainingMinutes,
+                            isOpen,
+                            tonightFit,
+                            isFuture,
+                            platform,
+                            rating,
+                            disneyPlusHref,
+                            onToggleOpen,
+                            onToggleEpisode,
+                            onBulkToggle,
+                            onRate,
+                            onOpenInfo,
+                            onCopiedForDisney,
 }: SeriesRowProps) {
   const title = getTitle(entry, lang);
   const allDone = doneCount === entry.count;
@@ -51,7 +66,9 @@ export function SeriesRow({
     allDone && styles.sgDone,
     tonightFit && styles.tnFit,
     isFuture && styles.future,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const handleHeaderClick = (event: ReactMouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLElement;
@@ -81,8 +98,8 @@ export function SeriesRow({
           </div>
           <div className={styles.sgSub}>
             {entry.opt ? <OptionalBadge lang={lang} /> : null}
-            {platform ? <PlatformBadge platform={platform} lang={lang} /> : null}
-            S{entry.season} · {entry.count} {t(lang, 'episodesAbbrev')} ·{' '}
+            {platform ? <PlatformBadge platform={platform} lang={lang}/> : null}S{entry.season} · {entry.count}{' '}
+            {t(lang, 'episodesAbbrev')} ·{' '}
             <span className={styles.sgRemtxt}>
               {doneCount}/{entry.count} · {fmt(remainingMinutes)}
             </span>

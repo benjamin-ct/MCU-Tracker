@@ -1,4 +1,4 @@
-import type {Lang, Mode} from '../../data/types';
+import type {Lang, Mode} from '../../data';
 import {t} from '../../i18n';
 import styles from './ModeToggle.module.css';
 
@@ -19,11 +19,7 @@ export function ModeToggle({ mode, lang, onChange }: ModeToggleProps) {
       >
         {t(lang, 'modeEssential')}
       </button>
-      <button
-        type="button"
-        className={mode === 'tout' ? styles.on : undefined}
-        onClick={() => onChange('tout')}
-      >
+      <button type="button" className={mode === 'tout' ? styles.on : undefined} onClick={() => onChange('tout')}>
         {t(lang, 'modeAll')}
       </button>
     </div>

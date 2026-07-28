@@ -6,9 +6,5 @@ interface ToastProps {
 }
 
 export function Toast({ message, visible }: ToastProps) {
-  return (
-    <div className={visible ? `${styles.toast} ${styles.show}` : styles.toast}>
-      {message}
-    </div>
-  );
+  return <div className={visible ? `${styles.toast} ${styles.show}` : styles.toast}>{message}</div>;
 }

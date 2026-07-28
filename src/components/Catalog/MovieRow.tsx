@@ -3,8 +3,8 @@ import {trWatchedOn} from '../../i18n';
 import {fmt, fmtDayMonth} from '../../utils/format';
 import {OptionalBadge, PlatformBadge, TonightBadge} from './Badges';
 import {DisneyPlusLink} from './DisneyPlusLink';
-import {StarRating} from './StarRating';
 import styles from './MovieRow.module.css';
+import {StarRating} from './StarRating';
 
 interface MovieRowProps {
   entry: FilmEntry;
@@ -39,12 +39,9 @@ export function MovieRow({
 }: MovieRowProps) {
   const title = getTitle(entry, lang);
 
-  const rowClassName = [
-    styles.row,
-    isWatched && styles.done,
-    tonightFit && styles.tnFit,
-    isFuture && styles.future,
-  ].filter(Boolean).join(' ');
+  const rowClassName = [styles.row, isWatched && styles.done, tonightFit && styles.tnFit, isFuture && styles.future]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <div className={rowClassName} id={`r-${entry.id}`}>

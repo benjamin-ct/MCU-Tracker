@@ -1,19 +1,17 @@
 // Ported from #info-modal (legacy index.html) + openInfo() (legacy js/modals.js).
 import type {ReactNode} from 'react';
-import type {CatalogEntry, Lang, TmdbRef} from '../../data/types';
-import {isFilm} from '../../data/types';
-import {getInfo, getSectionNames, getTitle} from '../../data/localize';
-import {PLAT} from '../../data/platform';
-import {ROMANS} from '../../data/sections';
+
+import type {CatalogEntry, Lang, TmdbRef} from '../../data';
+import {getInfo, getSectionNames, getTitle, isFilm, PLAT, ROMANS} from '../../data';
+import type {PosterFetchResult} from '../../hooks';
 import {t, trEpisodeCount} from '../../i18n';
 import {fmt} from '../../utils/format';
 import {imdbUrl} from '../../utils/links';
-import type {PosterFetchResult} from '../../hooks/useTmdbPoster';
-import {OptionalBadge, PlatformBadge} from '../Catalog/Badges';
-import {Modal} from './Modal';
-import {InfoPoster} from './InfoPoster';
-import modalStyles from './Modal.module.css';
+import {OptionalBadge, PlatformBadge} from '../Catalog';
 import styles from './InfoModal.module.css';
+import {InfoPoster} from './InfoPoster';
+import {Modal} from './Modal';
+import modalStyles from './Modal.module.css';
 
 interface InfoModalProps {
   entry: CatalogEntry | null;
@@ -27,7 +25,13 @@ export function InfoModal({ entry, lang, onClose, fetchPoster, onPosterError }: 
   return (
     <Modal open={entry !== null} onClose={onClose} maxWidthPx={480}>
       {entry ? (
-        <InfoModalBody entry={entry} lang={lang} onClose={onClose} fetchPoster={fetchPoster} onPosterError={onPosterError} />
+        <InfoModalBody
+          entry={entry}
+          lang={lang}
+          onClose={onClose}
+          fetchPoster={fetchPoster}
+          onPosterError={onPosterError}
+        />
       ) : null}
     </Modal>
   );
@@ -63,8 +67,9 @@ function InfoModalBody({ entry, lang, onClose, fetchPoster, onPosterError }: Inf
     numberCards.push(
       <div className={styles.numCard} key="box">
         <div className={styles.numV}>{info.box}</div>
-        <div
-          className={styles.numL}>{info.box.startsWith('TBD') ? t(lang, 'boxOfficeLbl') : t(lang, 'boxOfficeWorldLbl')}</div>
+        <div className={styles.numL}>
+          {info.box.startsWith('TBD') ? t(lang, 'boxOfficeLbl') : t(lang, 'boxOfficeWorldLbl')}
+        </div>
       </div>,
     );
   }
@@ -80,21 +85,28 @@ function InfoModalBody({ entry, lang, onClose, fetchPoster, onPosterError }: Inf
   return (
     <>
       <div className={modalStyles.modalTop}>
-        <InfoPoster entry={entry} info={info} title={title} lang={lang} fetchPoster={fetchPoster} onError={onPosterError} />
+        <InfoPoster
+          entry={entry}
+          info={info}
+          title={title}
+          lang={lang}
+          fetchPoster={fetchPoster}
+          onError={onPosterError}
+        />
         <div className={styles.infoHeadText}>
           <div className={styles.infoChapter}>
             {ROMANS[entry.sec]} · {getSectionNames(lang)[entry.sec]}
           </div>
           <span className={styles.infoTitle}>{title}</span>
         </div>
-        <button type="button" className={modalStyles.modalClose} onClick={onClose}>✕</button>
+        <button type="button" className={modalStyles.modalClose} onClick={onClose}>
+          ✕
+        </button>
       </div>
       <div className={styles.infoMeta}>
         {yearText ? <span>{yearText}</span> : null}
         <span>{durationText}</span>
-        {platform ? (
-          <PlatformBadge platform={platform} lang={lang}/>
-        ) : null}
+        {platform ? <PlatformBadge platform={platform} lang={lang}/> : null}
         {entry.opt ? <OptionalBadge lang={lang} /> : null}
       </div>
       {info ? (
@@ -146,9 +158,7 @@ function InfoModalBody({ entry, lang, onClose, fetchPoster, onPosterError }: Inf
           </div>
         </>
       ) : (
-        <p className={`${styles.synopsis} ${styles.synopsisMuted}`}>
-          {t(lang, 'noInfoYet')}
-        </p>
+        <p className={`${styles.synopsis} ${styles.synopsisMuted}`}>{t(lang, 'noInfoYet')}</p>
       )}
     </>
   );

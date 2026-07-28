@@ -1,8 +1,8 @@
+export {OptionalBadge, PlatformBadge, SeriesTonightBadge, TonightBadge} from './Badges';
 export { Catalog } from './Catalog';
 export { ChapterGroup } from './ChapterGroup';
+export {DisneyPlusLink} from './DisneyPlusLink';
 export { MovieRow } from './MovieRow';
-export { SeriesRow } from './SeriesRow';
 export { SeriesEpisodeList } from './SeriesEpisodeList';
+export {SeriesRow} from './SeriesRow';
 export { StarRating } from './StarRating';
-export { DisneyPlusLink } from './DisneyPlusLink';
-export { OptionalBadge, PlatformBadge, TonightBadge, SeriesTonightBadge } from './Badges';

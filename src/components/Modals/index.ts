@@ -1,6 +1,6 @@
-export { Modal } from './Modal';
+export {CumulativeChart} from './CumulativeChart';
 export { InfoModal } from './InfoModal';
 export { InfoPoster } from './InfoPoster';
+export {Modal} from './Modal';
 export { StatsModal } from './StatsModal';
-export { CumulativeChart } from './CumulativeChart';
 export { TmdbKeyModal } from './TmdbKeyModal';

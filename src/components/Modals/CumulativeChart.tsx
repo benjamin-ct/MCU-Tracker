@@ -1,4 +1,5 @@
 import {useEffect, useMemo, useRef, useState} from 'react';
+
 import type {Lang} from '../../data';
 import {getMonthNames} from '../../data';
 import {t} from '../../i18n';
@@ -100,7 +101,9 @@ export function CumulativeChart({series, totalMinutes, lang}: CumulativeChartPro
     <div className={styles.chartInner}>
       <div className={styles.chartTip} style={{opacity: hovered ? 1 : 0, left: `${tooltipLeftPercent}%`}}>
         {hovered ? (
-          <><b>{fmt(hovered.cum)}</b> · {hoveredPercent}% — {fmtShortDate(hovered.date, monthNames)}</>
+          <>
+            <b>{fmt(hovered.cum)}</b> · {hoveredPercent}% — {fmtShortDate(hovered.date, monthNames)}
+          </>
         ) : null}
       </div>
       <svg
@@ -119,23 +122,43 @@ export function CumulativeChart({series, totalMinutes, lang}: CumulativeChartPro
       >
         <polygon points={areaPts} fill="rgba(56,191,80,.14)"/>
         <line
-          x1={hovered ? hovered.x : 0} y1={6}
-          x2={hovered ? hovered.x : 0} y2={CHART_HEIGHT - PAD_BOTTOM}
-          stroke="var(--dim)" strokeOpacity={0.5} strokeWidth={1}
+          x1={hovered ? hovered.x : 0}
+          y1={6}
+          x2={hovered ? hovered.x : 0}
+          y2={CHART_HEIGHT - PAD_BOTTOM}
+          stroke="var(--dim)"
+          strokeOpacity={0.5}
+          strokeWidth={1}
           opacity={hovered ? 1 : 0}
         />
-        <polyline points={lineStr} fill="none" stroke="#38BF50" strokeWidth={2.2} strokeLinejoin="round"
-                  strokeLinecap="round"/>
+        <polyline
+          points={lineStr}
+          fill="none"
+          stroke="#38BF50"
+          strokeWidth={2.2}
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
         <circle
-          r={4} fill="#38BF50" stroke="var(--card)" strokeWidth={1.5}
-          cx={hovered ? hovered.x : 0} cy={hovered ? hovered.y : 0}
+          r={4}
+          fill="#38BF50"
+          stroke="var(--card)"
+          strokeWidth={1.5}
+          cx={hovered ? hovered.x : 0}
+          cy={hovered ? hovered.y : 0}
           opacity={hovered ? 1 : 0}
         />
         <text x={PAD_X} y={CHART_HEIGHT - 6} fontFamily="DM Mono, monospace" fontSize={9} fill="var(--faint)">
           {firstLabel}
         </text>
-        <text x={CHART_WIDTH - PAD_X} y={CHART_HEIGHT - 6} fontFamily="DM Mono, monospace" fontSize={9}
-              fill="var(--faint)" textAnchor="end">
+        <text
+          x={CHART_WIDTH - PAD_X}
+          y={CHART_HEIGHT - 6}
+          fontFamily="DM Mono, monospace"
+          fontSize={9}
+          fill="var(--faint)"
+          textAnchor="end"
+        >
           {lastLabel}
         </text>
       </svg>

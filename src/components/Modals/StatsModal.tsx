@@ -1,13 +1,14 @@
 // Ported from #stat-modal (legacy index.html) + openStats() (legacy js/modals.js).
 import {useEffect, useState} from 'react';
+
 import type {CatalogEntry, Lang, Mode} from '../../data';
 import {getSectionNames, getTitle} from '../../data';
 import {t, trAvgRated} from '../../i18n';
-import {fmt} from '../../utils/format';
 import {totals, type WatchDates} from '../../utils/compute';
+import {fmt} from '../../utils/format';
 import {buildCumulativeSeries} from '../../utils/stats';
-import {Modal} from './Modal';
 import {CumulativeChart} from './CumulativeChart';
+import {Modal} from './Modal';
 import modalStyles from './Modal.module.css';
 import styles from './StatsModal.module.css';
 
@@ -28,7 +29,7 @@ interface StatsModalProps {
 }
 
 export function StatsModal({ open, onClose, catalog, watchDates, ratings, mode, lang }: StatsModalProps) {
-  const { t: totalMinutes, w: watchedMinutes, r: remainingMinutes, ps: sectionStats } = totals(catalog, watchDates, mode);
+  const {totalMinutes, watchedMinutes, remainingMinutes, sections: sectionStats} = totals(catalog, watchDates, mode);
   const percentComplete = totalMinutes > 0 ? Math.round((watchedMinutes / totalMinutes) * 100) : 0;
   const [time, setTime] = useState(() => Date.now());
 
@@ -54,7 +55,9 @@ export function StatsModal({ open, onClose, catalog, watchDates, ratings, mode, 
     <Modal open={open} onClose={onClose}>
       <div className={modalStyles.modalTop}>
         <span className={modalStyles.modalH2}>{t(lang, 'statsTitle')}</span>
-        <button type="button" className={modalStyles.modalClose} onClick={onClose}>✕</button>
+        <button type="button" className={modalStyles.modalClose} onClick={onClose}>
+          ✕
+        </button>
       </div>
       <div className={styles.sgrid}>
         <div className={styles.scard}>
@@ -76,21 +79,22 @@ export function StatsModal({ open, onClose, catalog, watchDates, ratings, mode, 
       </div>
       <div className={styles.ssecTitle}>
         {t(lang, 'cumulativeProgressLbl')}{' '}
-        {series.length >= 2 ? (
-          <span className={styles.hoverHint}>{t(lang, 'hoverChartHint')}</span>
-        ) : null}
+        {series.length >= 2 ? <span className={styles.hoverHint}>{t(lang, 'hoverChartHint')}</span> : null}
       </div>
       <div className={styles.chartWrap}>
         <CumulativeChart series={series} totalMinutes={totalMinutes} lang={lang} />
       </div>
       <div className={styles.ssecTitle}>{t(lang, 'progressByChapterLbl')}</div>
       {sectionStats.map((section, index) => {
-        const percent = section.t > 0 ? Math.round((section.w / section.t) * 100) : 0;
+        const percent =
+          section.totalMinutes > 0 ? Math.round((section.watchedMinutes / section.totalMinutes) * 100) : 0;
         return (
           <div className={styles.srow} key={index}>
             <div className={styles.srowHd}>
               <span className={styles.srowN}>{sectionNames[index]}</span>
-              <span className={styles.srowP}>{percent}% · {fmt(section.w)}</span>
+              <span className={styles.srowP}>
+                {percent}% · {fmt(section.watchedMinutes)}
+              </span>
             </div>
             <div className={styles.sbar}>
               <div className={styles.sbarF} style={{width: `${percent}%`}}/>

@@ -4,8 +4,9 @@
 // "checked" set, so the two can never drift apart the way they used to in older
 // versions (see reconcileLegacyChecked below, which cleans up exactly that drift for
 // anyone still carrying an old export/localStorage layout).
-import { useCallback, useEffect, useState } from 'react';
-import { isWatched as isWatchedId, type WatchDates } from '../utils/compute';
+import {useCallback, useEffect, useState} from 'react';
+
+import {isWatched as isWatchedId, type WatchDates} from '../utils/compute';
 
 const WATCH_DATES_KEY = 'mcu6-wd';
 const LEGACY_CHECKED_KEY = 'mcu6-c';
@@ -28,6 +29,14 @@ function writeJson(key: string, value: unknown): void {
   } catch {
     // quota exceeded / private browsing — progress still works for this session
   }
+}
+
+// Light shape guard for imported files: we own the export format, so this isn't meant
+// to be bulletproof — just enough that a hand-edited or truncated file can't push a
+// non-object (string, number, array) into watchDates/ratings and break the id lookups
+// that assume a plain record.
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 // Cleans up orphaned watch dates (an id present in watchDates but absent from an
@@ -106,12 +115,15 @@ export function useWatchProgress(): UseWatchProgressResult {
   }, []);
 
   const importProgress = useCallback((data: ImportedProgressData) => {
+    if (!isRecord(data)) return;
     if (Array.isArray(data.checked)) {
-      setWatchDates(reconcileLegacyChecked(data.checked, data.watchDates ?? null));
-    } else if (data.watchDates) {
-      setWatchDates(data.watchDates);
+      setWatchDates(
+        reconcileLegacyChecked(data.checked, isRecord(data.watchDates) ? (data.watchDates as WatchDates) : null),
+      );
+    } else if (isRecord(data.watchDates)) {
+      setWatchDates(data.watchDates as WatchDates);
     }
-    if (data.ratings) setRatings(data.ratings);
+    if (isRecord(data.ratings)) setRatings(data.ratings as Record<string, number>);
   }, []);
 
   return { watchDates, ratings, isWatched, setWatched, toggleRating, resetProgress, importProgress };

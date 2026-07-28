@@ -1,27 +1,27 @@
 /* ── Variables thème sombre (défaut) ── */
 :root {
-  --bg: #080C09;
-  --card: #0D1210;
-  --raised: #121A13;
+  --bg: #080c09;
+  --card: #0d1210;
+  --raised: #121a13;
   --groove: #182019;
-  --red: #38BF50;
-  --red-glow: rgba(56, 191, 80, .15);
-  --red-deep: #1E7A2C;
-  --purple: #C8941A;
-  --purple-soft: rgba(200, 148, 26, .13);
-  --green: #4ADE80;
-  --green-soft: rgba(74, 222, 128, .12);
-  --text: #E6EDE7;
-  --dim: #7A9480;
-  --faint: #3E5240;
-  --ln: rgba(255, 255, 255, .055);
-  --ln2: rgba(255, 255, 255, .1);
-  --amber: #FBBF24;
-  --danger: #EF9A9A;
-  --danger-glow: rgba(239, 154, 154, .3);
-  --dp-text: #DFF5E2;
-  --on-accent: #080C09;
-  --topbar-bg: rgba(8, 12, 9, .94);
+  --red: #38bf50;
+  --red-glow: rgba(56, 191, 80, 0.15);
+  --red-deep: #1e7a2c;
+  --purple: #c8941a;
+  --purple-soft: rgba(200, 148, 26, 0.13);
+  --green: #4ade80;
+  --green-soft: rgba(74, 222, 128, 0.12);
+  --text: #e6ede7;
+  --dim: #7a9480;
+  --faint: #3e5240;
+  --ln: rgba(255, 255, 255, 0.055);
+  --ln2: rgba(255, 255, 255, 0.1);
+  --amber: #fbbf24;
+  --danger: #ef9a9a;
+  --danger-glow: rgba(239, 154, 154, 0.3);
+  --dp-text: #dff5e2;
+  --on-accent: #080c09;
+  --topbar-bg: rgba(8, 12, 9, 0.94);
   --g: 'Space Grotesk', -apple-system, sans-serif;
   --m: 'DM Mono', monospace, sans-serif;
   --hh: 0px;
@@ -30,40 +30,43 @@
 /* ── Variables thème clair ──
    Même hiérarchie sémantique que le thème sombre (bg < card < raised < groove),
    couleurs d'accent assombries là où elles servent de texte. */
-:root[data-theme="light"] {
-  --bg: #F3F6F2;
-  --card: #FFFFFF;
-  --raised: #EBF0E9;
-  --groove: #DEE6DC;
-  --red: #1E8A34;
-  --red-glow: rgba(30, 138, 52, .12);
+:root[data-theme='light'] {
+  --bg: #f3f6f2;
+  --card: #ffffff;
+  --raised: #ebf0e9;
+  --groove: #dee6dc;
+  --red: #1e8a34;
+  --red-glow: rgba(30, 138, 52, 0.12);
   --red-deep: #166828;
-  --purple: #8A6710;
-  --purple-soft: rgba(138, 103, 16, .12);
-  --green: #1F9D4C;
-  --green-soft: rgba(31, 157, 76, .12);
-  --text: #10160E;
-  --dim: #57654E;
-  --faint: #8A9481;
-  --ln: rgba(0, 0, 0, .08);
-  --ln2: rgba(0, 0, 0, .13);
-  --amber: #8A5A00;
-  --danger: #B5352F;
-  --danger-glow: rgba(181, 53, 47, .25);
-  --dp-text: #0F5C22;
-  --on-accent: #F3F6F2;
-  --topbar-bg: rgba(243, 246, 242, .88);
+  --purple: #8a6710;
+  --purple-soft: rgba(138, 103, 16, 0.12);
+  --green: #1f9d4c;
+  --green-soft: rgba(31, 157, 76, 0.12);
+  --text: #10160e;
+  --dim: #57654e;
+  --faint: #8a9481;
+  --ln: rgba(0, 0, 0, 0.08);
+  --ln2: rgba(0, 0, 0, 0.13);
+  --amber: #8a5a00;
+  --danger: #b5352f;
+  --danger-glow: rgba(181, 53, 47, 0.25);
+  --dp-text: #0f5c22;
+  --on-accent: #f3f6f2;
+  --topbar-bg: rgba(243, 246, 242, 0.88);
 }
 
 /* ── Reset ── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
   margin: 0;
   padding: 0;
 }
 
-html, body {
+html,
+body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--g), sans-serif;
@@ -116,7 +119,7 @@ main {
 }
 
 /* ── Checkboxes (partagées : MovieRow, SeriesRow, SeriesEpisodeList) ── */
-input[type=checkbox] {
+input[type='checkbox'] {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -131,7 +134,8 @@ input[type=checkbox] {
   border: 1.5px solid var(--faint);
   background: transparent;
   position: relative;
-  transition: border-color .15s, background .15s;
+  transition: border-color 0.15s,
+  background 0.15s;
   flex-shrink: 0;
 }
 
@@ -145,7 +149,7 @@ input[type=checkbox] {
   border-right: 2.5px solid var(--bg);
   border-bottom: 2.5px solid var(--bg);
   transform: rotate(40deg) scale(0);
-  transition: transform .15s cubic-bezier(.4, 0, .2, 1);
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sq.s {
@@ -161,20 +165,20 @@ input[type=checkbox] {
   height: 8px;
 }
 
-input[type=checkbox]:checked + .sq {
+input[type='checkbox']:checked + .sq {
   background: var(--red);
   border-color: var(--red);
 }
 
-input[type=checkbox]:checked + .sq::after {
+input[type='checkbox']:checked + .sq::after {
   transform: rotate(40deg) scale(1);
 }
 
-input[type=checkbox]:indeterminate + .sq {
+input[type='checkbox']:indeterminate + .sq {
   border-color: var(--red);
 }
 
-input[type=checkbox]:indeterminate + .sq::before {
+input[type='checkbox']:indeterminate + .sq::before {
   content: '';
   position: absolute;
   left: 4px;
@@ -216,7 +220,8 @@ input[type=checkbox]:indeterminate + .sq::before {
   border-radius: 50%;
   border: 1px solid var(--ln2);
   background: var(--raised);
-  transition: border-color .15s, background .15s;
+  transition: border-color 0.15s,
+  background 0.15s;
 }
 
 .info-btn span {
@@ -226,7 +231,7 @@ input[type=checkbox]:indeterminate + .sq::before {
 
 .info-btn:active::before {
   border-color: var(--red);
-  background: rgba(56, 191, 80, .12);
+  background: rgba(56, 191, 80, 0.12);
 }
 
 .info-btn:active {
@@ -239,11 +244,12 @@ input[type=checkbox]:indeterminate + .sq::before {
 }
 
 @keyframes hp {
-  0%, 100% {
+  0%,
+  100% {
     box-shadow: none;
   }
   50% {
-    box-shadow: 0 0 0 3px rgba(56, 191, 80, .45);
+    box-shadow: 0 0 0 3px rgba(56, 191, 80, 0.45);
   }
 }
 
