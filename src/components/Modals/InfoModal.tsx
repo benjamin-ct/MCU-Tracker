@@ -1,16 +1,16 @@
 // Ported from #info-modal (legacy index.html) + openInfo() (legacy js/modals.js).
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 
-import type {CatalogEntry, Lang, TmdbRef} from '../../data';
-import {getInfo, getSectionNames, getTitle, isFilm, PLAT, ROMANS} from '../../data';
-import type {PosterFetchResult} from '../../hooks';
-import {t, trEpisodeCount} from '../../i18n';
-import {fmt} from '../../utils/format';
-import {imdbUrl} from '../../utils/links';
-import {OptionalBadge, PlatformBadge} from '../Catalog';
+import type { CatalogEntry, Lang, TmdbRef } from '../../data';
+import { getInfo, getSectionNames, getTitle, isFilm, PLAT, ROMANS } from '../../data';
+import type { PosterFetchResult } from '../../hooks';
+import { t, trEpisodeCount } from '../../i18n';
+import { fmt } from '../../utils/format';
+import { imdbUrl } from '../../utils/links';
+import { OptionalBadge, PlatformBadge } from '../Catalog';
 import styles from './InfoModal.module.css';
-import {InfoPoster} from './InfoPoster';
-import {Modal} from './Modal';
+import { InfoPoster } from './InfoPoster';
+import { Modal } from './Modal';
 import modalStyles from './Modal.module.css';
 
 interface InfoModalProps {
@@ -107,7 +107,7 @@ function InfoModalBody({ entry, lang, onClose, fetchPoster, onPosterError }: Inf
       <div className={styles.infoMeta}>
         {yearText ? <span>{yearText}</span> : null}
         <span>{durationText}</span>
-        {platform ? <PlatformBadge platform={platform} lang={lang}/> : null}
+        {platform ? <PlatformBadge platform={platform} lang={lang} /> : null}
         {entry.opt ? <OptionalBadge lang={lang} /> : null}
       </div>
       {info ? (

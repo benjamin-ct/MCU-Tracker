@@ -3,10 +3,10 @@
 // (Essentiel/Tout) and `sortMode` (chrono/release) are persisted, same as before;
 // viewFilter/searchQuery/tonightMin are session-only — a fresh load always starts on
 // "All", no search, tonight's budget "off", matching the original behavior exactly.
-import {type Dispatch, type SetStateAction, useCallback, useState} from 'react';
+import { type Dispatch, type SetStateAction, useCallback, useState } from 'react';
 
-import type {Mode, SortMode, ViewFilter} from '../data';
-import {useLocalStorageState} from './useLocalStorageState';
+import type { Mode, SortMode, ViewFilter } from '../data';
+import { useLocalStorageState } from './useLocalStorageState';
 
 const TONIGHT_STEPS_MIN = [0, 30, 60, 90, 120, 150, 180, 240];
 

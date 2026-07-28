@@ -1,5 +1,5 @@
-import type {Lang, Mode} from '../../data';
-import {t} from '../../i18n';
+import type { Lang, Mode } from '../../data';
+import { t } from '../../i18n';
 import styles from './ModeToggle.module.css';
 
 interface ModeToggleProps {
@@ -11,7 +11,7 @@ interface ModeToggleProps {
 export function ModeToggle({ mode, lang, onChange }: ModeToggleProps) {
   return (
     <div className={styles.tog} data-m={mode}>
-      <div className={styles.pill}/>
+      <div className={styles.pill} />
       <button
         type="button"
         className={mode === 'essentiel' ? styles.on : undefined}

@@ -68,7 +68,7 @@ Ordre de chargement des `<script>` = ordre ci-dessus (`data.js` en premier, `app
 
 ```js
 const E = [
-  fil(id, titre, chapitre(0-3), durée_min, optionnel, année),
+  fil(id, titre, chapitre(0 - 3), durée_min, optionnel, année),
   ser(id, titre, chapitre, saison, nb_épisodes, durée_totale_min, optionnel),
   serE(id, titre, chapitre, saison, [durées_par_épisode], optionnel),
   // ... autres entrées

@@ -1,14 +1,14 @@
 // Ported from #stat-modal (legacy index.html) + openStats() (legacy js/modals.js).
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
-import type {CatalogEntry, Lang, Mode} from '../../data';
-import {getSectionNames, getTitle} from '../../data';
-import {t, trAvgRated} from '../../i18n';
-import {totals, type WatchDates} from '../../utils/compute';
-import {fmt} from '../../utils/format';
-import {buildCumulativeSeries} from '../../utils/stats';
-import {CumulativeChart} from './CumulativeChart';
-import {Modal} from './Modal';
+import type { CatalogEntry, Lang, Mode } from '../../data';
+import { getSectionNames, getTitle } from '../../data';
+import { t, trAvgRated } from '../../i18n';
+import { totals, type WatchDates } from '../../utils/compute';
+import { fmt } from '../../utils/format';
+import { buildCumulativeSeries } from '../../utils/stats';
+import { CumulativeChart } from './CumulativeChart';
+import { Modal } from './Modal';
 import modalStyles from './Modal.module.css';
 import styles from './StatsModal.module.css';
 
@@ -29,7 +29,7 @@ interface StatsModalProps {
 }
 
 export function StatsModal({ open, onClose, catalog, watchDates, ratings, mode, lang }: StatsModalProps) {
-  const {totalMinutes, watchedMinutes, remainingMinutes, sections: sectionStats} = totals(catalog, watchDates, mode);
+  const { totalMinutes, watchedMinutes, remainingMinutes, sections: sectionStats } = totals(catalog, watchDates, mode);
   const percentComplete = totalMinutes > 0 ? Math.round((watchedMinutes / totalMinutes) * 100) : 0;
   const [time, setTime] = useState(() => Date.now());
 
@@ -97,7 +97,7 @@ export function StatsModal({ open, onClose, catalog, watchDates, ratings, mode, 
               </span>
             </div>
             <div className={styles.sbar}>
-              <div className={styles.sbarF} style={{width: `${percent}%`}}/>
+              <div className={styles.sbarF} style={{ width: `${percent}%` }} />
             </div>
           </div>
         );

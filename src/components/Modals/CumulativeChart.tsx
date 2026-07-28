@@ -1,10 +1,10 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
-import type {Lang} from '../../data';
-import {getMonthNames} from '../../data';
-import {t} from '../../i18n';
-import {fmt} from '../../utils/format';
-import type {CumulativePoint} from '../../utils/stats';
+import type { Lang } from '../../data';
+import { getMonthNames } from '../../data';
+import { t } from '../../i18n';
+import { fmt } from '../../utils/format';
+import type { CumulativePoint } from '../../utils/stats';
 import styles from './CumulativeChart.module.css';
 
 const CHART_WIDTH = 600;
@@ -42,7 +42,7 @@ interface CumulativeChartProps {
   lang: Lang;
 }
 
-export function CumulativeChart({series, totalMinutes, lang}: CumulativeChartProps) {
+export function CumulativeChart({ series, totalMinutes, lang }: CumulativeChartProps) {
   const monthNames = getMonthNames(lang);
   const points = useMemo(() => computeGeom(series), [series]);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
@@ -80,7 +80,7 @@ export function CumulativeChart({series, totalMinutes, lang}: CumulativeChartPro
         event.preventDefault();
       }
     };
-    svg.addEventListener('touchmove', handleTouchMove, {passive: false});
+    svg.addEventListener('touchmove', handleTouchMove, { passive: false });
     return () => svg.removeEventListener('touchmove', handleTouchMove);
   }, []);
 
@@ -99,7 +99,7 @@ export function CumulativeChart({series, totalMinutes, lang}: CumulativeChartPro
 
   return (
     <div className={styles.chartInner}>
-      <div className={styles.chartTip} style={{opacity: hovered ? 1 : 0, left: `${tooltipLeftPercent}%`}}>
+      <div className={styles.chartTip} style={{ opacity: hovered ? 1 : 0, left: `${tooltipLeftPercent}%` }}>
         {hovered ? (
           <>
             <b>{fmt(hovered.cum)}</b> · {hoveredPercent}% — {fmtShortDate(hovered.date, monthNames)}
@@ -120,7 +120,7 @@ export function CumulativeChart({series, totalMinutes, lang}: CumulativeChartPro
         }}
         onTouchEnd={hide}
       >
-        <polygon points={areaPts} fill="rgba(56,191,80,.14)"/>
+        <polygon points={areaPts} fill="rgba(56,191,80,.14)" />
         <line
           x1={hovered ? hovered.x : 0}
           y1={6}

@@ -1,8 +1,8 @@
 // Ported from the .tn-wrap element in the legacy index.html + the tn-m/tn-p click
 // handlers in js/app.js.
-import type {Lang} from '../../data';
-import {t} from '../../i18n';
-import {tnDisp} from '../../utils/format';
+import type { Lang } from '../../data';
+import { t } from '../../i18n';
+import { tnDisp } from '../../utils/format';
 import styles from './TonightStepper.module.css';
 
 interface TonightStepperProps {

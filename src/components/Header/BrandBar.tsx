@@ -1,6 +1,6 @@
-import type {Lang, SortMode} from '../../data';
-import type {Theme} from '../../hooks/useTheme';
-import {t} from '../../i18n';
+import type { Lang, SortMode } from '../../data';
+import type { Theme } from '../../hooks/useTheme';
+import { t } from '../../i18n';
 import styles from './BrandBar.module.css';
 
 interface BrandBarProps {

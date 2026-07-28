@@ -1,6 +1,6 @@
-import type {Lang} from '../../data';
-import {t} from '../../i18n';
-import {fmtE} from '../../utils/format';
+import type { Lang } from '../../data';
+import { t } from '../../i18n';
+import { fmtE } from '../../utils/format';
 import styles from './SeriesEpisodeList.module.css';
 
 interface SeriesEpisodeListProps {
@@ -13,13 +13,13 @@ interface SeriesEpisodeListProps {
 }
 
 export function SeriesEpisodeList({
-                                    seriesId,
-                                    epMins,
-                                    isEpisodeWatched,
-                                    future,
-                                    lang,
-                                    onToggleEpisode,
-                                  }: SeriesEpisodeListProps) {
+  seriesId,
+  epMins,
+  isEpisodeWatched,
+  future,
+  lang,
+  onToggleEpisode,
+}: SeriesEpisodeListProps) {
   return (
     <ul className={styles.epList}>
       {epMins.map((minutes, index) => {

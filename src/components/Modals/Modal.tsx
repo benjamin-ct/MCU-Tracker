@@ -1,4 +1,4 @@
-import {type ReactNode, useEffect} from 'react';
+import { type ReactNode, useEffect } from 'react';
 
 import styles from './Modal.module.css';
 
@@ -28,7 +28,7 @@ export function Modal({ open, onClose, maxWidthPx, children }: ModalProps) {
         if (event.target === event.currentTarget) onClose();
       }}
     >
-      <div className={styles.panel} style={maxWidthPx ? {maxWidth: `${maxWidthPx}px`} : undefined}>
+      <div className={styles.panel} style={maxWidthPx ? { maxWidth: `${maxWidthPx}px` } : undefined}>
         {children}
       </div>
     </div>

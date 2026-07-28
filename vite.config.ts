@@ -1,5 +1,5 @@
 import react from '@vitejs/plugin-react';
-import {defineConfig} from 'vite';
+import { defineConfig } from 'vite';
 
 // Cloudflare Worker (worker/index.js) serves everything from `dist/` via its
 // ASSETS binding and only intercepts /api/tmdb/* itself — see wrangler.jsonc.

@@ -1,8 +1,8 @@
 // Ported from the second .flt-grp in the legacy index.html (flt-all/flt-todo).
 // Named ViewFilterToggle rather than ViewFilter to avoid clashing with the
 // ViewFilter type in data/types.
-import type {Lang, ViewFilter} from '../../data';
-import {t} from '../../i18n';
+import type { Lang, ViewFilter } from '../../data';
+import { t } from '../../i18n';
 import styles from './FilterGroup.module.css';
 
 interface ViewFilterToggleProps {

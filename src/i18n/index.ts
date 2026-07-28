@@ -1,6 +1,6 @@
-export {trAllWatchedFuturePending, trDoomsdayHere, trDoomsdayPace, trMarathonDoneReady} from './richText';
+export { trAllWatchedFuturePending, trDoomsdayHere, trDoomsdayPace, trMarathonDoneReady } from './richText';
 export type { StringKey } from './strings';
-export {STRINGS, t} from './strings';
+export { STRINGS, t } from './strings';
 export {
   trAvgRated,
   trCopiedForDisney,

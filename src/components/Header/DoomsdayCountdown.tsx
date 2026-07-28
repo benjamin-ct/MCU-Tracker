@@ -2,11 +2,11 @@
 // (js/render.js). The i18n helpers now return React nodes (i18n/richText.tsx) instead
 // of HTML strings, so the countdown message is rendered as plain JSX children — no
 // dangerouslySetInnerHTML anywhere.
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 
-import type {Lang} from '../../data';
-import {trAllWatchedFuturePending, trDoomsdayHere, trDoomsdayPace, trMarathonDoneReady} from '../../i18n';
-import {fmt} from '../../utils/format';
+import type { Lang } from '../../data';
+import { trAllWatchedFuturePending, trDoomsdayHere, trDoomsdayPace, trMarathonDoneReady } from '../../i18n';
+import { fmt } from '../../utils/format';
 import styles from './DoomsdayCountdown.module.css';
 
 interface DoomsdayCountdownProps {

@@ -1,41 +1,41 @@
 /* ── Cumulative Chart ── */
 .chartEmpty {
-    font-family: var(--m), sans-serif;
-    font-size: 10.5px;
-    color: var(--faint);
-    text-align: center;
-    padding: 24px 8px;
-    line-height: 1.6;
+  font-family: var(--m), sans-serif;
+  font-size: 10.5px;
+  color: var(--faint);
+  text-align: center;
+  padding: 24px 8px;
+  line-height: 1.6;
 }
 
 .chartInner {
-    position: relative;
+  position: relative;
 }
 
 .chartTip {
-    position: absolute;
-    top: 0;
-    transform: translate(-50%, -100%);
-    background: var(--card);
-    border: 1px solid var(--ln2);
-    border-radius: 7px;
-    padding: 5px 9px;
-    font-family: var(--m), sans-serif;
-    font-size: 10.5px;
-    color: var(--text);
-    white-space: nowrap;
-    pointer-events: none;
-    z-index: 3;
-    transition: opacity 0.12s;
+  position: absolute;
+  top: 0;
+  transform: translate(-50%, -100%);
+  background: var(--card);
+  border: 1px solid var(--ln2);
+  border-radius: 7px;
+  padding: 5px 9px;
+  font-family: var(--m), sans-serif;
+  font-size: 10.5px;
+  color: var(--text);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 3;
+  transition: opacity 0.12s;
 }
 
 .chartTip b {
-    color: var(--red);
+  color: var(--red);
 }
 
 .chartSvg {
-    width: 100%;
-    height: 112px;
-    display: block;
-    touch-action: none;
+  width: 100%;
+  height: 112px;
+  display: block;
+  touch-action: none;
 }

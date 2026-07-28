@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import { useState } from 'react';
 
 import styles from './StarRating.module.css';
 
@@ -10,7 +10,7 @@ interface StarRatingProps {
 
 const STAR_VALUES = [1, 2, 3, 4, 5];
 
-export function StarRating({rating, containerClassName, onRate}: StarRatingProps) {
+export function StarRating({ rating, containerClassName, onRate }: StarRatingProps) {
   const [hoverRating, setHoverRating] = useState(0);
 
   return (

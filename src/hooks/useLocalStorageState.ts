@@ -3,7 +3,7 @@
 // repeated lsGet/lsSet-with-try/catch pairs scattered through the legacy js/state.js.
 // Not used for watchDates/ratings: those need one-time cross-key migration logic
 // (see useWatchProgress) that doesn't fit this single-key read/write shape.
-import {type Dispatch, type SetStateAction, useEffect, useState} from 'react';
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react';
 
 interface Options<T> {
   serialize?: (value: T) => string;

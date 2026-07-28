@@ -46,8 +46,9 @@
   justify-content: center;
   cursor: pointer;
   padding: 0;
-  transition: border-color 0.15s,
-  color 0.15s;
+  transition:
+    border-color 0.15s,
+    color 0.15s;
 }
 
 .iconBtn:active {

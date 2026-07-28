@@ -1,15 +1,15 @@
 // Assembles the full app: Header, Sidebar, Catalog, Search, Modals, Toast, Footer.
-import {useEffect, useMemo, useRef, useState} from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
-import {Catalog} from './components/Catalog';
-import {Footer} from './components/Footer';
-import {Header} from './components/Header';
-import {InfoModal, StatsModal} from './components/Modals';
-import {SearchBox} from './components/Search';
-import {Sidebar} from './components/Sidebar';
-import {Toast} from './components/Toast';
-import type {SeriesEntry, SortMode} from './data';
-import {CATALOG, DOOMSDAY_DATE, getTitle, isFuture, isSeries} from './data';
+import { Catalog } from './components/Catalog';
+import { Footer } from './components/Footer';
+import { Header } from './components/Header';
+import { InfoModal, StatsModal } from './components/Modals';
+import { SearchBox } from './components/Search';
+import { Sidebar } from './components/Sidebar';
+import { Toast } from './components/Toast';
+import type { SeriesEntry, SortMode } from './data';
+import { CATALOG, DOOMSDAY_DATE, getTitle, isFuture, isSeries } from './data';
 import {
   useCatalogFilters,
   useCollapseState,
@@ -21,7 +21,7 @@ import {
   useToast,
   useWatchProgress,
 } from './hooks';
-import {t, trCopiedForDisney} from './i18n';
+import { t, trCopiedForDisney } from './i18n';
 import {
   cnt,
   daysLeft,
@@ -32,7 +32,7 @@ import {
   nextUnwatchedEpisodeIndex,
   totals,
 } from './utils/compute';
-import {groupKeyFor, groupsFor, visibleGroups} from './utils/groups';
+import { groupKeyFor, groupsFor, visibleGroups } from './utils/groups';
 
 const SERIES_IDS = CATALOG.filter(isSeries).map((entry) => entry.id);
 
@@ -61,9 +61,9 @@ function App() {
     stepTonightUp,
     stepTonightDown,
   } = useCatalogFilters();
-  const {watchDates, ratings, setWatched, setManyWatched, toggleRating, resetProgress, importProgress} =
+  const { watchDates, ratings, setWatched, setManyWatched, toggleRating, resetProgress, importProgress } =
     useWatchProgress();
-  const {fetchPoster} = useTmdbPoster();
+  const { fetchPoster } = useTmdbPoster();
   const { message: toastMessage, visible: toastVisible, showToast } = useToast();
 
   // Chapters start open, series start collapsed — matches cGroup/cSer's initial state
@@ -97,7 +97,10 @@ function App() {
   // an unrelated re-render doesn't re-walk the whole catalog each time.
   const stats = useMemo(() => totals(CATALOG, watchDates, mode), [watchDates, mode]);
   const percentComplete = stats.totalMinutes > 0 ? Math.round((stats.watchedMinutes / stats.totalMinutes) * 100) : 0;
-  const eveningsRemaining = useMemo(() => estimateEvenings(stats.remainingUnitDurations), [stats.remainingUnitDurations]);
+  const eveningsRemaining = useMemo(
+    () => estimateEvenings(stats.remainingUnitDurations),
+    [stats.remainingUnitDurations],
+  );
   const days = useMemo(() => daysLeft(DOOMSDAY_DATE), []);
   const pendingCount = useMemo(() => futurePendingCount(CATALOG, watchDates, mode), [watchDates, mode]);
   const totalVisibleCount = useMemo(

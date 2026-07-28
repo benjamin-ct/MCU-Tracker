@@ -1,6 +1,6 @@
 // Auto-generated from the vanilla-JS catalogue during the React migration (27/07/2026).
 // 90 entries, chronological internal order (sec 0-3). See types.ts for the shape.
-import type {CatalogEntry} from './types';
+import type { CatalogEntry } from './types';
 
 export const CATALOG: CatalogEntry[] = [
   {

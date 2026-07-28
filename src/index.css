@@ -134,8 +134,9 @@ input[type='checkbox'] {
   border: 1.5px solid var(--faint);
   background: transparent;
   position: relative;
-  transition: border-color 0.15s,
-  background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
   flex-shrink: 0;
 }
 
@@ -220,8 +221,9 @@ input[type='checkbox']:indeterminate + .sq::before {
   border-radius: 50%;
   border: 1px solid var(--ln2);
   background: var(--raised);
-  transition: border-color 0.15s,
-  background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
 }
 
 .info-btn span {

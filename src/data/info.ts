@@ -1,6 +1,6 @@
 // French base info for the "i" modal (synopsis/director/cast/budget/box/rt/trivia/
 // saga link/trailer/poster), one entry per catalogue id. See types.ts for the shape.
-import type {InfoEntry, InfoOverride} from './types';
+import type { InfoEntry, InfoOverride } from './types';
 
 export const INFO: Record<string, InfoEntry> = {
   cap1: {

@@ -1,7 +1,7 @@
 // Ported from buildCumulativeSeries() (legacy js/modals.js) — builds the day-by-day
 // cumulative watched-minutes series backing the stats modal's chart.
-import type {CatalogEntry} from '../data';
-import {isWatched, type WatchDates} from './compute';
+import type { CatalogEntry } from '../data';
+import { isWatched, type WatchDates } from './compute';
 
 export interface CumulativePoint {
   date: string; // ISO 'YYYY-MM-DD'

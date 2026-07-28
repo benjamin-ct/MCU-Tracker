@@ -8,7 +8,7 @@ ce qui change, c'est qu'il y a maintenant une étape de build avant de déployer
 ## Ce qui a changé depuis la version vanilla JS
 
 |                                     | Avant (vanilla JS)                                                                            | Maintenant (React)                                                |
-|-------------------------------------|-----------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+| ----------------------------------- | --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | Fichiers servis                     | `index.html`/`css/`/`js/` à la racine du repo                                                 | `dist/` (généré par `npm run build`)                              |
 | `wrangler.jsonc` `assets.directory` | `"./"`                                                                                        | `"./dist"`                                                        |
 | Étape de build                      | Aucune                                                                                        | `npm ci && npm run build` avant de déployer                       |

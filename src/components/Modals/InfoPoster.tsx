@@ -3,12 +3,12 @@
 // fallback; a real poster only ever replaces it after a same-origin <img> probe
 // confirms it actually loads, so a bad URL/offline network never leaves a broken
 // image in its place.
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 
-import type {CatalogEntry, InfoEntry, Lang} from '../../data';
-import type {PosterFetchResult} from '../../hooks';
-import {TMDB_IMAGE_BASE} from '../../hooks';
-import {t} from '../../i18n';
+import type { CatalogEntry, InfoEntry, Lang } from '../../data';
+import type { PosterFetchResult } from '../../hooks';
+import { TMDB_IMAGE_BASE } from '../../hooks';
+import { t } from '../../i18n';
 import styles from './InfoPoster.module.css';
 
 const CHAPTER_GRADIENTS: [string, string][] = [

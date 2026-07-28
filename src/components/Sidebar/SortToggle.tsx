@@ -3,8 +3,8 @@
 // since a second .flt wrapper also hosts ViewFilterToggle + TonightStepper together.
 // Resetting the chapter-collapse state on sort change (cGroup.clear() in the legacy
 // app, since group keys differ between chrono/release) is the caller's responsibility.
-import type {Lang, SortMode} from '../../data';
-import {t} from '../../i18n';
+import type { Lang, SortMode } from '../../data';
+import { t } from '../../i18n';
 import styles from './FilterGroup.module.css';
 
 interface SortToggleProps {

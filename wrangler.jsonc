@@ -19,7 +19,7 @@
     // actuellement une page unique donc ce n'est pas encore strictement nécessaire,
     // mais c'est la config Cloudflare Assets standard pour ce type de build et
     // coûte rien à avoir dès maintenant.
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "single-page-application",
   },
   // Environnement de prévisualisation : un Worker CLOUDFLARE SÉPARÉ ("mcutimeline-
   // preview"), jamais le Worker de prod — déployé automatiquement par la CI sur la
@@ -28,7 +28,7 @@
   // (sans --env) continue de cibler mcutimeline (prod) comme avant.
   "env": {
     "preview": {
-      "name": "mcutimeline-preview"
-    }
-  }
+      "name": "mcutimeline-preview",
+    },
+  },
 }

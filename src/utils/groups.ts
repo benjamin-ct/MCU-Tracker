@@ -2,10 +2,10 @@
 // The original built an HTML string (headHTML) for each chapter header; here we return
 // plain data instead — a future <ChapterGroup> component renders the header as JSX,
 // picking the localized section/year label itself via getSectionNames()/the year number.
-import type {CatalogEntry, Mode, SectionIndex, SortMode, ViewFilter} from '../data';
-import {isFuture, RELEASE_DATE, releaseYear} from '../data';
-import {cnt, isEntryFullyWatched, isWatched, matchSearch, sDone, sRem, type WatchDates} from './compute';
-import {fmt} from './format';
+import type { CatalogEntry, Mode, SectionIndex, SortMode, ViewFilter } from '../data';
+import { isFuture, RELEASE_DATE, releaseYear } from '../data';
+import { cnt, isEntryFullyWatched, isWatched, matchSearch, sDone, sRem, type WatchDates } from './compute';
+import { fmt } from './format';
 
 export interface ChronoGroup {
   key: string;

@@ -1,15 +1,15 @@
-import type {MouseEvent as ReactMouseEvent} from 'react';
-import {useEffect, useRef} from 'react';
+import type { MouseEvent as ReactMouseEvent } from 'react';
+import { useEffect, useRef } from 'react';
 
-import type {Lang, PlatformEntry, SeriesEntry} from '../../data';
-import {getTitle} from '../../data';
-import {t} from '../../i18n';
-import {fmt} from '../../utils/format';
-import {OptionalBadge, PlatformBadge, SeriesTonightBadge} from './Badges';
-import {DisneyPlusLink} from './DisneyPlusLink';
-import {SeriesEpisodeList} from './SeriesEpisodeList';
+import type { Lang, PlatformEntry, SeriesEntry } from '../../data';
+import { getTitle } from '../../data';
+import { t } from '../../i18n';
+import { fmt } from '../../utils/format';
+import { OptionalBadge, PlatformBadge, SeriesTonightBadge } from './Badges';
+import { DisneyPlusLink } from './DisneyPlusLink';
+import { SeriesEpisodeList } from './SeriesEpisodeList';
 import styles from './SeriesRow.module.css';
-import {StarRating} from './StarRating';
+import { StarRating } from './StarRating';
 
 interface SeriesRowProps {
   entry: SeriesEntry;
@@ -32,23 +32,23 @@ interface SeriesRowProps {
 }
 
 export function SeriesRow({
-                            entry,
-                            lang,
-                            isEpisodeWatched,
-                            doneCount,
-                            remainingMinutes,
-                            isOpen,
-                            tonightFit,
-                            isFuture,
-                            platform,
-                            rating,
-                            disneyPlusHref,
-                            onToggleOpen,
-                            onToggleEpisode,
-                            onBulkToggle,
-                            onRate,
-                            onOpenInfo,
-                            onCopiedForDisney,
+  entry,
+  lang,
+  isEpisodeWatched,
+  doneCount,
+  remainingMinutes,
+  isOpen,
+  tonightFit,
+  isFuture,
+  platform,
+  rating,
+  disneyPlusHref,
+  onToggleOpen,
+  onToggleEpisode,
+  onBulkToggle,
+  onRate,
+  onOpenInfo,
+  onCopiedForDisney,
 }: SeriesRowProps) {
   const title = getTitle(entry, lang);
   const allDone = doneCount === entry.count;
@@ -94,11 +94,11 @@ export function SeriesRow({
         <div className={styles.sgInfo}>
           <div className={styles.sgName}>
             {title}
-            <SeriesTonightBadge lang={lang} visible={tonightFit}/>
+            <SeriesTonightBadge lang={lang} visible={tonightFit} />
           </div>
           <div className={styles.sgSub}>
             {entry.opt ? <OptionalBadge lang={lang} /> : null}
-            {platform ? <PlatformBadge platform={platform} lang={lang}/> : null}S{entry.season} · {entry.count}{' '}
+            {platform ? <PlatformBadge platform={platform} lang={lang} /> : null}S{entry.season} · {entry.count}{' '}
             {t(lang, 'episodesAbbrev')} ·{' '}
             <span className={styles.sgRemtxt}>
               {doneCount}/{entry.count} · {fmt(remainingMinutes)}
@@ -108,15 +108,15 @@ export function SeriesRow({
         <button type="button" className="info-btn" data-info onClick={onOpenInfo}>
           <span>i</span>
         </button>
-        <span className={styles.sgArr}/>
+        <span className={styles.sgArr} />
       </div>
       <div className={styles.sgFooter}>
         <div className={styles.dpRow}>
           <div className={styles.dpRowInner}>
-            <DisneyPlusLink href={disneyPlusHref} title={title} onCopied={onCopiedForDisney}/>
+            <DisneyPlusLink href={disneyPlusHref} title={title} onCopied={onCopiedForDisney} />
           </div>
         </div>
-        <StarRating rating={rating} containerClassName={styles.sgStars} onRate={onRate}/>
+        <StarRating rating={rating} containerClassName={styles.sgStars} onRate={onRate} />
       </div>
       {isOpen && (
         <SeriesEpisodeList

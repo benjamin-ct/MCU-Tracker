@@ -2,7 +2,7 @@
 // this map is the single source of truth for "not out yet" (isFuture()) — excludes
 // from totals/evenings/countdown, disables the checkbox, hides the Disney+ link,
 // skips it for "up next" and "tonight".
-import type {PlatformEntry} from './types';
+import type { PlatformEntry } from './types';
 
 export const PLAT: Record<string, PlatformEntry> = {
   brandnewday: {

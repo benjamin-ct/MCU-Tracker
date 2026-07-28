@@ -1,11 +1,11 @@
-import type {CatalogEntry, Lang, SortMode, ViewFilter} from '../../data';
-import {ActionButtons} from './ActionButtons';
-import {BulkExpand} from './BulkExpand';
-import {NextUpCard} from './NextUpCard';
+import type { CatalogEntry, Lang, SortMode, ViewFilter } from '../../data';
+import { ActionButtons } from './ActionButtons';
+import { BulkExpand } from './BulkExpand';
+import { NextUpCard } from './NextUpCard';
 import styles from './Sidebar.module.css';
-import {SortToggle} from './SortToggle';
-import {TonightStepper} from './TonightStepper';
-import {ViewFilterToggle} from './ViewFilterToggle';
+import { SortToggle } from './SortToggle';
+import { TonightStepper } from './TonightStepper';
+import { ViewFilterToggle } from './ViewFilterToggle';
 
 interface SidebarProps {
   lang: Lang;

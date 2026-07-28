@@ -3,10 +3,10 @@
 // the browser, and answers for everyone with no personal key needed). The old
 // personal-key fallback (paste-your-own-TMDB-key) was dropped: the proxy is the single
 // source of posters now, so there's no key state, no v3/v4 detection and no key modal.
-import {useCallback} from 'react';
+import { useCallback } from 'react';
 
-import type {TmdbRef} from '../data';
-import {useLocalStorageState} from './useLocalStorageState';
+import type { TmdbRef } from '../data';
+import { useLocalStorageState } from './useLocalStorageState';
 
 const POSTER_CACHE_STORAGE_KEY = 'mcu-poster-cache';
 export const TMDB_IMAGE_BASE = 'https://image.tmdb.org/t/p/w342';
@@ -47,19 +47,19 @@ export function useTmdbPoster(): UseTmdbPosterResult {
     async (tmdbInfo: TmdbRef): Promise<PosterFetchResult> => {
       const cacheKey = `${tmdbInfo.type}:${tmdbInfo.id}`;
       if (cacheKey in posterCache) {
-        return {url: posterCache[cacheKey], source: 'cache'};
+        return { url: posterCache[cacheKey], source: 'cache' };
       }
 
       const proxied = await fetchPosterViaProxy(tmdbInfo);
-      if (proxied === undefined) return {url: null, source: 'none'};
+      if (proxied === undefined) return { url: null, source: 'none' };
       // Only cache a real poster: a `null` ("no poster yet") is deliberately not cached,
       // so a poster added on TMDB later shows up on the next open instead of being stuck
       // behind a permanent negative cache entry.
-      if (proxied) setPosterCache((prev) => ({...prev, [cacheKey]: proxied}));
-      return {url: proxied, source: 'proxy'};
+      if (proxied) setPosterCache((prev) => ({ ...prev, [cacheKey]: proxied }));
+      return { url: proxied, source: 'proxy' };
     },
     [posterCache, setPosterCache],
   );
 
-  return {fetchPoster};
+  return { fetchPoster };
 }

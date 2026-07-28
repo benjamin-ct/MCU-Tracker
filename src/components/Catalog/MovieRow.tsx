@@ -1,10 +1,10 @@
-import {FilmEntry, getMonthNames, getTitle, Lang, PlatformEntry} from '../../data';
-import {trWatchedOn} from '../../i18n';
-import {fmt, fmtDayMonth} from '../../utils/format';
-import {OptionalBadge, PlatformBadge, TonightBadge} from './Badges';
-import {DisneyPlusLink} from './DisneyPlusLink';
+import { FilmEntry, getMonthNames, getTitle, Lang, PlatformEntry } from '../../data';
+import { trWatchedOn } from '../../i18n';
+import { fmt, fmtDayMonth } from '../../utils/format';
+import { OptionalBadge, PlatformBadge, TonightBadge } from './Badges';
+import { DisneyPlusLink } from './DisneyPlusLink';
 import styles from './MovieRow.module.css';
-import {StarRating} from './StarRating';
+import { StarRating } from './StarRating';
 
 interface MovieRowProps {
   entry: FilmEntry;
@@ -74,15 +74,15 @@ export function MovieRow({
           <span>i</span>
         </button>
         <span className={styles.rtD}>{fmt(entry.m)}</span>
-        <TonightBadge lang={lang} visible={tonightFit}/>
+        <TonightBadge lang={lang} visible={tonightFit} />
       </div>
       <div className={styles.rowFooter}>
         <div className={styles.dpRow}>
           <div className={styles.dpRowInner}>
-            <DisneyPlusLink href={disneyPlusHref} title={title} onCopied={onCopiedForDisney}/>
+            <DisneyPlusLink href={disneyPlusHref} title={title} onCopied={onCopiedForDisney} />
           </div>
         </div>
-        <StarRating rating={rating} containerClassName={styles.stars} onRate={onRate}/>
+        <StarRating rating={rating} containerClassName={styles.stars} onRate={onRate} />
       </div>
     </div>
   );

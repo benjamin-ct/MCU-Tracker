@@ -4,9 +4,9 @@
 // "checked" set, so the two can never drift apart the way they used to in older
 // versions (see reconcileLegacyChecked below, which cleans up exactly that drift for
 // anyone still carrying an old export/localStorage layout).
-import {useCallback, useEffect, useState} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import {isWatched as isWatchedId, type WatchDates} from '../utils/compute';
+import { isWatched as isWatchedId, type WatchDates } from '../utils/compute';
 
 const WATCH_DATES_KEY = 'mcu6-wd';
 const LEGACY_CHECKED_KEY = 'mcu6-c';
@@ -111,7 +111,7 @@ export function useWatchProgress(): UseWatchProgressResult {
   const setManyWatched = useCallback((ids: string[], watched: boolean) => {
     if (ids.length === 0) return;
     setWatchDates((prev) => {
-      const next = {...prev};
+      const next = { ...prev };
       if (watched) {
         const now = new Date().toISOString();
         ids.forEach((id) => {
@@ -146,5 +146,5 @@ export function useWatchProgress(): UseWatchProgressResult {
     if (isRecord(data.ratings)) setRatings(data.ratings as Record<string, number>);
   }, []);
 
-  return {watchDates, ratings, isWatched, setWatched, setManyWatched, toggleRating, resetProgress, importProgress};
+  return { watchDates, ratings, isWatched, setWatched, setManyWatched, toggleRating, resetProgress, importProgress };
 }

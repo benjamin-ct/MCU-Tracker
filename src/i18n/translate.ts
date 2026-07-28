@@ -4,8 +4,8 @@
 // language means adding ONE block here — TypeScript's Record<Lang, …> then forces it
 // to be complete, instead of hunting down a `lang === 'en'` ternary in every function.
 // The exported tr*() helpers are thin delegations, so call sites stay unchanged.
-import type {Lang} from '../data';
-import {t} from './strings';
+import type { Lang } from '../data';
+import { t } from './strings';
 
 interface Messages {
   resultCount: (n: number) => string;
@@ -38,7 +38,7 @@ const EN: Messages = {
   avgRated: (avg, n) => `⭐ Best rated · Average ${avg}/5 (${EN.ratedCount(n)})`,
 };
 
-const MESSAGES: Record<Lang, Messages> = {fr: FR, en: EN};
+const MESSAGES: Record<Lang, Messages> = { fr: FR, en: EN };
 
 // Falls back to French for an unknown language, mirroring t() in strings.ts.
 function m(lang: Lang): Messages {

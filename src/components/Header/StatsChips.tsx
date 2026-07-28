@@ -2,8 +2,8 @@
 // Takes already-computed numbers rather than the raw catalog/watchDates, so it stays a
 // pure presentation component — totals()/estimateEvenings() (src/utils/compute.ts) run
 // once in the parent and get passed down.
-import type {Lang} from '../../data';
-import {t} from '../../i18n';
+import type { Lang } from '../../data';
+import { t } from '../../i18n';
 import styles from './StatsChips.module.css';
 
 interface StatsChipsProps {

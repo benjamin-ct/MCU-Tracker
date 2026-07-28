@@ -18,8 +18,9 @@
   padding: 6px 11px;
   border-radius: 6px;
   cursor: pointer;
-  transition: color 0.15s,
-  background 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s;
   white-space: nowrap;
 }
 

@@ -7,10 +7,10 @@
 // Same per-language-dictionary shape as strings.ts / translate.ts: one RICH block per
 // language, gathered in Record<Lang, …> so adding a language is a single new block the
 // compiler forces you to complete — no `lang === 'en'` ternaries to update everywhere.
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 
-import type {Lang} from '../data';
-import {trTitleCount} from './translate';
+import type { Lang } from '../data';
+import { trTitleCount } from './translate';
 
 interface RichMessages {
   allWatchedFuturePending: (fp: number) => ReactNode;
@@ -33,7 +33,7 @@ function paceIcon(isHeavyPace: boolean): ReactNode {
 
 function tmdbSettingsLink(label: string): ReactNode {
   return (
-    <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noreferrer" style={{color: 'var(--red)'}}>
+    <a href="https://www.themoviedb.org/settings/api" target="_blank" rel="noreferrer" style={{ color: 'var(--red)' }}>
       {label}
     </a>
   );
@@ -92,15 +92,14 @@ const EN: RichMessages = {
   ),
   tmdbHelp: (
     <>
-      Paste your TMDB key <b>or</b> token — both work, TMDB&apos;s settings page offers two: an <b>API Key (v3
-      auth)</b>{' '}
+      Paste your TMDB key <b>or</b> token — both work, TMDB&apos;s settings page offers two: an <b>API Key (v3 auth)</b>{' '}
       (32 characters) or a <b>Read Access Token (v4 auth)</b> (long token). Free: create an account at{' '}
       {tmdbSettingsLink('themoviedb.org → Settings → API')}.
     </>
   ),
 };
 
-const RICH: Record<Lang, RichMessages> = {fr: FR, en: EN};
+const RICH: Record<Lang, RichMessages> = { fr: FR, en: EN };
 
 // Falls back to French for an unknown language, mirroring t() in strings.ts.
 function r(lang: Lang): RichMessages {

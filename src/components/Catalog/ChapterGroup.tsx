@@ -1,8 +1,8 @@
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react';
 
-import type {Lang} from '../../data';
-import {getSectionNames, ROMANS} from '../../data';
-import type {CatalogGroup} from '../../utils/groups';
+import type { Lang } from '../../data';
+import { getSectionNames, ROMANS } from '../../data';
+import type { CatalogGroup } from '../../utils/groups';
 import styles from './ChapterGroup.module.css';
 
 interface ChapterGroupProps {
@@ -27,7 +27,7 @@ export function ChapterGroup({ group, isOpen, badgeText, lang, onToggleOpen, chi
           <span className={styles.chName}>{group.year}</span>
         )}
         <span className={styles.chBadge}>{badgeText}</span>
-        <span className={styles.arr}/>
+        <span className={styles.arr} />
       </div>
       <div className={styles.chBody}>{children}</div>
     </div>

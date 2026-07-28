@@ -2,8 +2,8 @@
 // mutable globals (mode, watchDates, tonightMin, searchQuery) directly. In React those
 // values live in state, so each one is now an explicit parameter instead — same logic,
 // but callable from any component/hook without relying on shared mutable state.
-import type {CatalogEntry, Mode, SectionIndex, SeriesEntry} from '../data';
-import {CAST_EXTRA, INFO, isFuture, TITLE_EN} from '../data';
+import type { CatalogEntry, Mode, SectionIndex, SeriesEntry } from '../data';
+import { CAST_EXTRA, INFO, isFuture, TITLE_EN } from '../data';
 
 export type WatchDates = Record<string, string>;
 

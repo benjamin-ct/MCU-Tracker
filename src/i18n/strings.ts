@@ -2,7 +2,7 @@
 // through here — either t(lang, 'key') for plain text, or one of the tr*() helpers in
 // translate.ts for text with plurals/interpolated values. Never hardcode a display
 // string elsewhere in the app; add it here instead.
-import type {Lang} from '../data';
+import type { Lang } from '../data';
 
 const FR = {
   chronoOrder: 'Ordre Chronologique',

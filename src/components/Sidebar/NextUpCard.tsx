@@ -1,7 +1,7 @@
-import type {CatalogEntry, Lang} from '../../data';
-import {getTitle, isFilm} from '../../data';
-import {t, trUpNextEmptyFuture} from '../../i18n';
-import {fmt, fmtE} from '../../utils/format';
+import type { CatalogEntry, Lang } from '../../data';
+import { getTitle, isFilm } from '../../data';
+import { t, trUpNextEmptyFuture } from '../../i18n';
+import { fmt, fmtE } from '../../utils/format';
 import styles from './NextUpCard.module.css';
 
 interface NextUpCardProps {
@@ -14,13 +14,13 @@ interface NextUpCardProps {
 }
 
 export function NextUpCard({
-                             next,
-                             nextEpisodeIndex,
-                             tonightMin,
-                             futurePendingCount,
-                             lang,
-                             onMarkNext,
-                           }: NextUpCardProps) {
+  next,
+  nextEpisodeIndex,
+  tonightMin,
+  futurePendingCount,
+  lang,
+  onMarkNext,
+}: NextUpCardProps) {
   let title: string;
   let sub: string | null = null;
   let button: string | null = null;

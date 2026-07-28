@@ -2,13 +2,13 @@
 // handlers in js/app.js. Persistence itself (localStorage writes) happens inside
 // useWatchProgress; this component only builds the export payload / parses the
 // imported file and reports the result up.
-import {type ChangeEvent, useEffect, useRef, useState} from 'react';
+import { type ChangeEvent, useEffect, useRef, useState } from 'react';
 
-import type {Lang, Mode} from '../../data';
-import type {ImportedProgressData} from '../../hooks';
-import {t} from '../../i18n';
-import type {WatchDates} from '../../utils/compute';
-import {OptionalBadge} from '../Catalog';
+import type { Lang, Mode } from '../../data';
+import type { ImportedProgressData } from '../../hooks';
+import { t } from '../../i18n';
+import type { WatchDates } from '../../utils/compute';
+import { OptionalBadge } from '../Catalog';
 import styles from './Footer.module.css';
 
 const ARM_TIMEOUT_MS = 3000;
@@ -27,7 +27,7 @@ interface FooterProps {
   onToast: (message: string) => void;
 }
 
-export function Footer({lang, watchDates, ratings, mode, onResetProgress, onImportData, onToast}: FooterProps) {
+export function Footer({ lang, watchDates, ratings, mode, onResetProgress, onImportData, onToast }: FooterProps) {
   const [armed, setArmed] = useState(false);
   const armTimerRef = useRef<number | undefined>(undefined);
 
@@ -93,7 +93,7 @@ export function Footer({lang, watchDates, ratings, mode, onResetProgress, onImpo
         </label>
       </div>
       <div className={styles.lgd}>
-        <OptionalBadge lang={lang}/>
+        <OptionalBadge lang={lang} />
         <span>{t(lang, 'optionalNote')}</span>
       </div>
       <p className={styles.note}>

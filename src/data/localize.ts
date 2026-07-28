@@ -4,11 +4,11 @@
 // side effect, and breaks memoization/concurrent rendering), so instead every piece
 // of localized content is *derived* from the current `lang` via a selector below —
 // nothing is ever mutated, `lang` is just an input like any other prop/state.
-import {INFO, INFO_EN} from './info';
-import {MONTHS_EN, MONTHS_FR, SEC_EN, SEC_FR} from './sections';
-import {TITLE_EN} from './titles';
-import {TRAILER_FR} from './trailers';
-import type {CatalogEntry, InfoEntry, Lang, PlatformEntry} from './types';
+import { INFO, INFO_EN } from './info';
+import { MONTHS_EN, MONTHS_FR, SEC_EN, SEC_FR } from './sections';
+import { TITLE_EN } from './titles';
+import { TRAILER_FR } from './trailers';
+import type { CatalogEntry, InfoEntry, Lang, PlatformEntry } from './types';
 
 // Most budget/box/rt values only contain digits and two recognizable French turns of
 // phrase ("Md$"/"M$" and "critique"/"public"/"pas encore sorti") — transform them
