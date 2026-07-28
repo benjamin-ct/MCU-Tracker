@@ -1,19 +1,14 @@
-// Ported from the .sg markup for series in the legacy js/render.js render(). The
-// bulk checkbox's indeterminate state (some but not all episodes watched) is a DOM
-// property with no JSX attribute equivalent, hence the ref + effect. Clicking
-// anywhere in .sg-hd toggles open/collapsed except on the bulk checkbox or info
-// button — same closest()-based guard the original used via document-level
-// delegation, just inlined into this component's own click handler.
-import { useEffect, useRef } from 'react';
-import type { MouseEvent as ReactMouseEvent } from 'react';
-import type { Lang, PlatformEntry, SeriesEntry } from '../../data/types';
-import { getTitle } from '../../data/localize';
-import { t } from '../../i18n';
-import { fmt } from '../../utils/format';
-import { OptionalBadge, PlatformBadge, SeriesTonightBadge } from './Badges';
-import { DisneyPlusLink } from './DisneyPlusLink';
-import { StarRating } from './StarRating';
-import { SeriesEpisodeList } from './SeriesEpisodeList';
+import type {MouseEvent as ReactMouseEvent} from 'react';
+import {useEffect, useRef} from 'react';
+import type {Lang, PlatformEntry, SeriesEntry} from '../../data';
+import {getTitle} from '../../data';
+import {t} from '../../i18n';
+import {fmt} from '../../utils/format';
+import {OptionalBadge, PlatformBadge, SeriesTonightBadge} from './Badges';
+import {DisneyPlusLink} from './DisneyPlusLink';
+import {StarRating} from './StarRating';
+import {SeriesEpisodeList} from './SeriesEpisodeList';
+import styles from './SeriesRow.module.css';
 
 interface SeriesRowProps {
   entry: SeriesEntry;
@@ -56,7 +51,6 @@ export function SeriesRow({
 }: SeriesRowProps) {
   const title = getTitle(entry, lang);
   const allDone = doneCount === entry.count;
-  const showDisneyPlusLink = !isFuture && !allDone;
   const bulkCheckboxRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -65,27 +59,30 @@ export function SeriesRow({
     }
   }, [doneCount, allDone]);
 
-  let sgClassName = 'sg';
-  if (isOpen) sgClassName += ' open';
-  if (allDone) sgClassName += ' sg-done';
-  if (tonightFit) sgClassName += ' tn-fit';
-  if (isFuture) sgClassName += ' future';
+  const sgClassName = [
+    styles.sg,
+    isOpen && styles.open,
+    allDone && styles.sgDone,
+    tonightFit && styles.tnFit,
+    isFuture && styles.future,
+  ].filter(Boolean).join(' ');
 
   const handleHeaderClick = (event: ReactMouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLElement;
-    if (target.closest('.sg-bulk') || target.closest('.info-btn') || target.closest('.dp-link')) return;
+    // .info-btn et .dp-link sont des classes globales ; sgBulk utilise data-bulk
+    // car la classe est scopée par CSS Modules (nom haché).
+    if (target.closest('[data-bulk]') || target.closest('.info-btn') || target.closest('.dp-link')) return;
     onToggleOpen();
   };
 
   return (
     <div className={sgClassName} id={`sg-${entry.id}`}>
-      <div className="sg-hd" onClick={handleHeaderClick}>
-        <div className="sg-bulk">
+      <div className={styles.sgHd} onClick={handleHeaderClick}>
+        <div className={styles.sgBulk} data-bulk>
           <label>
             <input
               ref={bulkCheckboxRef}
               type="checkbox"
-              className="sg-chk"
               checked={allDone}
               disabled={isFuture}
               onChange={(event) => onBulkToggle(event.target.checked)}
@@ -93,13 +90,13 @@ export function SeriesRow({
             <span className="sq" />
           </label>
         </div>
-        <div className="sg-info">
-          <div className="sg-name">{title}</div>
-          <div className="sg-sub">
+        <div className={styles.sgInfo}>
+          <div className={styles.sgName}>{title}</div>
+          <div className={styles.sgSub}>
             {entry.opt ? <OptionalBadge lang={lang} /> : null}
             {platform ? <PlatformBadge platform={platform} lang={lang} /> : null}
             S{entry.season} · {entry.count} {t(lang, 'episodesAbbrev')} ·{' '}
-            <span className="sg-remtxt">
+            <span className={styles.sgRemtxt}>
               {doneCount}/{entry.count} · {fmt(remainingMinutes)}
             </span>
             <SeriesTonightBadge lang={lang} />
@@ -108,14 +105,16 @@ export function SeriesRow({
         <button type="button" className="info-btn" onClick={onOpenInfo}>
           <span>i</span>
         </button>
-        <span className="sg-arr" />
+        <span className={styles.sgArr}/>
       </div>
-      {showDisneyPlusLink ? (
-        <div className="dp-row dp-row-sg">
-          <DisneyPlusLink href={disneyPlusHref} title={title} onCopied={onCopiedForDisney} />
+      <div className={styles.sgFooter}>
+        <div className={styles.dpRow}>
+          <div className={styles.dpRowInner}>
+            <DisneyPlusLink href={disneyPlusHref} title={title} onCopied={onCopiedForDisney}/>
+          </div>
         </div>
-      ) : null}
-      <StarRating rating={rating} variant="sg-stars" onRate={onRate} />
+        <StarRating rating={rating} variant="sg-stars" onRate={onRate}/>
+      </div>
       <SeriesEpisodeList
         seriesId={entry.id}
         epMins={entry.epMins}

@@ -1,0 +1,190 @@
+/* ── FILM ROW ── */
+.row {
+    border-bottom: 1px solid var(--ln);
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.rowTop {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    padding-right: 2px;
+}
+
+.rowTop label {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.rowTop :global(.info-btn) {
+    margin-top: 6px;
+}
+
+.rowTop .rtD {
+    margin-left: auto;
+    padding-left: 8px;
+    margin-top: 14.5px;
+}
+
+.rowTop :global(.tn-tag) {
+    margin-top: 13.5px;
+}
+
+.row label {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 11px 0;
+    cursor: pointer;
+}
+
+.rt {
+    flex: 1;
+    min-width: 0;
+}
+
+.rtT {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.rtYr {
+    font-family: var(--m);
+    font-size: 10.5px;
+    color: var(--faint);
+}
+
+.rtBadges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.rtD {
+    font-family: var(--m);
+    font-size: 11px;
+    color: var(--dim);
+    white-space: nowrap;
+}
+
+.watchDate {
+    font-family: var(--m);
+    font-size: 9.5px;
+    height: 12px;
+    overflow: hidden;
+    color: var(--faint);
+    margin-top: 2px;
+    display: none;
+}
+
+/* ── VISIONNÉ ── */
+.row.done .rtT {
+    color: var(--faint);
+}
+
+.row.done .watchDate {
+    display: block;
+}
+
+:global(body.view-todo) .row.done {
+    display: none;
+}
+
+/* ── TONIGHT FIT ── */
+.row.tnFit :global(.tn-tag) {
+    display: inline-flex;
+}
+
+/* ── FUTURE ── */
+.row.future {
+    opacity: .5;
+}
+
+.row.future :global(.sq) {
+    cursor: not-allowed;
+}
+
+.row.future label {
+    cursor: default;
+}
+
+/* ── FOOTER : crossfade dp-link ↔ étoiles à hauteur fixe ── */
+/* grid stack : les deux enfants occupent la même cellule → hauteur = max des deux,
+   ne change JAMAIS. Seule l'opacité est animée, plus aucune convulsion. */
+.rowFooter {
+    display: grid;
+}
+
+.rowFooter > * {
+    grid-area: 1/1;
+}
+
+.dpRow {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+}
+
+.row:not(.done):not(.future) .dpRow {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dpRowInner {
+    padding: 9px 0 9px 31px;
+    display: flex;
+    align-items: center;
+}
+
+/* Neutraliser height:0/overflow:hidden du .stars global dans ce contexte :
+   la visibilité est gérée par opacity uniquement. */
+.rowFooter :global(.stars) {
+    height: auto;
+    overflow: visible;
+    transition: opacity .2s ease .06s;
+}
+
+.row.done .rowFooter :global(.stars) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* ── RESPONSIVE ── */
+@media (min-width: 768px) {
+    .row label {
+        padding: 13px 0;
+    }
+
+    .rowTop :global(.info-btn) {
+        margin-top: 8px;
+    }
+
+    .rowTop .rtD {
+        margin-top: 16.5px;
+    }
+
+    .rowTop :global(.tn-tag) {
+        margin-top: 15.5px;
+    }
+
+    .dpRowInner {
+        padding: 10px 0 10px 36px;
+    }
+
+    .rtT {
+        font-size: 15px;
+        line-height: 20px;
+    }
+}
+
