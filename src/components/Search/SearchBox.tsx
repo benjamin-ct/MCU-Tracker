@@ -1,11 +1,6 @@
-// Ported from the .search-wrap/.search-count elements in the legacy index.html + the
-// srch input handler in js/app.js. searchQuery is kept untrimmed in state (so typing
-// "iron man" word-by-word isn't disrupted by trimming mid-keystroke) — matchSearch()
-// and the "is a search active" checks below all trim at the point of use instead,
-// matching the original's `const q=srchEl.value.trim()` without needing separate
-// raw/trimmed state.
-import type { Lang } from '../../data/types';
-import { t, trResultCount } from '../../i18n';
+import type {Lang} from '../../data/types';
+import {t, trResultCount} from '../../i18n';
+import styles from './SearchBox.module.css';
 
 interface SearchBoxProps {
   searchQuery: string;
@@ -19,12 +14,12 @@ export function SearchBox({ searchQuery, resultCount, lang, onSearchChange }: Se
 
   return (
     <>
-      <div className="search-wrap">
-        <div className="search-box">
-          <span className="search-icon">⌕</span>
+      <div className={styles.searchWrap}>
+        <div className={styles.searchBox}>
+          <span className={styles.searchIcon}>⌕</span>
           <input
             type="search"
-            className="search-input"
+            className={styles.searchInput}
             placeholder={t(lang, 'searchPlaceholder')}
             autoComplete="off"
             value={searchQuery}
@@ -32,14 +27,14 @@ export function SearchBox({ searchQuery, resultCount, lang, onSearchChange }: Se
           />
           <button
             type="button"
-            className={isSearching ? 'search-clear vis' : 'search-clear'}
+            className={isSearching ? `${styles.searchClear} ${styles.vis}` : styles.searchClear}
             onClick={() => onSearchChange('')}
           >
             ✕
           </button>
         </div>
       </div>
-      <div className={isSearching ? 'search-count vis' : 'search-count'}>
+      <div className={isSearching ? `${styles.searchCount} ${styles.vis}` : styles.searchCount}>
         {isSearching ? trResultCount(lang, resultCount) : ''}
       </div>
     </>

@@ -1,4 +1,4 @@
-/* ── SERIES ROW ── */
+/* ── Series Row ── */
 .sg {
     border: 1px solid var(--ln2);
     border-radius: 10px;
@@ -35,9 +35,6 @@
 }
 
 .sgInfo {
-    /* flex:1 au lieu de flex:0 1 auto : sgInfo remplit toujours tout l'espace
-       disponible → info-btn et sgArr restent à position fixe même quand
-       le texte sgRemtxt change de "12h14" à "0m". */
     flex: 1;
     min-width: 0;
 }
@@ -54,7 +51,7 @@
 }
 
 .sgSub {
-    font-family: var(--m);
+    font-family: var(--m), sans-serif;
     font-size: 10px;
     color: var(--faint);
     margin-top: 4px;
@@ -82,12 +79,12 @@
     transform: rotate(45deg);
 }
 
-/* ── TONIGHT FIT ── */
-.sg.tnFit :global(.sg-tn-tag) {
+/* ── Tonight fit ── */
+.sg.tnFit .tonightTag {
     display: inline-flex;
 }
 
-/* ── FUTURE ── */
+/* ── Future ── */
 .sg.future {
     opacity: .5;
 }
@@ -100,18 +97,14 @@
     cursor: default;
 }
 
-/* ── TOUT VU ── */
+/* ── Tout vu ── */
 :global(body.view-todo) .sg.sgDone {
     display: none;
 }
 
-/* ── ÉPISODES ── */
-/* .ep-list est rendu par SeriesEpisodeList (classe globale). */
-.sg.open :global(.ep-list) {
-    display: block;
-}
+/* SeriesEpisodeList est rendu conditionnellement (isOpen) depuis SeriesRow.tsx */
 
-/* ── FOOTER : crossfade dp-link ↔ étoiles à hauteur fixe ── */
+/* ── Footer : crossfade dp-link <-> étoiles a hauteur fixe ── */
 .sgFooter {
     display: grid;
 }
@@ -137,20 +130,31 @@
     align-items: center;
 }
 
-/* Neutraliser height:0/overflow:hidden du .sg-stars global dans ce contexte. */
-.sgFooter :global(.sg-stars) {
+/* ── Stars container ── */
+.sgStars {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 0;
+    overflow: hidden;
+    padding: 0 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: height .22s ease .06s, opacity .2s ease .06s;
+}
+
+.sgFooter .sgStars {
     height: auto;
     overflow: visible;
-    padding: 0 14px;
     transition: opacity .2s ease .06s;
 }
 
-.sg.sgDone .sgFooter :global(.sg-stars) {
+.sg.sgDone .sgFooter .sgStars {
     opacity: 1;
     pointer-events: auto;
 }
 
-/* ── RESPONSIVE ── */
+/* ── Responsive ── */
 @media (min-width: 768px) {
     .sgHd {
         padding: 14px 16px;
@@ -163,6 +167,5 @@
     .dpRowInner {
         padding: 10px 16px;
     }
+
 }
-
-

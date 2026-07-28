@@ -1,0 +1,36 @@
+/* ── Header / Topbar ── */
+.top {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--topbar-bg);
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--ln2);
+    padding: calc(14px + env(safe-area-inset-top)) 18px 18px;
+}
+
+.hdRow {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+
+@media (min-width: 768px) {
+    .top {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-template-areas: "brand tog" "strip strip" "hdrow hdrow";
+        gap: 10px 40px;
+        padding: 16px 48px;
+    }
+
+    .hdRow {
+        grid-area: hdrow;
+        flex-direction: row;
+        align-items: center;
+        gap: 40px;
+        margin-bottom: 0;
+    }
+}
+

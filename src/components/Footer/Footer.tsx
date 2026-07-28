@@ -2,11 +2,13 @@
 // handlers in js/app.js. Persistence itself (localStorage writes) happens inside
 // useWatchProgress; this component only builds the export payload / parses the
 // imported file and reports the result up.
-import { useEffect, useRef, useState, type ChangeEvent } from 'react';
-import type { ImportedProgressData } from '../../hooks/useWatchProgress';
-import type { Lang, Mode } from '../../data/types';
-import type { WatchDates } from '../../utils/compute';
-import { t } from '../../i18n';
+import {type ChangeEvent, useEffect, useRef, useState} from 'react';
+import type {ImportedProgressData} from '../../hooks/useWatchProgress';
+import type {Lang, Mode} from '../../data/types';
+import type {WatchDates} from '../../utils/compute';
+import {t} from '../../i18n';
+import {OptionalBadge} from '../Catalog/Badges';
+import styles from './Footer.module.css';
 
 const ARM_TIMEOUT_MS = 3000;
 
@@ -77,29 +79,27 @@ export function Footer({ lang, watchDates, ratings, mode, onResetProgress, onImp
   };
 
   return (
-    <div className="sb-ftr">
-      <button type="button" className={armed ? 'rst armed' : 'rst'} onClick={handleResetClick}>
+    <div className={styles.footer}>
+      <button type="button" className={armed ? `${styles.rst} ${styles.armed}` : styles.rst} onClick={handleResetClick}>
         {armed ? t(lang, 'resetConfirm') : t(lang, 'resetBtn')}
       </button>
-      <div className="io-row">
-        <button type="button" className="io-btn" onClick={handleExport}>
+      <div className={styles.ioRow}>
+        <button type="button" className={styles.ioBtn} onClick={handleExport}>
           {t(lang, 'exportBtn')}
         </button>
-        <label className="io-btn">
+        <label className={styles.ioBtn}>
           <span>{t(lang, 'importBtn')}</span>
           <input type="file" accept=".json" style={{ display: 'none' }} onChange={handleImportFile} />
         </label>
-        <button type="button" className="io-btn" onClick={onOpenTmdbModal}>
+        <button type="button" className={styles.ioBtn} onClick={onOpenTmdbModal}>
           {t(lang, 'tmdbBtn')}
         </button>
       </div>
-      <div className="lgd">
-        <span className="opt-badge" style={{ padding: '2px 7px' }}>
-          {t(lang, 'optionalBadge')}
-        </span>{' '}
+      <div className={styles.lgd}>
+        <OptionalBadge lang={lang}/>
         <span>{t(lang, 'optionalNote')}</span>
       </div>
-      <p className="note">
+      <p className={styles.note}>
         <span>{t(lang, 'footerNote1')}</span>
         <br />
         This product uses the TMDB API but is not endorsed or certified by TMDB.

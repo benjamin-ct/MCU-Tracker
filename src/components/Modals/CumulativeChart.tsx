@@ -1,15 +1,10 @@
-// Ported from computeChartGeom()/renderChartSVG()/wireChartInteraction()/
-// fmtShortDate() (legacy js/modals.js). touchmove needs a manually-attached
-// { passive: false } listener rather than React's onTouchMove prop: React attaches
-// touch handlers as passive by default, which silently breaks preventDefault() and
-// lets the page scroll instead of dragging the chart's tooltip on mobile — the exact
-// interaction the legacy app's own comment called out needing this for.
 import {useEffect, useMemo, useRef, useState} from 'react';
 import type {Lang} from '../../data';
 import {getMonthNames} from '../../data';
 import {t} from '../../i18n';
 import {fmt} from '../../utils/format';
 import type {CumulativePoint} from '../../utils/stats';
+import styles from './CumulativeChart.module.css';
 
 const CHART_WIDTH = 600;
 const CHART_HEIGHT = 132;
@@ -89,7 +84,7 @@ export function CumulativeChart({series, totalMinutes, lang}: CumulativeChartPro
   }, []);
 
   if (series.length < 2) {
-    return <div className="chart-empty">{t(lang, 'chartEmptyMsg')}</div>;
+    return <div className={styles.chartEmpty}>{t(lang, 'chartEmptyMsg')}</div>;
   }
 
   const hide = () => setHoverIndex(null);
@@ -102,63 +97,45 @@ export function CumulativeChart({series, totalMinutes, lang}: CumulativeChartPro
   const tooltipLeftPercent = hovered ? Math.max(6, Math.min(94, (hovered.x / CHART_WIDTH) * 100)) : 0;
 
   return (
-    <div className="chart-inner">
-      <div className="chart-tip" style={{opacity: hovered ? 1 : 0, left: `${tooltipLeftPercent}%`}}>
+    <div className={styles.chartInner}>
+      <div className={styles.chartTip} style={{opacity: hovered ? 1 : 0, left: `${tooltipLeftPercent}%`}}>
         {hovered ? (
-          <>
-            <b>{fmt(hovered.cum)}</b> · {hoveredPercent}% — {fmtShortDate(hovered.date, monthNames)}
-          </>
+          <><b>{fmt(hovered.cum)}</b> · {hoveredPercent}% — {fmtShortDate(hovered.date, monthNames)}</>
         ) : null}
       </div>
       <svg
         ref={svgRef}
+        className={styles.chartSvg}
         viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
-        style={{width: '100%', height: '112px', display: 'block', touchAction: 'none'}}
-        onPointerMove={(event) => handlePointer(event.clientX)}
-        onPointerDown={(event) => handlePointer(event.clientX)}
+        onPointerMove={(e) => handlePointer(e.clientX)}
+        onPointerDown={(e) => handlePointer(e.clientX)}
         onPointerLeave={hide}
-        onMouseMove={(event) => handlePointer(event.clientX)}
+        onMouseMove={(e) => handlePointer(e.clientX)}
         onMouseLeave={hide}
-        onTouchStart={(event) => {
-          if (event.touches[0]) handlePointer(event.touches[0].clientX);
+        onTouchStart={(e) => {
+          if (e.touches[0]) handlePointer(e.touches[0].clientX);
         }}
         onTouchEnd={hide}
       >
         <polygon points={areaPts} fill="rgba(56,191,80,.14)"/>
         <line
-          className="chart-vline"
-          x1={hovered ? hovered.x : 0}
-          y1={6}
-          x2={hovered ? hovered.x : 0}
-          y2={CHART_HEIGHT - PAD_BOTTOM}
-          stroke="var(--dim)"
-          strokeOpacity={0.5}
-          strokeWidth={1}
+          x1={hovered ? hovered.x : 0} y1={6}
+          x2={hovered ? hovered.x : 0} y2={CHART_HEIGHT - PAD_BOTTOM}
+          stroke="var(--dim)" strokeOpacity={0.5} strokeWidth={1}
           opacity={hovered ? 1 : 0}
         />
         <polyline points={lineStr} fill="none" stroke="#38BF50" strokeWidth={2.2} strokeLinejoin="round"
                   strokeLinecap="round"/>
         <circle
-          className="chart-marker"
-          r={4}
-          fill="#38BF50"
-          stroke="var(--card)"
-          strokeWidth={1.5}
-          cx={hovered ? hovered.x : 0}
-          cy={hovered ? hovered.y : 0}
+          r={4} fill="#38BF50" stroke="var(--card)" strokeWidth={1.5}
+          cx={hovered ? hovered.x : 0} cy={hovered ? hovered.y : 0}
           opacity={hovered ? 1 : 0}
         />
         <text x={PAD_X} y={CHART_HEIGHT - 6} fontFamily="DM Mono, monospace" fontSize={9} fill="var(--faint)">
           {firstLabel}
         </text>
-        <text
-          x={CHART_WIDTH - PAD_X}
-          y={CHART_HEIGHT - 6}
-          fontFamily="DM Mono, monospace"
-          fontSize={9}
-          fill="var(--faint)"
-          textAnchor="end"
-        >
+        <text x={CHART_WIDTH - PAD_X} y={CHART_HEIGHT - 6} fontFamily="DM Mono, monospace" fontSize={9}
+              fill="var(--faint)" textAnchor="end">
           {lastLabel}
         </text>
       </svg>

@@ -1,5 +1,4 @@
-import type {FilmEntry, Lang, PlatformEntry} from '../../data';
-import {getMonthNames, getTitle} from '../../data';
+import {FilmEntry, getMonthNames, getTitle, Lang, PlatformEntry} from '../../data';
 import {trWatchedOn} from '../../i18n';
 import {fmt, fmtDayMonth} from '../../utils/format';
 import {OptionalBadge, PlatformBadge, TonightBadge} from './Badges';
@@ -78,7 +77,7 @@ export function MovieRow({
           <span>i</span>
         </button>
         <span className={styles.rtD}>{fmt(entry.m)}</span>
-        <TonightBadge lang={lang} />
+        <TonightBadge lang={lang} visible={tonightFit}/>
       </div>
       <div className={styles.rowFooter}>
         <div className={styles.dpRow}>
@@ -86,7 +85,7 @@ export function MovieRow({
             <DisneyPlusLink href={disneyPlusHref} title={title} onCopied={onCopiedForDisney}/>
           </div>
         </div>
-        <StarRating rating={rating} variant="stars" onRate={onRate}/>
+        <StarRating rating={rating} containerClassName={styles.stars} onRate={onRate}/>
       </div>
     </div>
   );

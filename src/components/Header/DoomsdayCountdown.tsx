@@ -3,9 +3,10 @@
 // class="ok|warn">) rather than plain text, so this is one of the few places that
 // still needs dangerouslySetInnerHTML — everything rendered here is internally
 // generated (static translations + formatted numbers), never user input.
-import type { Lang } from '../../data/types';
-import { trAllWatchedFuturePending, trDoomsdayHere, trDoomsdayPace, trMarathonDoneReady } from '../../i18n';
-import { fmt } from '../../utils/format';
+import type {Lang} from '../../data/types';
+import {trAllWatchedFuturePending, trDoomsdayHere, trDoomsdayPace, trMarathonDoneReady} from '../../i18n';
+import {fmt} from '../../utils/format';
+import styles from './DoomsdayCountdown.module.css';
 
 interface DoomsdayCountdownProps {
   remainingMinutes: number;
@@ -17,10 +18,9 @@ interface DoomsdayCountdownProps {
 export function DoomsdayCountdown({ remainingMinutes, daysLeft, futurePendingCount, lang }: DoomsdayCountdownProps) {
   let html: string;
   if (remainingMinutes === 0) {
-    html =
-      futurePendingCount > 0
-        ? trAllWatchedFuturePending(lang, futurePendingCount)
-        : trMarathonDoneReady(lang);
+    html = futurePendingCount > 0
+      ? trAllWatchedFuturePending(lang, futurePendingCount)
+      : trMarathonDoneReady(lang);
   } else if (daysLeft <= 0) {
     html = trDoomsdayHere(lang);
   } else {
@@ -30,10 +30,10 @@ export function DoomsdayCountdown({ remainingMinutes, daysLeft, futurePendingCou
   }
 
   return (
-    <div className="cdwn">
-      <span className="cdwn-icon">🎬</span>
-      <span className="cdwn-txt" dangerouslySetInnerHTML={{ __html: html }} />
-      <span className="cdwn-days">{daysLeft}j</span>
+    <div className={styles.cdwn}>
+      <span className={styles.icon}>🎬</span>
+      <span className={styles.txt} dangerouslySetInnerHTML={{__html: html}}/>
+      <span className={styles.days}>{daysLeft}j</span>
     </div>
   );
 }

@@ -1,13 +1,9 @@
-// Ported from the #prochain element in the legacy index.html + updateProchain()
 import type {CatalogEntry, Lang} from '../../data/types';
-// (js/render.js). Purely presentational: the "next" entry and its unwatched-episode
-// index are computed by the caller via nextItem()/nextUnwatchedEpisodeIndex()
-// (src/utils/compute.ts), and marking it watched (plus any series auto-collapse once
-// its last episode is checked) is delegated to onMarkNext.
 import {isFilm} from '../../data/types';
 import {getTitle} from '../../data/localize';
 import {t, trUpNextEmptyFuture} from '../../i18n';
 import {fmt, fmtE} from '../../utils/format';
+import styles from './NextUpCard.module.css';
 
 interface NextUpCardProps {
   next: CatalogEntry | null;
@@ -41,27 +37,25 @@ export function NextUpCard({ next, nextEpisodeIndex, tonightMin, futurePendingCo
     (isFilm(next) ? next.m : next.epMins[nextEpisodeIndex]) <= tonightMin;
 
   return (
-    <div id="prochain">
-      <div style={{ padding: '12px 0 0' }}>
-        <div className={`prox${!next ? ' done' : ''}`}>
-          <div className="prox-l">
-            <div className="prox-eye">{t(lang, 'upNextLbl')}</div>
-            <div className="prox-title">{title}</div>
-            {sub && (
-              <div className="prox-sub">
-                {sub}
-                {fitsTonight && (
-                  <span style={{color: 'var(--green)', fontSize: '10px'}}> · {t(lang, 'tonightFitsInline')}</span>
-                )}
-              </div>
-            )}
-          </div>
-          {button && (
-            <button type="button" className="prox-btn" onClick={onMarkNext}>
-              {button}
-            </button>
+    <div className={styles.prochain}>
+      <div className={!next ? `${styles.prox} ${styles.done}` : styles.prox}>
+        <div className={styles.proxL}>
+          <div className={styles.proxEye}>{t(lang, 'upNextLbl')}</div>
+          <div className={styles.proxTitle}>{title}</div>
+          {sub && (
+            <div className={styles.proxSub}>
+              {sub}
+              {fitsTonight && (
+                <span className={styles.tonightHint}> · {t(lang, 'tonightFitsInline')}</span>
+              )}
+            </div>
           )}
         </div>
+        {button && (
+          <button type="button" className={styles.proxBtn} onClick={onMarkNext}>
+            {button}
+          </button>
+        )}
       </div>
     </div>
   );

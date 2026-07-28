@@ -1,0 +1,68 @@
+/* ── Modal backdrop + panel ── */
+.backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, .75);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+
+.panel {
+    background: var(--card);
+    border-radius: 20px 20px 0 0;
+    padding: 22px 20px calc(28px + env(safe-area-inset-bottom));
+    width: 100%;
+    max-width: 640px;
+    max-height: 88vh;
+    overflow-y: auto;
+}
+
+/* ── En-tête partagé (stats, info, tmdb) ── */
+.modalTop {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.modalH2 {
+    font-family: var(--m), sans-serif;
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--red);
+}
+
+.modalClose {
+    flex: none;
+    appearance: none;
+    border: none;
+    background: var(--raised);
+    color: var(--dim);
+    font-size: 18px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 768px) {
+    .backdrop {
+        align-items: center;
+    }
+
+    .panel {
+        border-radius: 16px;
+        max-width: 680px;
+        margin: 20px auto;
+    }
+}
+

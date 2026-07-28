@@ -1,0 +1,168 @@
+/* ── Info Modal ── */
+.infoHeadText {
+    flex: 1;
+    min-width: 0;
+    padding-top: 1px;
+}
+
+.infoChapter {
+    font-family: var(--m), sans-serif;
+    font-size: 9.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 5px;
+}
+
+.infoTitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+}
+
+.infoMeta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-family: var(--m), sans-serif;
+    font-size: 10.5px;
+    color: var(--dim);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.synopsis {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--text);
+    margin-bottom: 16px;
+}
+
+.synopsisMuted {
+    color: var(--faint);
+}
+
+.numGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 8px;
+    margin-bottom: 14px;
+}
+
+.numCard {
+    background: var(--raised);
+    border: 1px solid var(--ln2);
+    border-radius: 8px;
+    padding: 9px 10px;
+}
+
+.numV {
+    font-family: var(--m), sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+    font-variant-numeric: tabular-nums;
+}
+
+.numL {
+    font-family: var(--m), sans-serif;
+    font-size: 8.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-top: 3px;
+}
+
+.numRt .numV {
+    color: var(--red);
+}
+
+.linkBtns {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.trailerBtn,
+.imdbBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex: 1;
+    min-width: 0;
+    border-radius: 8px;
+    padding: 10px;
+    font-family: var(--g), sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .15s;
+}
+
+.trailerBtn {
+    background: rgba(56, 191, 80, .12);
+    border: 1px solid rgba(56, 191, 80, .35);
+    color: var(--text);
+}
+
+.trailerBtn:active {
+    background: rgba(56, 191, 80, .22);
+}
+
+.imdbBtn {
+    background: color-mix(in srgb, var(--amber) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--amber) 45%, transparent);
+    color: var(--amber);
+}
+
+.imdbBtn:active {
+    background: color-mix(in srgb, var(--amber) 24%, transparent);
+}
+
+.infoGrid {
+    border-top: 1px solid var(--ln);
+    padding-top: 14px;
+}
+
+.infoRow {
+    display: flex;
+    gap: 10px;
+    font-size: 12.5px;
+    margin-bottom: 9px;
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.infoRow:last-child {
+    margin-bottom: 0;
+}
+
+.infoLbl {
+    font-family: var(--m), sans-serif;
+    font-size: 9.5px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--faint);
+    width: 138px;
+    flex: 0 0 138px;
+    padding-top: 1px;
+}
+
+.infoPC {
+    background: rgba(56, 191, 80, .06);
+    margin: 0 -8px;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.infoPC .infoLbl {
+    color: var(--red);
+}
+
+.unknownFaint {
+    color: var(--faint);
+}
+

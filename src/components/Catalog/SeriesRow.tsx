@@ -31,23 +31,9 @@ interface SeriesRowProps {
 }
 
 export function SeriesRow({
-  entry,
-  lang,
-  isEpisodeWatched,
-  doneCount,
-  remainingMinutes,
-  isOpen,
-  tonightFit,
-  isFuture,
-  platform,
-  rating,
-  disneyPlusHref,
-  onToggleOpen,
-  onToggleEpisode,
-  onBulkToggle,
-  onRate,
-  onOpenInfo,
-  onCopiedForDisney,
+                            entry, lang, isEpisodeWatched, doneCount, remainingMinutes,
+                            isOpen, tonightFit, isFuture, platform, rating, disneyPlusHref,
+                            onToggleOpen, onToggleEpisode, onBulkToggle, onRate, onOpenInfo, onCopiedForDisney,
 }: SeriesRowProps) {
   const title = getTitle(entry, lang);
   const allDone = doneCount === entry.count;
@@ -69,9 +55,7 @@ export function SeriesRow({
 
   const handleHeaderClick = (event: ReactMouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLElement;
-    // .info-btn et .dp-link sont des classes globales ; sgBulk utilise data-bulk
-    // car la classe est scopée par CSS Modules (nom haché).
-    if (target.closest('[data-bulk]') || target.closest('.info-btn') || target.closest('.dp-link')) return;
+    if (target.closest('[data-bulk]') || target.closest('.info-btn') || target.closest('[data-dp-link]')) return;
     onToggleOpen();
   };
 
@@ -91,7 +75,10 @@ export function SeriesRow({
           </label>
         </div>
         <div className={styles.sgInfo}>
-          <div className={styles.sgName}>{title}</div>
+          <div className={styles.sgName}>
+            {title}
+            <SeriesTonightBadge lang={lang} visible={tonightFit}/>
+          </div>
           <div className={styles.sgSub}>
             {entry.opt ? <OptionalBadge lang={lang} /> : null}
             {platform ? <PlatformBadge platform={platform} lang={lang} /> : null}
@@ -99,7 +86,6 @@ export function SeriesRow({
             <span className={styles.sgRemtxt}>
               {doneCount}/{entry.count} · {fmt(remainingMinutes)}
             </span>
-            <SeriesTonightBadge lang={lang} />
           </div>
         </div>
         <button type="button" className="info-btn" onClick={onOpenInfo}>
@@ -113,16 +99,18 @@ export function SeriesRow({
             <DisneyPlusLink href={disneyPlusHref} title={title} onCopied={onCopiedForDisney}/>
           </div>
         </div>
-        <StarRating rating={rating} variant="sg-stars" onRate={onRate}/>
+        <StarRating rating={rating} containerClassName={styles.sgStars} onRate={onRate}/>
       </div>
-      <SeriesEpisodeList
-        seriesId={entry.id}
-        epMins={entry.epMins}
-        isEpisodeWatched={isEpisodeWatched}
-        future={isFuture}
-        lang={lang}
-        onToggleEpisode={onToggleEpisode}
-      />
+      {isOpen && (
+        <SeriesEpisodeList
+          seriesId={entry.id}
+          epMins={entry.epMins}
+          isEpisodeWatched={isEpisodeWatched}
+          future={isFuture}
+          lang={lang}
+          onToggleEpisode={onToggleEpisode}
+        />
+      )}
     </div>
   );
 }

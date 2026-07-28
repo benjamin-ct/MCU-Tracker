@@ -1,0 +1,58 @@
+/* ── Tonight Stepper ── */
+.tnWrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.tnLbl {
+    font-family: var(--m), sans-serif;
+    font-size: 10px;
+    color: var(--faint);
+    white-space: nowrap;
+}
+
+.tnStepper {
+    display: flex;
+    align-items: center;
+    background: var(--card);
+    border: 1px solid var(--ln2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.tnBtn {
+    appearance: none;
+    border: none;
+    background: transparent;
+    color: var(--dim);
+    font-size: 16px;
+    font-weight: 600;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tnBtn:active {
+    color: var(--red);
+}
+
+.tnVal {
+    font-family: var(--m), sans-serif;
+    font-size: 10.5px;
+    color: var(--text);
+    font-weight: 500;
+    min-width: 32px;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .tnWrap {
+        margin-left: 0;
+    }
+}
+

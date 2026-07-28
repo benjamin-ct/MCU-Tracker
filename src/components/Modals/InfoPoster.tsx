@@ -7,6 +7,7 @@ import {useEffect, useState} from 'react';
 import type {CatalogEntry, InfoEntry, Lang} from '../../data';
 import type {PosterFetchResult} from '../../hooks';
 import {t, trTmdbErrGeneric} from '../../i18n';
+import styles from './InfoPoster.module.css';
 
 const CHAPTER_GRADIENTS: [string, string][] = [
   ['#1E7A2C', '#0B120C'],
@@ -20,7 +21,7 @@ const CHAPTER_GRADIENTS: [string, string][] = [
 const STOP_WORDS = new Set(['le', 'la', 'les', 'de', 'du', 'des', 'et', 'à', 'a', 'the', 'of', 'and', 'an', 'un', 'une']);
 
 function posterInitials(title: string): string {
-  const words = title.replace(/[:().!'’]/g, ' ').split(/\s+/).filter(Boolean);
+  const words = title.replace(/[:().!'']/g, ' ').split(/\s+/).filter(Boolean);
   const significant = words.filter((word) => !STOP_WORDS.has(word.toLowerCase()));
   const use = significant.length ? significant : words;
   if (use.length === 1) return use[0].slice(0, 2).toUpperCase();
@@ -33,7 +34,6 @@ function probeLoad(url: string, onLoaded: (url: string) => void): () => void {
   probe.onload = () => {
     if (!cancelled) onLoaded(url);
   };
-  // Silent on failure: the generated poster stays in place, nothing to show for it.
   probe.src = url;
   return () => {
     cancelled = true;
@@ -68,10 +68,8 @@ export function InfoPoster({ entry, info, title, lang, fetchPoster, onError }: I
         return;
       }
       if (!info?.tmdb) return;
-
       const result = await fetchPoster(info.tmdb);
       if (cancelled) return;
-
       if (!result.ok) {
         if (result.error === 'invalid-key') onError(t(lang, 'tmdbErrInvalidKey'));
         else if (result.error === 'not-found') onError(t(lang, 'tmdbErrNotFound'));
@@ -79,12 +77,9 @@ export function InfoPoster({ entry, info, title, lang, fetchPoster, onError }: I
         else if (result.error === 'http') onError(trTmdbErrGeneric(lang, result.httpStatus));
         return;
       }
-
       if (result.url) {
         cancelStale = probeLoad(result.url, setPosterUrl);
       } else if (result.source === 'proxy' || result.source === 'personal-key') {
-        // Only a definitive "checked, nothing found" answer gets a message — a cache
-        // hit replaying a past null, or no way to even check, stays silent.
         onError(t(lang, 'tmdbNoPoster'));
       }
     }
@@ -101,15 +96,15 @@ export function InfoPoster({ entry, info, title, lang, fetchPoster, onError }: I
 
   return (
     <div
-      className="info-poster"
+      className={styles.poster}
       style={
         posterUrl
           ? { backgroundImage: `url('${posterUrl}')`, backgroundSize: 'cover', backgroundPosition: 'center' }
           : { background: `linear-gradient(150deg,${gradientStart},${gradientEnd})` }
       }
     >
-      <span className="info-poster-icon">{icon}</span>
-      {posterUrl ? null : <span className="info-poster-init">{posterInitials(title)}</span>}
+      <span className={styles.posterIcon}>{icon}</span>
+      {posterUrl ? null : <span className={styles.posterInit}>{posterInitials(title)}</span>}
     </div>
   );
 }

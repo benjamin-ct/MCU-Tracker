@@ -3,8 +3,9 @@
 // since a second .flt wrapper also hosts ViewFilterToggle + TonightStepper together.
 // Resetting the chapter-collapse state on sort change (cGroup.clear() in the legacy
 // app, since group keys differ between chrono/release) is the caller's responsibility.
-import type { Lang, SortMode } from '../../data/types';
-import { t } from '../../i18n';
+import type {Lang, SortMode} from '../../data';
+import {t} from '../../i18n';
+import styles from './FilterGroup.module.css';
 
 interface SortToggleProps {
   sortMode: SortMode;
@@ -14,17 +15,17 @@ interface SortToggleProps {
 
 export function SortToggle({ sortMode, lang, onChange }: SortToggleProps) {
   return (
-    <div className="flt-grp">
+    <div className={styles.fltGrp}>
       <button
         type="button"
-        className={sortMode === 'chrono' ? 'flt-btn on' : 'flt-btn'}
+        className={sortMode === 'chrono' ? `${styles.fltBtn} ${styles.on}` : styles.fltBtn}
         onClick={() => onChange('chrono')}
       >
         {t(lang, 'sortChrono')}
       </button>
       <button
         type="button"
-        className={sortMode === 'release' ? 'flt-btn on' : 'flt-btn'}
+        className={sortMode === 'release' ? `${styles.fltBtn} ${styles.on}` : styles.fltBtn}
         onClick={() => onChange('release')}
       >
         {t(lang, 'sortRelease')}

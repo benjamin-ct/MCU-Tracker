@@ -1,23 +1,26 @@
-// Ported from starsHTML()/refreshStars() (legacy js/render.js) + the document-level
-// click delegation in js/state.js. Visibility (height 0 -> 27px/41px on watched) is
-// entirely CSS-driven by the ancestor .row.done/.sg.sg-done class — this component
-// just renders the 5 stars, the parent row/series component owns that ancestor class.
+import {useState} from 'react';
+import styles from './StarRating.module.css';
+
 interface StarRatingProps {
   rating: number;
-  variant: 'stars' | 'sg-stars';
+  containerClassName: string;
   onRate: (value: number) => void;
 }
 
 const STAR_VALUES = [1, 2, 3, 4, 5];
 
-export function StarRating({ rating, variant, onRate }: StarRatingProps) {
+export function StarRating({rating, containerClassName, onRate}: StarRatingProps) {
+  const [hoverRating, setHoverRating] = useState(0);
+
   return (
-    <div className={variant}>
+    <div className={containerClassName}>
       {STAR_VALUES.map((value) => (
         <span
           key={value}
-          className={value <= rating ? 'star lit' : 'star'}
+          className={value <= (hoverRating || rating) ? `${styles.star} ${styles.lit}` : styles.star}
           onClick={() => onRate(value)}
+          onMouseEnter={() => setHoverRating(value)}
+          onMouseLeave={() => setHoverRating(0)}
         >
           ★
         </span>

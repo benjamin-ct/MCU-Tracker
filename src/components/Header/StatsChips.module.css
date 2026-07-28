@@ -1,0 +1,112 @@
+/* ── Stats Chips ── */
+.stats {
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.statL {
+    flex: none;
+    min-width: 145px;
+    white-space: nowrap;
+}
+
+.rnum {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.runit {
+    font-size: 20px;
+    color: var(--dim);
+    font-weight: 500;
+    margin-left: 2px;
+    font-variant-numeric: tabular-nums;
+}
+
+.rlbl {
+    font-family: var(--m), sans-serif;
+    font-size: 9.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-top: 5px;
+}
+
+.chips {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    align-items: flex-end;
+}
+
+.chip {
+    font-family: var(--m), sans-serif;
+    font-size: 10.5px;
+    color: var(--dim);
+    background: var(--raised);
+    border: 1px solid var(--ln2);
+    border-radius: 6px;
+    padding: 4px 9px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    min-width: 88px;
+    text-align: center;
+}
+
+.chip b {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.chip.accent {
+    color: var(--red);
+    border-color: var(--red-glow);
+    background: rgba(56, 191, 80, .07);
+}
+
+@media (min-width: 768px) {
+    .stats {
+        margin: 0;
+        flex: none;
+        flex-direction: row;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .statL {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+    }
+
+    .rlbl {
+        margin: 0;
+    }
+
+    .rnum {
+        font-size: 26px;
+    }
+
+    .runit {
+        font-size: 14px;
+    }
+
+    .chips {
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .chip {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
+}
+

@@ -1,6 +1,3 @@
-// Composes the 5 header pieces into the sticky .top bar from the legacy index.html —
-// a straight 1:1 structural port, only the pieces are now components instead of one
-// big imperative render() pass over hand-built DOM.
 import type {Lang, Mode, SortMode} from '../../data';
 import type {Theme} from '../../hooks';
 import {BrandBar} from './BrandBar';
@@ -8,6 +5,7 @@ import {ProgressStrip} from './ProgressStrip';
 import {StatsChips} from './StatsChips';
 import {DoomsdayCountdown} from './DoomsdayCountdown';
 import {ModeToggle} from './ModeToggle';
+import styles from './Header.module.css';
 
 interface HeaderProps {
   lang: Lang;
@@ -26,25 +24,16 @@ interface HeaderProps {
 }
 
 export function Header({
-  lang,
-  sortMode,
-  theme,
-  mode,
-  onToggleLang,
-  onToggleTheme,
-  onModeChange,
-  remainingMinutes,
-  watchedMinutes,
-  percentComplete,
-  eveningsRemaining,
-  daysLeft,
-  futurePendingCount,
+                         lang, sortMode, theme, mode,
+                         onToggleLang, onToggleTheme, onModeChange,
+                         remainingMinutes, watchedMinutes, percentComplete,
+                         eveningsRemaining, daysLeft, futurePendingCount,
 }: HeaderProps) {
   return (
-    <div className="top">
+    <div className={styles.top}>
       <BrandBar lang={lang} sortMode={sortMode} theme={theme} onToggleLang={onToggleLang} onToggleTheme={onToggleTheme} />
       <ProgressStrip percentComplete={percentComplete} />
-      <div className="hd-row">
+      <div className={styles.hdRow}>
         <StatsChips
           remainingMinutes={remainingMinutes}
           watchedMinutes={watchedMinutes}

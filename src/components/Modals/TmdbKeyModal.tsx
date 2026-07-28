@@ -6,6 +6,8 @@ import {useState} from 'react';
 import type {Lang} from '../../data';
 import {t} from '../../i18n';
 import {Modal} from './Modal';
+import modalStyles from './Modal.module.css';
+import styles from './TmdbKeyModal.module.css';
 
 interface TmdbKeyModalProps {
   open: boolean;
@@ -24,14 +26,11 @@ export function TmdbKeyModal({ open, tmdbKey, lang, onClose, onSave, onClear }: 
   if (open !== prevOpen || tmdbKey !== prevTmdbKey) {
     setPrevOpen(open);
     setPrevTmdbKey(tmdbKey);
-    if (open) {
-      setValue(tmdbKey ?? '');
-    }
+    if (open) setValue(tmdbKey ?? '');
   }
 
   const handleSave = () => {
-    const trimmed = value.trim();
-    onSave(trimmed || null);
+    onSave(value.trim() || null);
     onClose();
   };
 
@@ -43,37 +42,24 @@ export function TmdbKeyModal({ open, tmdbKey, lang, onClose, onSave, onClear }: 
 
   return (
     <Modal open={open} onClose={onClose} maxWidthPx={420}>
-      <div className="stat-top">
-        <span className="stat-h2">{t(lang, 'tmdbBtn')}</span>
-        <button type="button" className="stat-close" onClick={onClose}>
-          ✕
-        </button>
+      <div className={modalStyles.modalTop}>
+        <span className={modalStyles.modalH2}>{t(lang, 'tmdbBtn')}</span>
+        <button type="button" className={modalStyles.modalClose} onClick={onClose}>✕</button>
       </div>
-      <p className="info-synopsis" style={{ fontSize: '12.5px' }} dangerouslySetInnerHTML={{ __html: t(lang, 'tmdbHelp1') }} />
-      <p className="info-synopsis" style={{ fontSize: '11px', color: 'var(--faint)' }}>
-        {t(lang, 'tmdbHelp2')}
-      </p>
+      <p className={styles.helperText} dangerouslySetInnerHTML={{__html: t(lang, 'tmdbHelp1')}}/>
+      <p className={styles.helperNote}>{t(lang, 'tmdbHelp2')}</p>
       <input
         type="text"
-        className="search-input"
-        style={{
-          width: '100%',
-          boxSizing: 'border-box',
-          background: 'var(--raised)',
-          border: '1px solid var(--ln2)',
-          borderRadius: '8px',
-          padding: '10px 12px',
-          marginBottom: '12px',
-        }}
+        className={styles.keyInput}
         placeholder={t(lang, 'tmdbInputPlaceholder')}
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />
-      <div className="io-row" style={{ justifyContent: 'flex-start', marginTop: 0 }}>
-        <button type="button" className="io-btn" onClick={handleSave}>
+      <div className={styles.ioRow}>
+        <button type="button" className={styles.ioBtn} onClick={handleSave}>
           {t(lang, 'tmdbSave')}
         </button>
-        <button type="button" className="io-btn" onClick={handleClear}>
+        <button type="button" className={styles.ioBtn} onClick={handleClear}>
           {t(lang, 'tmdbClear')}
         </button>
       </div>

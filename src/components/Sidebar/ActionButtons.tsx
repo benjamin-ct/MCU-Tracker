@@ -1,9 +1,6 @@
-// Ported from the .act-row element in the legacy index.html. The surprise-pick
-// logic (random unwatched entry + scroll/highlight/toast) and the stats-modal open
-// state live at the App level (they need the full catalog and modal visibility
-// state) — this component only reports the two button clicks.
-import type { Lang } from '../../data/types';
-import { t } from '../../i18n';
+import type {Lang} from '../../data/types';
+import {t} from '../../i18n';
+import styles from './ActionButtons.module.css';
 
 interface ActionButtonsProps {
   lang: Lang;
@@ -13,11 +10,11 @@ interface ActionButtonsProps {
 
 export function ActionButtons({ lang, onSurprise, onOpenStats }: ActionButtonsProps) {
   return (
-    <div className="act-row">
-      <button type="button" className="act-btn" onClick={onSurprise}>
+    <div className={styles.actRow}>
+      <button type="button" className={styles.actBtn} onClick={onSurprise}>
         {t(lang, 'surpriseBtn')}
       </button>
-      <button type="button" className="act-btn" onClick={onOpenStats}>
+      <button type="button" className={styles.actBtn} onClick={onOpenStats}>
         {t(lang, 'statsBtn')}
       </button>
     </div>

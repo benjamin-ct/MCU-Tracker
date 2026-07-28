@@ -1,10 +1,5 @@
-// Ported from the .stat-modal shell shared by the stats/info/TMDB-key modals in the
-// legacy index.html, plus the Escape-closes-any-open-modal and click-outside-closes
-// handlers from js/app.js. There's no open/close CSS transition on the original (just
-// display:none/flex via .vis), so unmounting when closed is visually identical to the
-// original's class toggle and simpler — it also resets any modal-local state
-// (e.g. InfoPoster's fetch) each time it reopens, instead of it going stale.
-import { useEffect, type ReactNode } from 'react';
+import {type ReactNode, useEffect} from 'react';
+import styles from './Modal.module.css';
 
 interface ModalProps {
   open: boolean;
@@ -27,12 +22,12 @@ export function Modal({ open, onClose, maxWidthPx, children }: ModalProps) {
 
   return (
     <div
-      className="stat-modal vis"
+      className={styles.backdrop}
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
     >
-      <div className="stat-panel" style={maxWidthPx ? { maxWidth: `${maxWidthPx}px` } : undefined}>
+      <div className={styles.panel} style={maxWidthPx ? {maxWidth: `${maxWidthPx}px`} : undefined}>
         {children}
       </div>
     </div>

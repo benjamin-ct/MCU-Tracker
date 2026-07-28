@@ -1,20 +1,21 @@
-// Ported from the .strip element in the legacy index.html + the .fill width/glow
-// logic in updateStats() (js/render.js). The film-reel "holes" decoration either side
-// is pure CSS background, no markup needed beyond the empty divs.
+import styles from './ProgressStrip.module.css';
+
 interface ProgressStripProps {
   percentComplete: number;
 }
 
 export function ProgressStrip({ percentComplete }: ProgressStripProps) {
   const glow = percentComplete > 0 && percentComplete < 100;
-
   return (
-    <div className="strip">
-      <div className="holes" />
-      <div className="bar">
-        <div className={glow ? 'fill glow' : 'fill'} style={{ width: `${percentComplete}%` }} />
+    <div className={styles.strip}>
+      <div className={styles.holes}/>
+      <div className={styles.bar}>
+        <div
+          className={glow ? `${styles.fill} ${styles.glow}` : styles.fill}
+          style={{width: `${percentComplete}%`}}
+        />
       </div>
-      <div className="holes" />
+      <div className={styles.holes}/>
     </div>
   );
 }

@@ -15,8 +15,6 @@
 }
 
 .rowTop label {
-    /* flex:1 : le label remplit tout l'espace disponible → info-btn et rtD
-       restent à position fixe à droite, quelle que soit la longueur du titre. */
     flex: 1;
     min-width: 0;
 }
@@ -29,10 +27,6 @@
     margin-left: auto;
     padding-left: 8px;
     margin-top: 14.5px;
-}
-
-.rowTop :global(.tn-tag) {
-    margin-top: 13.5px;
 }
 
 .row label {
@@ -60,7 +54,7 @@
 }
 
 .rtYr {
-    font-family: var(--m);
+    font-family: var(--m), sans-serif;
     font-size: 10.5px;
     color: var(--faint);
 }
@@ -73,14 +67,14 @@
 }
 
 .rtD {
-    font-family: var(--m);
+    font-family: var(--m), sans-serif;
     font-size: 11px;
     color: var(--dim);
     white-space: nowrap;
 }
 
 .watchDate {
-    font-family: var(--m);
+    font-family: var(--m), sans-serif;
     font-size: 9.5px;
     height: 12px;
     overflow: hidden;
@@ -103,7 +97,7 @@
 }
 
 /* ── TONIGHT FIT ── */
-.row.tnFit :global(.tn-tag) {
+.row.tnFit .tonightTag {
     display: inline-flex;
 }
 
@@ -120,9 +114,9 @@
     cursor: default;
 }
 
-/* ── FOOTER : crossfade dp-link ↔ étoiles à hauteur fixe ── */
-/* grid stack : les deux enfants occupent la même cellule → hauteur = max des deux,
-   ne change JAMAIS. Seule l'opacité est animée, plus aucune convulsion. */
+/* ── FOOTER : crossfade dp-link ↔ étoiles à hauteur fixe ──
+   grid stack : les deux enfants occupent la même cellule → hauteur = max des deux,
+   ne change jamais. Seule l'opacité est animée. */
 .rowFooter {
     display: grid;
 }
@@ -143,29 +137,38 @@
 }
 
 .dpRowInner {
-    padding: 9px 0 9px 31px; /* hauteur totale : 9+23+9 = 41px */
+    padding: 9px 0 9px 31px;
     display: flex;
     align-items: center;
 }
 
-/* Quand checked, dpRow est invisible (opacity:0) mais contribue encore à la
-   hauteur du grid. On réduit son padding vertical de 9px→2px (41px→27px) pour
-   compenser le +14px de watchDate qui apparaît, et garder la hauteur de ligne
-   identique entre état vu et non-vu. */
+/* Quand checked, dpRow reste dans le grid (hauteur fixe) mais avec padding réduit
+   pour compenser le watchDate qui apparaît (+14px). */
 .row.done .dpRowInner {
     padding-top: 2px;
     padding-bottom: 2px;
 }
 
-/* Neutraliser height:0/overflow:hidden du .stars global dans ce contexte :
-   la visibilité est gérée par opacity uniquement. */
-.rowFooter :global(.stars) {
+/* ── Stars container ── */
+.stars {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 0;
+    overflow: hidden;
+    padding: 0 0 0 31px;
+    opacity: 0;
+    pointer-events: none;
+    transition: height .22s ease .06s, opacity .2s ease .06s;
+}
+
+.rowFooter .stars {
     height: auto;
     overflow: visible;
     transition: opacity .2s ease .06s;
 }
 
-.row.done .rowFooter :global(.stars) {
+.row.done .rowFooter .stars {
     opacity: 1;
     pointer-events: auto;
 }
@@ -184,15 +187,10 @@
         margin-top: 16.5px;
     }
 
-    .rowTop :global(.tn-tag) {
-        margin-top: 15.5px;
-    }
-
     .dpRowInner {
-        padding: 10px 0 10px 36px; /* 10+23+10 = 43px */
+        padding: 10px 0 10px 36px;
     }
 
-    /* Compensation checked sur desktop : 43px→29px (≈ stars height 29px desktop) */
     .row.done .dpRowInner {
         padding-top: 3px;
         padding-bottom: 3px;
@@ -203,4 +201,3 @@
         line-height: 20px;
     }
 }
-

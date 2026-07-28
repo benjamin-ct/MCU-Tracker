@@ -1,14 +1,11 @@
-// Composes the 6 sidebar pieces into the <aside class="sidebar"> from the legacy
-// index.html — a straight structural port. Two separate .flt wrappers, matching the
-// original: the first holds just the sort toggle, the second holds the view filter
-// alongside the tonight stepper (pushed right via .tn-wrap's margin-left:auto).
-import type { CatalogEntry, Lang, SortMode, ViewFilter } from '../../data/types';
-import { NextUpCard } from './NextUpCard';
-import { ActionButtons } from './ActionButtons';
-import { SortToggle } from './SortToggle';
-import { ViewFilterToggle } from './ViewFilterToggle';
-import { TonightStepper } from './TonightStepper';
-import { BulkExpand } from './BulkExpand';
+import type {CatalogEntry, Lang, SortMode, ViewFilter} from '../../data';
+import {NextUpCard} from './NextUpCard';
+import {ActionButtons} from './ActionButtons';
+import {SortToggle} from './SortToggle';
+import {ViewFilterToggle} from './ViewFilterToggle';
+import {TonightStepper} from './TonightStepper';
+import {BulkExpand} from './BulkExpand';
+import styles from './Sidebar.module.css';
 
 interface SidebarProps {
   lang: Lang;
@@ -48,7 +45,7 @@ export function Sidebar({
   onCollapseAll,
 }: SidebarProps) {
   return (
-    <aside className="sidebar">
+    <aside className={styles.sidebar}>
       <NextUpCard
         next={next}
         nextEpisodeIndex={nextEpisodeIndex}
@@ -58,10 +55,10 @@ export function Sidebar({
         onMarkNext={onMarkNext}
       />
       <ActionButtons lang={lang} onSurprise={onSurprise} onOpenStats={onOpenStats} />
-      <div className="flt">
+      <div className={styles.filterRow}>
         <SortToggle sortMode={sortMode} lang={lang} onChange={onSortChange} />
       </div>
-      <div className="flt">
+      <div className={styles.filterRow}>
         <ViewFilterToggle viewFilter={viewFilter} lang={lang} onChange={onViewFilterChange} />
         <TonightStepper tonightMin={tonightMin} lang={lang} onStepUp={onTonightStepUp} onStepDown={onTonightStepDown} />
       </div>
