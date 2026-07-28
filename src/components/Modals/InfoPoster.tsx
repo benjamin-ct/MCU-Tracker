@@ -3,10 +3,10 @@
 // fallback; a real poster only ever replaces it after a same-origin <img> probe
 // confirms it actually loads, so a bad URL/offline network never leaves a broken
 // image in its place.
-import { useEffect, useState } from 'react';
-import type { CatalogEntry, InfoEntry, Lang } from '../../data/types';
-import type { PosterFetchResult } from '../../hooks/useTmdbPoster';
-import { t, trTmdbErrGeneric } from '../../i18n';
+import {useEffect, useState} from 'react';
+import type {CatalogEntry, InfoEntry, Lang} from '../../data';
+import type {PosterFetchResult} from '../../hooks';
+import {t, trTmdbErrGeneric} from '../../i18n';
 
 const CHAPTER_GRADIENTS: [string, string][] = [
   ['#1E7A2C', '#0B120C'],
@@ -51,9 +51,14 @@ interface InfoPosterProps {
 
 export function InfoPoster({ entry, info, title, lang, fetchPoster, onError }: InfoPosterProps) {
   const [posterUrl, setPosterUrl] = useState<string | null>(null);
+  const [prevId, setPrevId] = useState<string | null>(null);
+
+  if (entry.id !== prevId) {
+    setPrevId(entry.id);
+    setPosterUrl(null);
+  }
 
   useEffect(() => {
-    setPosterUrl(null);
     let cancelStale: (() => void) | undefined;
     let cancelled = false;
 

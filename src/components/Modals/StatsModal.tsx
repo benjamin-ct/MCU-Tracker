@@ -1,12 +1,13 @@
 // Ported from #stat-modal (legacy index.html) + openStats() (legacy js/modals.js).
-import type { CatalogEntry, Lang, Mode } from '../../data/types';
-import { getSectionNames, getTitle } from '../../data/localize';
-import { t, trAvgRated } from '../../i18n';
-import { fmt } from '../../utils/format';
-import { totals, type WatchDates } from '../../utils/compute';
-import { buildCumulativeSeries } from '../../utils/stats';
-import { Modal } from './Modal';
-import { CumulativeChart } from './CumulativeChart';
+import {useEffect, useState} from 'react';
+import type {CatalogEntry, Lang, Mode} from '../../data';
+import {getSectionNames, getTitle} from '../../data';
+import {t, trAvgRated} from '../../i18n';
+import {fmt} from '../../utils/format';
+import {totals, type WatchDates} from '../../utils/compute';
+import {buildCumulativeSeries} from '../../utils/stats';
+import {Modal} from './Modal';
+import {CumulativeChart} from './CumulativeChart';
 
 const WEEK_MS = 7 * 86400000;
 
@@ -27,6 +28,15 @@ interface StatsModalProps {
 export function StatsModal({ open, onClose, catalog, watchDates, ratings, mode, lang }: StatsModalProps) {
   const { t: totalMinutes, w: watchedMinutes, r: remainingMinutes, ps: sectionStats } = totals(catalog, watchDates, mode);
   const percentComplete = totalMinutes > 0 ? Math.round((watchedMinutes / totalMinutes) * 100) : 0;
+  const [time, setTime] = useState(() => Date.now());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(Date.now());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const ratedEntries = catalog
     .filter((entry) => ratings[entry.id])
@@ -36,7 +46,7 @@ export function StatsModal({ open, onClose, catalog, watchDates, ratings, mode, 
     ? (ratedEntries.reduce((sum, x) => sum + x.rating, 0) / ratedEntries.length).toFixed(1)
     : '0';
 
-  const weekAgoIso = new Date(Date.now() - WEEK_MS).toISOString();
+  const weekAgoIso = new Date(time - WEEK_MS).toISOString();
   const watchedThisWeek = Object.values(watchDates).filter((d) => d >= weekAgoIso).length;
 
   const series = buildCumulativeSeries(catalog, watchDates);

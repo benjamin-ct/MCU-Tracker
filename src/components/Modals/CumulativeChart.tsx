@@ -4,12 +4,12 @@
 // touch handlers as passive by default, which silently breaks preventDefault() and
 // lets the page scroll instead of dragging the chart's tooltip on mobile — the exact
 // interaction the legacy app's own comment called out needing this for.
-import { useEffect, useMemo, useRef, useState } from 'react';
-import type { Lang } from '../../data/types';
-import { getMonthNames } from '../../data/localize';
-import { t } from '../../i18n';
-import { fmt } from '../../utils/format';
-import type { CumulativePoint } from '../../utils/stats';
+import {useEffect, useMemo, useRef, useState} from 'react';
+import type {Lang} from '../../data';
+import {getMonthNames} from '../../data';
+import {t} from '../../i18n';
+import {fmt} from '../../utils/format';
+import type {CumulativePoint} from '../../utils/stats';
 
 const CHART_WIDTH = 600;
 const CHART_HEIGHT = 132;
@@ -46,7 +46,7 @@ interface CumulativeChartProps {
   lang: Lang;
 }
 
-export function CumulativeChart({ series, totalMinutes, lang }: CumulativeChartProps) {
+export function CumulativeChart({series, totalMinutes, lang}: CumulativeChartProps) {
   const monthNames = getMonthNames(lang);
   const points = useMemo(() => computeGeom(series), [series]);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
@@ -71,7 +71,9 @@ export function CumulativeChart({ series, totalMinutes, lang }: CumulativeChartP
   };
 
   const handlePointerRef = useRef(handlePointer);
-  handlePointerRef.current = handlePointer;
+  useEffect(() => {
+    handlePointerRef.current = handlePointer;
+  });
 
   useEffect(() => {
     const svg = svgRef.current;
@@ -82,7 +84,7 @@ export function CumulativeChart({ series, totalMinutes, lang }: CumulativeChartP
         event.preventDefault();
       }
     };
-    svg.addEventListener('touchmove', handleTouchMove, { passive: false });
+    svg.addEventListener('touchmove', handleTouchMove, {passive: false});
     return () => svg.removeEventListener('touchmove', handleTouchMove);
   }, []);
 
@@ -101,7 +103,7 @@ export function CumulativeChart({ series, totalMinutes, lang }: CumulativeChartP
 
   return (
     <div className="chart-inner">
-      <div className="chart-tip" style={{ opacity: hovered ? 1 : 0, left: `${tooltipLeftPercent}%` }}>
+      <div className="chart-tip" style={{opacity: hovered ? 1 : 0, left: `${tooltipLeftPercent}%`}}>
         {hovered ? (
           <>
             <b>{fmt(hovered.cum)}</b> · {hoveredPercent}% — {fmtShortDate(hovered.date, monthNames)}
@@ -111,7 +113,7 @@ export function CumulativeChart({ series, totalMinutes, lang }: CumulativeChartP
       <svg
         ref={svgRef}
         viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
-        style={{ width: '100%', height: '112px', display: 'block', touchAction: 'none' }}
+        style={{width: '100%', height: '112px', display: 'block', touchAction: 'none'}}
         onPointerMove={(event) => handlePointer(event.clientX)}
         onPointerDown={(event) => handlePointer(event.clientX)}
         onPointerLeave={hide}
@@ -122,7 +124,7 @@ export function CumulativeChart({ series, totalMinutes, lang }: CumulativeChartP
         }}
         onTouchEnd={hide}
       >
-        <polygon points={areaPts} fill="rgba(56,191,80,.14)" />
+        <polygon points={areaPts} fill="rgba(56,191,80,.14)"/>
         <line
           className="chart-vline"
           x1={hovered ? hovered.x : 0}
@@ -134,7 +136,8 @@ export function CumulativeChart({ series, totalMinutes, lang }: CumulativeChartP
           strokeWidth={1}
           opacity={hovered ? 1 : 0}
         />
-        <polyline points={lineStr} fill="none" stroke="#38BF50" strokeWidth={2.2} strokeLinejoin="round" strokeLinecap="round" />
+        <polyline points={lineStr} fill="none" stroke="#38BF50" strokeWidth={2.2} strokeLinejoin="round"
+                  strokeLinecap="round"/>
         <circle
           className="chart-marker"
           r={4}

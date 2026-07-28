@@ -2,10 +2,10 @@
 // js/app.js. Persisting the key and showing the saved/removed toast is delegated to
 // the caller (onSave/onClear) — this component only owns the text field's local
 // editing state, reset to the current stored key each time the modal opens.
-import { useEffect, useState } from 'react';
-import type { Lang } from '../../data/types';
-import { t } from '../../i18n';
-import { Modal } from './Modal';
+import {useState} from 'react';
+import type {Lang} from '../../data';
+import {t} from '../../i18n';
+import {Modal} from './Modal';
 
 interface TmdbKeyModalProps {
   open: boolean;
@@ -18,10 +18,16 @@ interface TmdbKeyModalProps {
 
 export function TmdbKeyModal({ open, tmdbKey, lang, onClose, onSave, onClear }: TmdbKeyModalProps) {
   const [value, setValue] = useState(tmdbKey ?? '');
+  const [prevOpen, setPrevOpen] = useState(open);
+  const [prevTmdbKey, setPrevTmdbKey] = useState(tmdbKey);
 
-  useEffect(() => {
-    if (open) setValue(tmdbKey ?? '');
-  }, [open, tmdbKey]);
+  if (open !== prevOpen || tmdbKey !== prevTmdbKey) {
+    setPrevOpen(open);
+    setPrevTmdbKey(tmdbKey);
+    if (open) {
+      setValue(tmdbKey ?? '');
+    }
+  }
 
   const handleSave = () => {
     const trimmed = value.trim();
