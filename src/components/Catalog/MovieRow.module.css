@@ -11,6 +11,10 @@
   display: flex;
   align-items: flex-start;
   gap: 6px;
+  /* Le padding-top vit ici (pas sur le label) : titre + bouton info + rtMeta
+     partent ainsi tous du même haut et s'alignent sur la 1re ligne du titre
+     via leur hauteur de ligne — aucun margin-top de compensation. */
+  padding-top: 11px;
   padding-right: 2px;
 }
 
@@ -19,21 +23,31 @@
   min-width: 0;
 }
 
-.rowTop :global(.info-btn) {
-  margin-top: 6px;
+/* Le bouton info (30px) porte déjà margin: -5px 0 → hauteur de layout = 20px,
+   soit la line-height du titre : il se centre naturellement, sans margin-top. */
+
+/* Durée + badge « ce soir » regroupés, centrés sur la ligne du titre.
+   min-height = line-height du titre (.rtT) → centrage sans valeur magique. */
+.rowTop .rtMeta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding-left: 8px;
+  min-height: 20px;
 }
 
 .rowTop .rtD {
-  margin-left: auto;
-  padding-left: 8px;
-  margin-top: 14.5px;
+  white-space: nowrap;
 }
 
 .row label {
   display: flex;
   align-items: flex-start;
   gap: 11px;
-  padding: 11px 0;
+  /* padding-top déplacé sur .rowTop ; on ne garde que l'espacement bas
+     (gap avant le footer). */
+  padding: 0 0 11px;
   cursor: pointer;
 }
 
@@ -100,6 +114,7 @@
 .row.tnFit .tonightTag {
   display: inline-flex;
 }
+
 
 /* ── FUTURE ── */
 .row.future {
@@ -177,16 +192,12 @@
 
 /* ── RESPONSIVE ── */
 @media (min-width: 768px) {
+  .rowTop {
+    padding-top: 13px;
+  }
+
   .row label {
-    padding: 13px 0;
-  }
-
-  .rowTop :global(.info-btn) {
-    margin-top: 8px;
-  }
-
-  .rowTop .rtD {
-    margin-top: 16.5px;
+    padding: 0 0 13px;
   }
 
   .dpRowInner {
