@@ -1,15 +1,15 @@
-import type {MouseEvent as ReactMouseEvent} from 'react';
-import {useEffect, useRef} from 'react';
+import type { MouseEvent as ReactMouseEvent } from 'react';
+import { useEffect, useRef } from 'react';
 
-import type {Lang, PlatformEntry, SeriesEntry} from '../../data';
-import {getTitle} from '../../data';
-import {t} from '../../i18n';
-import {fmt} from '../../utils/format';
-import {OptionalBadge, PlatformBadge, SeriesTonightBadge} from './Badges';
-import {DisneyPlusLink} from './DisneyPlusLink';
-import {SeriesEpisodeList} from './SeriesEpisodeList';
+import type { Lang, PlatformEntry, SeriesEntry } from '../../data';
+import { getTitle } from '../../data';
+import { t } from '../../i18n';
+import { fmt } from '../../utils/format';
+import { OptionalBadge, PlatformBadge, SeriesTonightBadge } from './Badges';
+import { DisneyPlusLink } from './DisneyPlusLink';
+import { SeriesEpisodeList } from './SeriesEpisodeList';
 import styles from './SeriesRow.module.css';
-import {StarRating} from './StarRating';
+import { StarRating } from './StarRating';
 
 interface SeriesRowProps {
   entry: SeriesEntry;
@@ -102,7 +102,7 @@ export function SeriesRow({
             </span>
           </div>
         </div>
-        <SeriesTonightBadge lang={lang} visible={tonightFit}/>
+        <SeriesTonightBadge lang={lang} visible={tonightFit} />
         <button type="button" className="info-btn" data-info onClick={onOpenInfo}>
           <span>i</span>
         </button>

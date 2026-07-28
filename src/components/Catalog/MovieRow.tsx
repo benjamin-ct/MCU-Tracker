@@ -1,10 +1,10 @@
-import {FilmEntry, getMonthNames, getTitle, Lang, PlatformEntry} from '../../data';
-import {trWatchedOn} from '../../i18n';
-import {fmt, fmtDayMonth} from '../../utils/format';
-import {OptionalBadge, PlatformBadge, TonightBadge} from './Badges';
-import {DisneyPlusLink} from './DisneyPlusLink';
+import { FilmEntry, getMonthNames, getTitle, Lang, PlatformEntry } from '../../data';
+import { trWatchedOn } from '../../i18n';
+import { fmt, fmtDayMonth } from '../../utils/format';
+import { OptionalBadge, PlatformBadge, TonightBadge } from './Badges';
+import { DisneyPlusLink } from './DisneyPlusLink';
 import styles from './MovieRow.module.css';
-import {StarRating} from './StarRating';
+import { StarRating } from './StarRating';
 
 interface MovieRowProps {
   entry: FilmEntry;
@@ -72,7 +72,7 @@ export function MovieRow({
         </label>
         <span className={styles.rtMeta}>
           <span className={styles.rtD}>{fmt(entry.m)}</span>
-          <TonightBadge lang={lang} visible={tonightFit}/>
+          <TonightBadge lang={lang} visible={tonightFit} />
         </span>
         <button type="button" className="info-btn" onClick={onOpenInfo}>
           <span>i</span>
