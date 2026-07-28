@@ -8,6 +8,7 @@
 // language, gathered in Record<Lang, …> so adding a language is a single new block the
 // compiler forces you to complete — no `lang === 'en'` ternaries to update everywhere.
 import type {ReactNode} from 'react';
+
 import type {Lang} from '../data';
 import {trTitleCount} from './translate';
 
@@ -120,9 +121,4 @@ export function trDoomsdayHere(lang: Lang): ReactNode {
 
 export function trDoomsdayPace(lang: Lang, hPerDay: string, isHeavyPace: boolean): ReactNode {
   return r(lang).doomsdayPace(hPerDay, isHeavyPace);
-}
-
-// Help text for the TMDB key modal — the embedded link opens TMDB's API settings page.
-export function TmdbHelpText({lang}: { lang: Lang }) {
-  return <>{r(lang).tmdbHelp}</>;
 }

@@ -86,6 +86,7 @@ function InfoModalBody({ entry, lang, onClose, fetchPoster, onPosterError }: Inf
     <>
       <div className={modalStyles.modalTop}>
         <InfoPoster
+          key={entry.id}
           entry={entry}
           info={info}
           title={title}

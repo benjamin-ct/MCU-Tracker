@@ -24,20 +24,10 @@ interface FooterProps {
   mode: Mode;
   onResetProgress: () => void;
   onImportData: (data: ImportedFileData) => void;
-  onOpenTmdbModal: () => void;
   onToast: (message: string) => void;
 }
 
-export function Footer({
-                         lang,
-                         watchDates,
-                         ratings,
-                         mode,
-                         onResetProgress,
-                         onImportData,
-                         onOpenTmdbModal,
-                         onToast,
-                       }: FooterProps) {
+export function Footer({lang, watchDates, ratings, mode, onResetProgress, onImportData, onToast}: FooterProps) {
   const [armed, setArmed] = useState(false);
   const armTimerRef = useRef<number | undefined>(undefined);
 
@@ -101,9 +91,6 @@ export function Footer({
           <span>{t(lang, 'importBtn')}</span>
           <input type="file" accept=".json" style={{ display: 'none' }} onChange={handleImportFile} />
         </label>
-        <button type="button" className={styles.ioBtn} onClick={onOpenTmdbModal}>
-          {t(lang, 'tmdbBtn')}
-        </button>
       </div>
       <div className={styles.lgd}>
         <OptionalBadge lang={lang}/>

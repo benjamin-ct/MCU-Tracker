@@ -1,10 +1,4 @@
-export {
-  TmdbHelpText,
-  trAllWatchedFuturePending,
-  trDoomsdayHere,
-  trDoomsdayPace,
-  trMarathonDoneReady,
-} from './richText';
+export {trAllWatchedFuturePending, trDoomsdayHere, trDoomsdayPace, trMarathonDoneReady} from './richText';
 export type { StringKey } from './strings';
 export {STRINGS, t} from './strings';
 export {
@@ -14,7 +8,6 @@ export {
   trRatedCount,
   trResultCount,
   trTitleCount,
-  trTmdbErrGeneric,
   trUpNextEmptyFuture,
   trWatchedOn,
 } from './translate';

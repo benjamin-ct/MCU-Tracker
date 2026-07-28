@@ -10,7 +10,7 @@ export { usePwaIcon } from './usePwaIcon';
 export type {Theme, UseThemeResult} from './useTheme';
 export {useTheme} from './useTheme';
 export type {PosterFetchResult, UseTmdbPosterResult} from './useTmdbPoster';
-export {useTmdbPoster} from './useTmdbPoster';
+export {TMDB_IMAGE_BASE, useTmdbPoster} from './useTmdbPoster';
 export type {UseToastResult} from './useToast';
 export {useToast} from './useToast';
 export type {ImportedProgressData, UseWatchProgressResult} from './useWatchProgress';

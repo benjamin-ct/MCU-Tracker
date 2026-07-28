@@ -12,7 +12,6 @@ interface Messages {
   titleCount: (n: number) => string;
   episodeCount: (n: number) => string;
   ratedCount: (n: number) => string;
-  tmdbErrGeneric: (status: number | string) => string;
   upNextEmptyFuture: (fp: number) => string;
   copiedForDisney: (short: string) => string;
   avgRated: (avg: number | string, n: number) => string;
@@ -23,7 +22,6 @@ const FR: Messages = {
   titleCount: (n) => `${n} titre${n > 1 ? 's' : ''}`,
   episodeCount: (n) => `${n} épisode${n > 1 ? 's' : ''}`,
   ratedCount: (n) => `${n} noté${n > 1 ? 's' : ''}`,
-  tmdbErrGeneric: (status) => `⚠ Erreur TMDB (${status})`,
   upNextEmptyFuture: (fp) => `🎬 Tout est vu de disponible — ${FR.titleCount(fp)} pas encore sorti${fp > 1 ? 's' : ''}`,
   copiedForDisney: (short) => `📋 "${short}" copié — cherche dans Disney+`,
   avgRated: (avg, n) => `⭐ Meilleures notes · Moyenne ${avg}/5 (${FR.ratedCount(n)})`,
@@ -35,7 +33,6 @@ const EN: Messages = {
   titleCount: (n) => `${n} title${n !== 1 ? 's' : ''}`,
   episodeCount: (n) => `${n} episode${n !== 1 ? 's' : ''}`,
   ratedCount: (n) => `${n} rated`,
-  tmdbErrGeneric: (status) => `⚠ TMDB error (${status})`,
   upNextEmptyFuture: (fp) => `🎬 Everything available is watched — ${EN.titleCount(fp)} not yet released`,
   copiedForDisney: (short) => `📋 "${short}" copied — search on Disney+`,
   avgRated: (avg, n) => `⭐ Best rated · Average ${avg}/5 (${EN.ratedCount(n)})`,
@@ -52,7 +49,6 @@ export const trResultCount = (lang: Lang, n: number): string => m(lang).resultCo
 export const trTitleCount = (lang: Lang, n: number): string => m(lang).titleCount(n);
 export const trEpisodeCount = (lang: Lang, n: number): string => m(lang).episodeCount(n);
 export const trRatedCount = (lang: Lang, n: number): string => m(lang).ratedCount(n);
-export const trTmdbErrGeneric = (lang: Lang, status: number | string): string => m(lang).tmdbErrGeneric(status);
 export const trUpNextEmptyFuture = (lang: Lang, fp: number): string => m(lang).upNextEmptyFuture(fp);
 export const trCopiedForDisney = (lang: Lang, short: string): string => m(lang).copiedForDisney(short);
 export const trAvgRated = (lang: Lang, avg: number | string, n: number): string => m(lang).avgRated(avg, n);

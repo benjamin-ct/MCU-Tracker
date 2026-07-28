@@ -74,11 +74,15 @@ export function daysLeft(doomsday: Date): number {
   return Math.max(0, Math.ceil((doomsday.getTime() - Date.now()) / 86400000));
 }
 
+// Capacity of one "evening" of watching, in minutes (~2h30). Used as the bin size when
+// estimating how many evenings the remaining content needs.
+export const EVENING_CAPACITY_MIN = 150;
+
 // Bin-packing (first-fit decreasing): places each remaining unit of content into an
 // "evening" of ~150min capacity. A single film longer than 150min still takes just one
 // evening (it doesn't get split), unlike the naive total/150 calculation which inflated
 // the evening count.
-export function estimateEvenings(units: number[], cap: number): number {
+export function estimateEvenings(units: number[], cap: number = EVENING_CAPACITY_MIN): number {
   if (!units.length) return 0;
   const sorted = units.slice().sort((a, b) => b - a);
   const bins: number[] = [];

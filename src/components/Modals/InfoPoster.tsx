@@ -7,7 +7,8 @@ import {useEffect, useState} from 'react';
 
 import type {CatalogEntry, InfoEntry, Lang} from '../../data';
 import type {PosterFetchResult} from '../../hooks';
-import {t, trTmdbErrGeneric} from '../../i18n';
+import {TMDB_IMAGE_BASE} from '../../hooks';
+import {t} from '../../i18n';
 import styles from './InfoPoster.module.css';
 
 const CHAPTER_GRADIENTS: [string, string][] = [
@@ -39,7 +40,7 @@ const STOP_WORDS = new Set([
 
 function posterInitials(title: string): string {
   const words = title
-    .replace(/[:().!'']/g, ' ')
+    .replace(/[:().!']/g, ' ')
     .split(/\s+/)
     .filter(Boolean);
   const significant = words.filter((word) => !STOP_WORDS.has(word.toLowerCase()));
@@ -70,13 +71,9 @@ interface InfoPosterProps {
 }
 
 export function InfoPoster({ entry, info, title, lang, fetchPoster, onError }: InfoPosterProps) {
+  // Remounted (via key={entry.id} at the call site) whenever the entry changes, so the
+  // poster resets to its generated fallback without any setState-during-render dance.
   const [posterUrl, setPosterUrl] = useState<string | null>(null);
-  const [prevId, setPrevId] = useState<string | null>(null);
-
-  if (entry.id !== prevId) {
-    setPrevId(entry.id);
-    setPosterUrl(null);
-  }
 
   useEffect(() => {
     let cancelStale: (() => void) | undefined;
@@ -84,22 +81,17 @@ export function InfoPoster({ entry, info, title, lang, fetchPoster, onError }: I
 
     async function load() {
       if (info?.poster) {
-        cancelStale = probeLoad(`https://image.tmdb.org/t/p/w342${info.poster}`, setPosterUrl);
+        cancelStale = probeLoad(`${TMDB_IMAGE_BASE}${info.poster}`, setPosterUrl);
         return;
       }
       if (!info?.tmdb) return;
       const result = await fetchPoster(info.tmdb);
       if (cancelled) return;
-      if (!result.ok) {
-        if (result.error === 'invalid-key') onError(t(lang, 'tmdbErrInvalidKey'));
-        else if (result.error === 'not-found') onError(t(lang, 'tmdbErrNotFound'));
-        else if (result.error === 'network') onError(t(lang, 'tmdbErrNetwork'));
-        else if (result.error === 'http') onError(trTmdbErrGeneric(lang, result.httpStatus));
-        return;
-      }
       if (result.url) {
         cancelStale = probeLoad(result.url, setPosterUrl);
-      } else if (result.source === 'proxy' || result.source === 'personal-key') {
+      } else if (result.source === 'proxy') {
+        // The proxy checked and there's genuinely no poster (source 'none' = it couldn't
+        // even check, so stay silent).
         onError(t(lang, 'tmdbNoPoster'));
       }
     }

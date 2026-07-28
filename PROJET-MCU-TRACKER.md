@@ -71,7 +71,7 @@ const E = [
   fil(id, titre, chapitre(0-3), durée_min, optionnel, année),
   ser(id, titre, chapitre, saison, nb_épisodes, durée_totale_min, optionnel),
   serE(id, titre, chapitre, saison, [durées_par_épisode], optionnel),
-  ...
+  // ... autres entrées
 ];
 ```
 
@@ -110,7 +110,7 @@ const E = [
 - **Langue FR/EN** : bouton `#lang-btn` dans le header (affiche la langue _vers laquelle_ basculer, pas la langue
   actuelle). État = variable globale `lang` (`js/i18n.js`), persistée dans `mcu-lang` (pas de sync via
   `window.storage` — c'est une préférence d'affichage locale, comme la clé TMDB, pas une donnée de progression). *
-  *Aucune chaîne visible par l'utilisateur ne doit être écrite en dur ailleurs que dans `js/i18n.js`** (STRINGS +
+  _Aucune chaîne visible par l'utilisateur ne doit être écrite en dur ailleurs que dans `js/i18n.js`_* (STRINGS +
   fonctions `tr*()`) et `js/data.js`/`js/data-en.js` (contenu du catalogue) — toute nouvelle chaîne d'UI passe par
   `t('cléExistante')` ou une nouvelle entrée dans `STRINGS`.
   - Le contenu (`E[].title`, champs de `INFO`, `SEC`, `MONTHS`, `PLAT[id].l`/`.date`) n'est **pas dupliqué par langue dans le reste du code** : `applyLangToContent()` mute ces mêmes objets en place quand la langue change (exactement comme `mode`/`watchDates` sont mutés en place ailleurs), donc `render.js`/`modals.js`/`app.js` continuent de lire `e.title`, `INFO[id].synopsis`, `SEC[i]` sans changement, quelle que soit la langue active.

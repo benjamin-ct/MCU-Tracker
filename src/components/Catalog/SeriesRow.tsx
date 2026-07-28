@@ -105,7 +105,7 @@ export function SeriesRow({
             </span>
           </div>
         </div>
-        <button type="button" className="info-btn" onClick={onOpenInfo}>
+        <button type="button" className="info-btn" data-info onClick={onOpenInfo}>
           <span>i</span>
         </button>
         <span className={styles.sgArr}/>

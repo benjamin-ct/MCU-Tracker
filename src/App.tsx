@@ -1,10 +1,10 @@
 // Assembles the full app: Header, Sidebar, Catalog, Search, Modals, Toast, Footer.
-import {useMemo, useRef, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 
 import {Catalog} from './components/Catalog';
 import {Footer} from './components/Footer';
 import {Header} from './components/Header';
-import {InfoModal, StatsModal, TmdbKeyModal} from './components/Modals';
+import {InfoModal, StatsModal} from './components/Modals';
 import {SearchBox} from './components/Search';
 import {Sidebar} from './components/Sidebar';
 import {Toast} from './components/Toast';
@@ -36,6 +36,13 @@ import {groupKeyFor, groupsFor, visibleGroups} from './utils/groups';
 
 const SERIES_IDS = CATALOG.filter(isSeries).map((entry) => entry.id);
 
+// Surprise-pick timing: wait for the collapse/scroll layout to settle before scrolling
+// to the picked row, then keep the highlight pulse on for a few seconds.
+const SURPRISE_SCROLL_DELAY_MS = 120;
+const SURPRISE_HIGHLIGHT_MS = 3600;
+// Disney+ copy toast truncates long titles so the toast stays one line.
+const DISNEY_TOAST_MAX_LEN = 26;
+
 function App() {
   const { lang, toggleLang } = useLanguage();
   const { theme, toggleTheme } = useTheme();
@@ -54,8 +61,9 @@ function App() {
     stepTonightUp,
     stepTonightDown,
   } = useCatalogFilters();
-  const { watchDates, ratings, setWatched, toggleRating, resetProgress, importProgress } = useWatchProgress();
-  const { tmdbKey, setTmdbKey, clearTmdbKey, fetchPoster } = useTmdbPoster();
+  const {watchDates, ratings, setWatched, setManyWatched, toggleRating, resetProgress, importProgress} =
+    useWatchProgress();
+  const {fetchPoster} = useTmdbPoster();
   const { message: toastMessage, visible: toastVisible, showToast } = useToast();
 
   // Chapters start open, series start collapsed — matches cGroup/cSer's initial state
@@ -65,7 +73,6 @@ function App() {
 
   const [openInfoEntryId, setOpenInfoEntryId] = useState<string | null>(null);
   const [statsModalOpen, setStatsModalOpen] = useState(false);
-  const [tmdbModalOpen, setTmdbModalOpen] = useState(false);
   const openInfoEntry = openInfoEntryId ? (CATALOG.find((entry) => entry.id === openInfoEntryId) ?? null) : null;
 
   // Tracks whether a search was already active, so chapters/series only auto-expand
@@ -73,16 +80,25 @@ function App() {
   // the legacy js/app.js.
   const wasSearchingRef = useRef(false);
 
+  // Pending surprise-pick timers, cleared on unmount so a late scroll/highlight can't
+  // touch the DOM after the app is gone. We intentionally read the ref's live value in
+  // cleanup (not a mount-time snapshot): the timers are pushed later by handleSurprise,
+  // long after this effect runs once.
+  const surpriseTimersRef = useRef<number[]>([]);
+  useEffect(() => {
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      surpriseTimersRef.current.forEach((id) => window.clearTimeout(id));
+    };
+  }, []);
+
   // Derived catalog computations only depend on watchDates/mode (and, for the visible
   // count, the active sort/search/view filters) — memoized so a keystroke elsewhere or
   // an unrelated re-render doesn't re-walk the whole catalog each time.
   const stats = useMemo(() => totals(CATALOG, watchDates, mode), [watchDates, mode]);
   const percentComplete = stats.totalMinutes > 0 ? Math.round((stats.watchedMinutes / stats.totalMinutes) * 100) : 0;
-  const eveningsRemaining = useMemo(
-    () => estimateEvenings(stats.remainingUnitDurations, 150),
-    [stats.remainingUnitDurations],
-  );
-  const days = daysLeft(DOOMSDAY_DATE);
+  const eveningsRemaining = useMemo(() => estimateEvenings(stats.remainingUnitDurations), [stats.remainingUnitDurations]);
+  const days = useMemo(() => daysLeft(DOOMSDAY_DATE), []);
   const pendingCount = useMemo(() => futurePendingCount(CATALOG, watchDates, mode), [watchDates, mode]);
   const totalVisibleCount = useMemo(
     () => visibleGroups(CATALOG, sortMode, mode, searchQuery, viewFilter, watchDates).totalVisibleCount,
@@ -122,7 +138,10 @@ function App() {
   };
 
   const handleBulkToggleSeries = (entry: SeriesEntry, watched: boolean) => {
-    entry.epMins.forEach((_, index) => setWatched(`${entry.id}-e${index + 1}`, watched));
+    setManyWatched(
+      entry.epMins.map((_, index) => `${entry.id}-e${index + 1}`),
+      watched,
+    );
     if (watched) seriesCollapse.setKeyCollapsed(entry.id, true);
   };
 
@@ -137,7 +156,7 @@ function App() {
   };
 
   const handleCopiedForDisney = (title: string) => {
-    const short = title.length > 26 ? `${title.slice(0, 25)}…` : title;
+    const short = title.length > DISNEY_TOAST_MAX_LEN ? `${title.slice(0, DISNEY_TOAST_MAX_LEN - 1)}…` : title;
     showToast(trCopiedForDisney(lang, short));
   };
 
@@ -158,14 +177,16 @@ function App() {
       setSearchQuery('');
     }
     const elementId = pick.type === 'f' ? `r-${pick.id}` : `sg-${pick.id}`;
-    window.setTimeout(() => {
+    const scrollTimer = window.setTimeout(() => {
       const el = document.getElementById(elementId);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.classList.add('highlight-pulse');
-        window.setTimeout(() => el.classList.remove('highlight-pulse'), 3600);
+        const clearTimer = window.setTimeout(() => el.classList.remove('highlight-pulse'), SURPRISE_HIGHLIGHT_MS);
+        surpriseTimersRef.current.push(clearTimer);
       }
-    }, 120);
+    }, SURPRISE_SCROLL_DELAY_MS);
+    surpriseTimersRef.current.push(scrollTimer);
     showToast(`🎲 ${getTitle(pick, lang)}`);
   };
 
@@ -243,7 +264,6 @@ function App() {
               importProgress(data);
               if (data.mode) setMode(data.mode);
             }}
-            onOpenTmdbModal={() => setTmdbModalOpen(true)}
             onToast={showToast}
           />
         </div>
@@ -263,20 +283,6 @@ function App() {
         ratings={ratings}
         mode={mode}
         lang={lang}
-      />
-      <TmdbKeyModal
-        open={tmdbModalOpen}
-        tmdbKey={tmdbKey}
-        lang={lang}
-        onClose={() => setTmdbModalOpen(false)}
-        onSave={(key) => {
-          setTmdbKey(key);
-          showToast(t(lang, key ? 'tmdbKeySaved' : 'tmdbKeyRemoved'));
-        }}
-        onClear={() => {
-          clearTmdbKey();
-          showToast(t(lang, 'tmdbKeyRemoved'));
-        }}
       />
       <Toast message={toastMessage} visible={toastVisible} />
     </div>

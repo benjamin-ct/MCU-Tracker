@@ -82,6 +82,7 @@ export interface UseWatchProgressResult {
   ratings: Record<string, number>;
   isWatched: (id: string) => boolean;
   setWatched: (id: string, watched: boolean) => void;
+  setManyWatched: (ids: string[], watched: boolean) => void;
   toggleRating: (id: string, value: number) => void;
   resetProgress: () => void;
   importProgress: (data: ImportedProgressData) => void;
@@ -101,6 +102,25 @@ export function useWatchProgress(): UseWatchProgressResult {
       if (watched) return { ...prev, [id]: new Date().toISOString() };
       const { [id]: _removed, ...rest } = prev;
       return rest;
+    });
+  }, []);
+
+  // Batch variant: applies the same watched/unwatched flip to many ids in a single
+  // state update, so toggling a whole series (bulk checkbox, or auto-marking the last
+  // episode) rebuilds watchDates once instead of once per episode.
+  const setManyWatched = useCallback((ids: string[], watched: boolean) => {
+    if (ids.length === 0) return;
+    setWatchDates((prev) => {
+      const next = {...prev};
+      if (watched) {
+        const now = new Date().toISOString();
+        ids.forEach((id) => {
+          next[id] = now;
+        });
+      } else {
+        ids.forEach((id) => delete next[id]);
+      }
+      return next;
     });
   }, []);
 
@@ -126,5 +146,5 @@ export function useWatchProgress(): UseWatchProgressResult {
     if (isRecord(data.ratings)) setRatings(data.ratings as Record<string, number>);
   }, []);
 
-  return { watchDates, ratings, isWatched, setWatched, toggleRating, resetProgress, importProgress };
+  return {watchDates, ratings, isWatched, setWatched, setManyWatched, toggleRating, resetProgress, importProgress};
 }
