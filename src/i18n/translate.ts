@@ -26,8 +26,8 @@ export function trTmdbErrGeneric(lang: Lang, status: number | string): string {
 
 export function trAllWatchedFuturePending(lang: Lang, fp: number): string {
   return lang === 'en'
-    ? `All available watched <span class="ok">✓</span> · <b>${trTitleCount(lang, fp)}</b> not yet released remaining`
-    : `Tout vu de disponible <span class="ok">✓</span> · <b>${trTitleCount(lang, fp)}</b> pas encore sorti${fp > 1 ? 's' : ''} restant${fp > 1 ? 's' : ''}`;
+    ? `Doomsday — Dec 18, 2026 · <b>${trTitleCount(lang, fp)}</b> not yet released`
+    : `Doomsday — 18 déc 2026 · <b>${trTitleCount(lang, fp)}</b> pas encore sorti${fp > 1 ? 's' : ''} restant${fp > 1 ? 's' : ''}`;
 }
 
 export function trMarathonDoneReady(lang: Lang): string {

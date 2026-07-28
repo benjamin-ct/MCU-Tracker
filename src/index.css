@@ -117,7 +117,13 @@ body{padding-bottom:calc(60px + env(safe-area-inset-bottom));}
   align-items: flex-start;
   gap: 12px;
 }
-.prox.done{justify-content:center;color:var(--dim);font-family:var(--m);font-size:12px;}
+
+.prox.done .prox-title {
+  color: var(--dim);
+  font-family: var(--m);
+  font-size: 12px;
+  font-weight: 500;
+}
 .prox-eye{font-family:var(--m);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin-bottom:4px;}
 .prox-title{font-size:14px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:3px;}
 .prox-sub{font-family:var(--m);font-size:10.5px;color:var(--dim);}
