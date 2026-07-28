@@ -1,8 +1,8 @@
 // Ported from the legacy js/i18n.js tr*() functions — strings with plurals or
 // interpolated values, too irregular between FR/EN to fit the plain STRINGS dict.
 // Each takes `lang` as an explicit parameter, same pattern as data/localize.ts.
-import type { Lang } from '../data/types';
-import { t } from './strings';
+import type {Lang} from '../data';
+import {t} from './strings';
 
 export function trResultCount(lang: Lang, n: number): string {
   return lang === 'en' ? `${n} result${n !== 1 ? 's' : ''}` : `${n} résultat${n !== 1 ? 's' : ''}`;
@@ -26,8 +26,8 @@ export function trTmdbErrGeneric(lang: Lang, status: number | string): string {
 
 export function trAllWatchedFuturePending(lang: Lang, fp: number): string {
   return lang === 'en'
-    ? `All available watched <span class="ok">✓</span> · <b>${fp}</b> ${trTitleCount(lang, fp)} not yet released remaining`
-    : `Tout vu de disponible <span class="ok">✓</span> · <b>${fp}</b> ${trTitleCount(lang, fp)} pas encore sorti${fp > 1 ? 's' : ''} restant${fp > 1 ? 's' : ''}`;
+    ? `All available watched <span class="ok">✓</span> · <b>${trTitleCount(lang, fp)}</b> not yet released remaining`
+    : `Tout vu de disponible <span class="ok">✓</span> · <b>${trTitleCount(lang, fp)}</b> pas encore sorti${fp > 1 ? 's' : ''} restant${fp > 1 ? 's' : ''}`;
 }
 
 export function trMarathonDoneReady(lang: Lang): string {

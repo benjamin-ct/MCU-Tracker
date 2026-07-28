@@ -35,9 +35,11 @@
 }
 
 .sgInfo {
-    flex: 0 1 auto;
+    /* flex:1 au lieu de flex:0 1 auto : sgInfo remplit toujours tout l'espace
+       disponible → info-btn et sgArr restent à position fixe même quand
+       le texte sgRemtxt change de "12h14" à "0m". */
+    flex: 1;
     min-width: 0;
-    max-width: 100%;
 }
 
 .sgName {
@@ -70,7 +72,6 @@
     width: 9px;
     height: 9px;
     flex: none;
-    margin-left: auto;
     border-right: 1.6px solid var(--faint);
     border-bottom: 1.6px solid var(--faint);
     transform: rotate(-45deg);
