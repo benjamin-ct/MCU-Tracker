@@ -1,0 +1,176 @@
+/* ── Series Row ── */
+.sg {
+  border: 1px solid var(--ln2);
+  border-radius: 10px;
+  margin: 8px 0;
+  overflow: hidden;
+  background: var(--card);
+}
+
+.sg.tnFit {
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+.sgHd {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 14px;
+  cursor: pointer;
+  background: var(--raised);
+  user-select: none;
+}
+
+.sgBulk {
+  display: flex;
+  align-items: center;
+  flex: none;
+  padding-right: 4px;
+}
+
+.sgBulk label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.sgInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.sgName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  line-height: 1.3;
+}
+
+.sgSub {
+  font-family: var(--m), sans-serif;
+  font-size: 10px;
+  color: var(--faint);
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.sgRemtxt {
+  color: var(--dim);
+}
+
+.sgArr {
+  width: 9px;
+  height: 9px;
+  flex: none;
+  border-right: 1.6px solid var(--faint);
+  border-bottom: 1.6px solid var(--faint);
+  transform: rotate(-45deg);
+  transition: transform 0.2s;
+}
+
+.sg.open .sgArr {
+  transform: rotate(45deg);
+}
+
+/* ── Tonight fit ── */
+.sg.tnFit .tonightTag {
+  display: inline-flex;
+}
+
+/* ── Future ── */
+.sg.future {
+  opacity: 0.5;
+}
+
+.sg.future .sgBulk :global(.sq) {
+  cursor: not-allowed;
+}
+
+.sg.future .sgHd {
+  cursor: default;
+}
+
+/* ── Tout vu ── */
+.sg.sgDone .sgName {
+  color: var(--faint);
+}
+
+:global(body.view-todo) .sg.sgDone {
+  display: none;
+}
+
+/* SeriesEpisodeList est rendu conditionnellement (isOpen) depuis SeriesRow.tsx */
+
+/* ── Footer : crossfade dp-link <-> étoiles a hauteur fixe ── */
+.sgFooter {
+  display: grid;
+}
+
+.sgFooter > * {
+  grid-area: 1/1;
+}
+
+.dpRow {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.sg:not(.sgDone):not(.future) .dpRow {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.dpRowInner {
+  padding: 9px 14px;
+  display: flex;
+  align-items: center;
+}
+
+/* ── Stars container ── */
+.sgStars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 0;
+  overflow: hidden;
+  padding: 0 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    height 0.22s ease 0.06s,
+    opacity 0.2s ease 0.06s;
+}
+
+.sgFooter .sgStars {
+  height: auto;
+  overflow: visible;
+  transition: opacity 0.2s ease 0.06s;
+}
+
+.sg.sgDone .sgFooter .sgStars {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── Responsive ── */
+@media (min-width: 768px) {
+  .sgHd {
+    padding: 14px 16px;
+  }
+
+  .sgName {
+    font-size: 15px;
+  }
+
+  .dpRowInner {
+    padding: 10px 16px;
+  }
+}

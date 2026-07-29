@@ -3,14 +3,32 @@
   // le Worker existant (mcuwatchtimeline.com) plutôt que d'en créer un nouveau.
   "name": "mcutimeline",
   // Toujours mettre la date du jour lors d'une mise à jour de cette valeur.
-  "compatibility_date": "2026-07-26",
-  // Point d'entrée : gère uniquement /api/tmdb/*, délègue tout le reste (index.html,
-  // css/, js/) au binding ASSETS ci-dessous. Voir worker/index.js.
+  "compatibility_date": "2026-07-27",
+  // Point d'entrée : gère uniquement /api/tmdb/*, délègue tout le reste au binding
+  // ASSETS ci-dessous. Voir worker/index.js.
   "main": "worker/index.js",
   "assets": {
-    // Racine du repo : mêmes fichiers statiques qu'avant l'ajout de ce Worker script,
-    // pour ne rien changer au site déjà en place (index.html/css/js à la racine).
-    "directory": "./",
-    "binding": "ASSETS"
-  }
+    // Sortie du build Vite/React (`npm run build`, voir package.json et
+    // vite.config.ts) — plus le repo root depuis la migration React : ce dossier
+    // n'existe qu'après un build, jamais commité (voir .gitignore), généré par le
+    // pipeline CI/CD avant "wrangler deploy" (voir .github/workflows).
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // SPA : toute route inconnue (ex. un rechargement en profondeur si un routeur
+    // était ajouté plus tard) retombe sur index.html plutôt qu'un 404 — l'app est
+    // actuellement une page unique donc ce n'est pas encore strictement nécessaire,
+    // mais c'est la config Cloudflare Assets standard pour ce type de build et
+    // coûte rien à avoir dès maintenant.
+    "not_found_handling": "single-page-application",
+  },
+  // Environnement de prévisualisation : un Worker CLOUDFLARE SÉPARÉ ("mcutimeline-
+  // preview"), jamais le Worker de prod — déployé automatiquement par la CI sur la
+  // branche de migration/les PR (voir .github/workflows/preview.yml) pour tester le
+  // build React en conditions réelles avant de fusionner vers main. "wrangler deploy"
+  // (sans --env) continue de cibler mcutimeline (prod) comme avant.
+  "env": {
+    "preview": {
+      "name": "mcutimeline-preview",
+    },
+  },
 }

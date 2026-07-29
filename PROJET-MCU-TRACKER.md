@@ -1,5 +1,13 @@
 # Marathon MCU — Résumé du projet
 
+> **Note (migration React, juillet 2026)** : ce document décrit l'architecture **vanilla JS
+> d'origine** (fichiers `index.html`/`css/`/`js/` à la racine, sans build). L'app a depuis été
+> migrée vers React + TypeScript (voir `README.md` pour la nouvelle structure, `DEPLOY.md` pour
+> le déploiement). La plupart des décisions ci-dessous restent valables en principe (modèle de
+> données, `watchDates` comme source unique de vérité, jamais de secret côté client, etc.) même
+> si leur implémentation a changé — gardé comme référence historique du modèle de données et des
+> contraintes, pas comme description du code actuel.
+
 ## Quoi
 
 Un tracker de visionnage MCU en **vanilla JS, sans framework, sans build**. Deux façons de parcourir le catalogue, commutables par onglet : ordre chronologique interne (par défaut — de Captain America: First Avenger, 1942 in-universe, jusqu'à Avengers: Doomsday, 18 déc. 2026) ou ordre de sortie réelle. Fonctionne comme app locale, PWA installable ("Ajouter à l'écran d'accueil"). Bilingue FR/EN et thème clair/sombre, tous deux commutables dans l'UI (voir "Thème & langue" ci-dessous).
@@ -60,12 +68,13 @@ Ordre de chargement des `<script>` = ordre ci-dessus (`data.js` en premier, `app
 
 ```js
 const E = [
-  fil(id, titre, chapitre(0-3), durée_min, optionnel, année),
+  fil(id, titre, chapitre(0 - 3), durée_min, optionnel, année),
   ser(id, titre, chapitre, saison, nb_épisodes, durée_totale_min, optionnel),
   serE(id, titre, chapitre, saison, [durées_par_épisode], optionnel),
-  ...
+  // ... autres entrées
 ];
 ```
+
 - 90 entrées au total (52 films + 38 séries), réparties en 4 chapitres (`SEC` / `ROMANS`) : Avant les Avengers / Saga de l'Infini / Saga du Multivers / Phase 6.
 - `opt: true` = contenu "optionnel" (Fox X-Men, Netflix Defenders-verse) — masqué en mode "Essentiel", visible en mode "Tout regarder".
 
@@ -88,12 +97,22 @@ const E = [
 - Les deux modes partagent un seul Set de replis, `cGroup` (ex-`cSec`), avec des clés préfixées (`chrono-0`, `release-2016`...) pour ne jamais collisionner entre les deux modes ; changer d'onglet vide `cGroup` (on repart toujours sur un affichage tout déplié dans le nouvel onglet).
 - Le bouton "Film surprise" doit ouvrir le bon chapitre quel que soit l'onglet actif : `groupKeyFor(e)` calcule la clé de groupe de l'entrée **dans le mode courant**, à ne jamais remplacer par un accès direct à `e.sec`.
 - `nextItem()`/`updateProchain()`/le countdown restent basés sur l'ordre chronologique interne (`E[]`) **quel que soit l'onglet affiché** — le marathon recommandé ("prochain à voir") est un concept indépendant de l'onglet de navigation actif, volontairement.
-- **Un chapitre/année entier ne se replie PAS automatiquement à la fin** (contrairement à une série individuelle, voir `cSer` ci-dessous) : une version du 27/07/2026 l'avait ajouté (`autoCollapseIfGroupDone()`), mais ça repliait le chapitre dans le même `render()` que celui qui coche le dernier item — masquant la ligne (et ses étoiles) avant que l'utilisateur ait pu noter ce qu'il vient de regarder. Retiré le jour même suite à ce retour d'usage réel ; ne pas le réintroduire sans un moyen de laisser la ligne notable un instant (ex. replier seulement au check *suivant*, pas au check qui termine le chapitre).
+- **Un chapitre/année entier ne se replie PAS automatiquement à la fin** (contrairement à une série individuelle, voir
+  `cSer` ci-dessous) : une version du 27/07/2026 l'avait ajouté (`autoCollapseIfGroupDone()`), mais ça repliait le
+  chapitre dans le même `render()` que celui qui coche le dernier item — masquant la ligne (et ses étoiles) avant que
+  l'utilisateur ait pu noter ce qu'il vient de regarder. Retiré le jour même suite à ce retour d'usage réel ; ne pas le
+  réintroduire sans un moyen de laisser la ligne notable un instant (ex. replier seulement au check _suivant_, pas au
+  check qui termine le chapitre).
 
 ## Thème & langue
 
 - **Thème clair/sombre** : bouton ☀️/🌙 dans le header (`#theme-btn`). État = attribut `data-theme` sur `<html>` (`"dark"` ou `"light"`), lu par les variables CSS dans `css/style.css`. Au tout premier chargement (rien en `localStorage`), part de `prefers-color-scheme` système ; ensuite le choix manuel (persisté dans `mcu-theme`) a toujours priorité et n'est plus jamais écrasé par le système. Toute nouvelle couleur ajoutée au CSS doit passer par une variable (`--xxx`) définie dans les deux blocs `:root`/`:root[data-theme="light"]`, jamais une couleur en dur, sinon elle ne s'adapte pas au thème clair.
-- **Langue FR/EN** : bouton `#lang-btn` dans le header (affiche la langue *vers laquelle* basculer, pas la langue actuelle). État = variable globale `lang` (`js/i18n.js`), persistée dans `mcu-lang` (pas de sync via `window.storage` — c'est une préférence d'affichage locale, comme la clé TMDB, pas une donnée de progression). **Aucune chaîne visible par l'utilisateur ne doit être écrite en dur ailleurs que dans `js/i18n.js`** (STRINGS + fonctions `tr*()`) et `js/data.js`/`js/data-en.js` (contenu du catalogue) — toute nouvelle chaîne d'UI passe par `t('cléExistante')` ou une nouvelle entrée dans `STRINGS`.
+- **Langue FR/EN** : bouton `#lang-btn` dans le header (affiche la langue _vers laquelle_ basculer, pas la langue
+  actuelle). État = variable globale `lang` (`js/i18n.js`), persistée dans `mcu-lang` (pas de sync via
+  `window.storage` — c'est une préférence d'affichage locale, comme la clé TMDB, pas une donnée de progression). *
+  _Aucune chaîne visible par l'utilisateur ne doit être écrite en dur ailleurs que dans `js/i18n.js`_* (STRINGS +
+  fonctions `tr*()`) et `js/data.js`/`js/data-en.js` (contenu du catalogue) — toute nouvelle chaîne d'UI passe par
+  `t('cléExistante')` ou une nouvelle entrée dans `STRINGS`.
   - Le contenu (`E[].title`, champs de `INFO`, `SEC`, `MONTHS`, `PLAT[id].l`/`.date`) n'est **pas dupliqué par langue dans le reste du code** : `applyLangToContent()` mute ces mêmes objets en place quand la langue change (exactement comme `mode`/`watchDates` sont mutés en place ailleurs), donc `render.js`/`modals.js`/`app.js` continuent de lire `e.title`, `INFO[id].synopsis`, `SEC[i]` sans changement, quelle que soit la langue active.
   - `js/data.js` ne contient QUE le français (+ les champs neutres `director`/`cast`/`yt`/`tmdb`/`poster`, qui ne sont jamais dupliqués côté anglais). `js/data-en.js` ne contient QUE ce qui diffère en anglais. Pour `budget`/`box`/`rt`, la transformation FR→EN est automatique par défaut (`frMoney()`/`frRT()` dans `data.js`, gèrent `Md$`→`B`, `M$`→`$…M`, `critique/public`→`critics/audience`, `pas encore sorti`→`not yet released`) ; n'ajouter un override dans `INFO_EN` que si le texte français contient un mot qui ne rentre pas dans ce moule (ex. "au total", "épisode", "record pour une série...").
   - **Piège vérifié en prod** : `totals()` retourne un champ nommé `t` (minutes totales) — ne jamais le destructurer sous ce nom (`const{t,...}=totals()`) dans une fonction qui appelle aussi `t('clé')` (la fonction i18n globale), ça masque la fonction et casse silencieusement tout `t(...)` dans la portée (bug réel rencontré dans `updateStats()`/`openStats()`, corrigé en renommant en `tot`).
