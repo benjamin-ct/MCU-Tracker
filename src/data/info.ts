@@ -1431,6 +1431,37 @@ export const INFO: Record<string, InfoEntry> = {
       type: 'movie',
     },
   },
+  daredevil3: {
+    synopsis: 'Suite non détaillée à ce jour ; seul projet Earth-616 prévu entre Doomsday et Secret Wars.',
+    director: 'Showrunner(s) non confirmé(s)',
+    cast: "Charlie Cox, Vincent D'Onofrio",
+    budget: 'N/A',
+    box: 'N/A',
+    rt: 'TBD (pas encore sorti)',
+    triv: 'Saison déjà commandée dès la sortie de la saison 2 ; 8 épisodes annoncés.',
+    link: 'Seul projet Earth-616 entre Avengers: Doomsday et Avengers: Secret Wars.',
+    yt: 'Pas encore publiée',
+    tmdb: {
+      id: 202555,
+      type: 'tv',
+    },
+  },
+  xmenreboot: {
+    synopsis:
+      "Reboot des X-Men au sein du MCU ; intrigue non dévoilée, présenté par Feige comme la suite de l'univers après Secret Wars.",
+    director: 'Jake Schreier',
+    cast: 'Kit Connor, Sadie Sink, Christopher Abbott, Adam Driver',
+    budget: 'N/A',
+    box: 'N/A',
+    rt: 'TBD (pas encore sorti)',
+    triv: "Casting dévoilé au D23 2026 ; titre encore non officiel. Selon Kevin Feige, Avengers: Secret Wars sert de « reset » et ce film ouvre la suite de l'univers.",
+    link: 'Lance la prochaine ère du MCU après Avengers: Secret Wars.',
+    yt: 'Pas encore publiée',
+    tmdb: {
+      id: 1293690,
+      type: 'movie',
+    },
+  },
 };
 
 // English overrides: only fields that differ from a generic FR->EN transform of the
@@ -1954,5 +1985,22 @@ export const INFO_EN: Record<string, InfoOverride> = {
     rt: 'TBD (not yet released)',
     triv: "Marvel Studios' only 2027 release; pushed from May to December 2027 to allow more post-production time after Doomsday.",
     link: 'The final chapter of the Multiverse Saga, following Avengers: Doomsday (Dec. 2026).',
+  },
+  daredevil3: {
+    synopsis: 'Plot not yet detailed; the only Earth-616 project set to release between Doomsday and Secret Wars.',
+    cast: "Charlie Cox, Vincent D'Onofrio",
+    box: 'N/A',
+    rt: 'TBD (not yet released)',
+    triv: 'Renewed right after season 2 premiered; 8 episodes announced.',
+    link: 'The only Earth-616 project between Avengers: Doomsday and Avengers: Secret Wars.',
+  },
+  xmenreboot: {
+    synopsis:
+      'An MCU reboot of the X-Men; plot undisclosed, framed by Feige as the next chapter of the universe after Secret Wars.',
+    cast: 'Kit Connor, Sadie Sink, Christopher Abbott, Adam Driver',
+    box: 'N/A',
+    rt: 'TBD (not yet released)',
+    triv: 'Cast unveiled at D23 2026; the title is still unofficial. Per Kevin Feige, Avengers: Secret Wars serves as a "reset" and this film kicks off what comes next.',
+    link: "Launches the MCU's next era after Avengers: Secret Wars.",
   },
 };

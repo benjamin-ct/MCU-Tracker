@@ -175,4 +175,7 @@ export const CAST_EXTRA: Record<string, string> = {
     'Robert Downey Jr., Chris Hemsworth, Pedro Pascal, Paul Rudd, Anthony Mackie, Florence Pugh, Vanessa Kirby, Ebon Moss-Bachrach, Wyatt Russell, Channing Tatum, Simu Liu, Ian McKellen, Tom Hiddleston, James Marsden, Patrick Stewart, Joseph Quinn, Sebastian Stan, David Harbour, Letitia Wright, Lewis Pullman, Kelsey Grammer, Kathryn Newton, Danny Ramirez, Winston Duke, Alan Cumming, Hannah John-Kamen, Rebecca Romijn, Mabel Cadena, Tenoch Huerta',
   secretwars:
     'Robert Downey Jr., Chris Hemsworth, Anthony Mackie, Letitia Wright, Simu Liu, Pedro Pascal, Vanessa Kirby, Ebon Moss-Bachrach, Joseph Quinn, Sebastian Stan, Florence Pugh, David Harbour, Wyatt Russell',
+  daredevil3: "Charlie Cox, Vincent D'Onofrio",
+  xmenreboot:
+    'Kit Connor, Christopher Abbott, Samara Weaving, Inde Navarrette, Maya Boyd, Sadie Sink, Adam Driver, Asa Germann',
 };

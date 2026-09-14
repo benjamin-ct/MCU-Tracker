@@ -1,5 +1,5 @@
 // Auto-generated from the vanilla-JS catalogue during the React migration (27/07/2026).
-// 91 entries, chronological internal order (sec 0-3). See types.ts for the shape.
+// 93 entries, chronological internal order (sec 0-3). See types.ts for the shape.
 import type { CatalogEntry } from './types';
 
 export const CATALOG: CatalogEntry[] = [
@@ -852,11 +852,30 @@ export const CATALOG: CatalogEntry[] = [
     y: null,
   },
   {
+    type: 's',
+    id: 'daredevil3',
+    title: 'Daredevil : Born Again',
+    sec: 3,
+    season: 3,
+    count: 8,
+    epMins: [45, 45, 45, 45, 45, 45, 45, 45],
+    opt: false,
+  },
+  {
     type: 'f',
     id: 'secretwars',
     title: 'Avengers : Secret Wars',
     sec: 3,
     m: 165,
+    opt: false,
+    y: null,
+  },
+  {
+    type: 'f',
+    id: 'xmenreboot',
+    title: 'X-Men (2028)',
+    sec: 3,
+    m: 130,
     opt: false,
     y: null,
   },

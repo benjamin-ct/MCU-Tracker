@@ -91,7 +91,9 @@ export const RELEASE_DATE: Record<string, string> = {
   doomsday: '2026-12-18',
   capmarvel: '2019-03-08',
   gotg2: '2017-05-05',
+  daredevil3: '2027-03-01',
   secretwars: '2027-12-17',
+  xmenreboot: '2028-05-05',
 };
 
 export function releaseYear(id: string): number | null {

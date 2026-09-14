@@ -94,5 +94,7 @@ export const IMDB_ID: Record<string, string> = {
   yfns2: 'tt16027074',
   visionquest: 'tt23112594',
   doomsday: 'tt21357150',
+  daredevil3: 'tt18923754',
   secretwars: 'tt21361444',
+  xmenreboot: 'tt29347085',
 };
