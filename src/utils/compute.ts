@@ -70,10 +70,6 @@ export function nextItem(catalog: CatalogEntry[], watchDates: WatchDates, mode: 
   return null;
 }
 
-export function daysLeft(doomsday: Date): number {
-  return Math.max(0, Math.ceil((doomsday.getTime() - Date.now()) / 86400000));
-}
-
 // Capacity of one "evening" of watching, in minutes (~2h30). Used as the bin size when
 // estimating how many evenings the remaining content needs.
 export const EVENING_CAPACITY_MIN = 150;

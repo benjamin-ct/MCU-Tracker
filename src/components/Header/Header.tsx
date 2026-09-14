@@ -19,7 +19,7 @@ interface HeaderProps {
   watchedMinutes: number;
   percentComplete: number;
   eveningsRemaining: number;
-  daysLeft: number;
+  doomsdayDate: Date;
   futurePendingCount: number;
 }
 
@@ -35,7 +35,7 @@ export function Header({
   watchedMinutes,
   percentComplete,
   eveningsRemaining,
-  daysLeft,
+  doomsdayDate,
   futurePendingCount,
 }: HeaderProps) {
   return (
@@ -58,7 +58,7 @@ export function Header({
         />
         <DoomsdayCountdown
           remainingMinutes={remainingMinutes}
-          daysLeft={daysLeft}
+          doomsdayDate={doomsdayDate}
           futurePendingCount={futurePendingCount}
           lang={lang}
         />

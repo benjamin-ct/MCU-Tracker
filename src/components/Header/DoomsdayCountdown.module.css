@@ -48,7 +48,7 @@
   color: var(--red);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
-  min-width: 32px;
+  min-width: 78px;
   text-align: right;
   flex: none;
 }
