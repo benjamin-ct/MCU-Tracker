@@ -1,0 +1,32 @@
+name: Preview Deploy
+
+# Deploys to a SEPARATE Worker ("mcutimeline-preview", see the env.preview block in
+# wrangler.jsonc) so the React migration can be tested against a real URL before
+# merging — never touches the production "mcutimeline" Worker. Same two secrets as
+# deploy.yml (CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID).
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy-preview:
+    name: Build and deploy preview to Cloudflare Workers
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - name: Deploy preview
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy --env preview

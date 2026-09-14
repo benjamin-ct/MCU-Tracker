@@ -1,0 +1,101 @@
+/* ── Footer ── */
+.footer {
+  padding: 24px 18px calc(14px + env(safe-area-inset-bottom));
+  text-align: center;
+  border-top: 1px solid var(--ln);
+  margin-top: 12px;
+}
+
+.rst {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--ln2);
+  border-radius: 8px;
+  color: var(--faint);
+  font-family: var(--g), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 22px;
+  cursor: pointer;
+}
+
+.rst.armed {
+  color: var(--danger);
+  border-color: var(--danger-glow);
+}
+
+.ioRow {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.ioBtn {
+  appearance: none;
+  border: 1px solid var(--ln2);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--faint);
+  font-family: var(--g), sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 8px 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ioBtn:active {
+  border-color: var(--dim);
+  color: var(--dim);
+}
+
+.lgd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-family: var(--m), sans-serif;
+  font-size: 9.5px;
+  color: var(--faint);
+  margin-top: 14px;
+}
+
+.lgdBadge {
+  padding: 2px 7px;
+}
+
+.note {
+  font-family: var(--m), sans-serif;
+  font-size: 9.5px;
+  line-height: 1.7;
+  color: var(--faint);
+  margin-top: 12px;
+}
+
+@media (min-width: 768px) {
+  .footer {
+    padding: 24px 32px 32px 24px;
+    border-top: 1px solid var(--ln);
+    margin-top: 0;
+    text-align: left;
+  }
+
+  .ioRow {
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+
+  .lgd {
+    justify-content: flex-start;
+    margin-top: 12px;
+  }
+
+  .note {
+    margin-top: 8px;
+    font-size: 9px;
+  }
+}

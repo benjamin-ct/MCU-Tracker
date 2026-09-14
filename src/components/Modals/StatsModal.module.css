@@ -1,0 +1,142 @@
+/* ── Stats Modal ── */
+.sgrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.scard {
+  background: var(--raised);
+  border: 1px solid var(--ln2);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.scardV {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.scardL {
+  font-family: var(--m), sans-serif;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-top: 5px;
+}
+
+.ssecTitle {
+  font-family: var(--m), sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 10px;
+}
+
+.hoverHint {
+  font-weight: 400;
+  text-transform: none;
+  color: var(--faint);
+}
+
+.srow {
+  margin-bottom: 10px;
+}
+
+.srowHd {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.srowN {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--dim);
+}
+
+.srowP {
+  font-family: var(--m), sans-serif;
+  font-size: 11px;
+  color: var(--text);
+}
+
+.sbar {
+  height: 5px;
+  background: var(--groove);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.sbarF {
+  height: 100%;
+  background: var(--red);
+  border-radius: 3px;
+}
+
+.sttitle {
+  font-family: var(--m), sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 18px 0 10px;
+}
+
+.stopRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--ln);
+}
+
+.stopRow:last-child {
+  border-bottom: none;
+}
+
+.stopRank {
+  font-family: var(--m), sans-serif;
+  font-size: 11px;
+  color: var(--faint);
+  min-width: 18px;
+}
+
+.stopTitle {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  min-width: 0;
+}
+
+.stopStars {
+  font-size: 13px;
+  color: var(--amber);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.sEmpty {
+  font-family: var(--m), sans-serif;
+  font-size: 11px;
+  color: var(--faint);
+  padding: 14px 0;
+  text-align: center;
+}
+
+.chartWrap {
+  margin: 2px 0 20px;
+  border: 1px solid var(--ln2);
+  border-radius: 10px;
+  background: var(--raised);
+  padding: 12px 12px 6px;
+  overflow: visible;
+}

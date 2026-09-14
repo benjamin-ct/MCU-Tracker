@@ -1,0 +1,12 @@
+/* ── Star Rating ── */
+.star {
+  font-size: 16px;
+  color: var(--faint);
+  cursor: pointer;
+  line-height: 1;
+  padding: 2px;
+}
+
+.star.lit {
+  color: var(--amber);
+}
