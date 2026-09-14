@@ -78,7 +78,7 @@ const E = [
 - 90 entrées au total (52 films + 38 séries), réparties en 4 chapitres (`SEC` / `ROMANS`) : Avant les Avengers / Saga de l'Infini / Saga du Multivers / Phase 6.
 - `opt: true` = contenu "optionnel" (Fox X-Men, Netflix Defenders-verse) — masqué en mode "Essentiel", visible en mode "Tout regarder".
 
-**`PLAT`** — dictionnaire des contenus **pas encore sortis** (dernière vérification : 25/07/2026) : `brandnewday`, `yfns2`, `visionquest`, `doomsday`. C'est la **source unique de vérité** pour "pas encore sorti" via `isFuture(e)` — utilisée pour exclure des totaux/soirées/countdown, désactiver la case à cocher, masquer le lien Disney+, etc. **Ne jamais dupliquer cette logique ailleurs.**
+**`PLAT`** — dictionnaire des contenus **pas encore sortis** (dernière vérification : 14/09/2026) : `yfns2`, `visionquest`, `doomsday`. C'est la **source unique de vérité** pour "pas encore sorti" via `isFuture(e)` — utilisée pour exclure des totaux/soirées/countdown, désactiver la case à cocher, masquer le lien Disney+, etc. **Ne jamais dupliquer cette logique ailleurs.**
 
 **`INFO`** — dictionnaire par id avec les champs pour la modale "i" : `synopsis`, `director`, `cast` (2-3 noms principaux affichés), `pc` (scène post-crédit), `budget`, `box` (box-office), `rt` (score Rotten Tomatoes), `triv` (anecdote), `link` (connexion à la saga), `yt` (URL bande-annonce — anglaise par défaut, mutée par `applyLangToContent()` en FR quand `TRAILER_FR[id]` existe), `tmdb: {id, type}` (pour fetch API poster uniquement), `poster` (chemin d'affiche statique vérifié, pour les quelques titres où on a une vraie image sans avoir besoin de clé API).
 

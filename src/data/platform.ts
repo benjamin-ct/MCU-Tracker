@@ -1,17 +1,10 @@
-// Titles not yet released as of the last verification (25/07/2026). Presence in
+// Titles not yet released as of the last verification (14/09/2026). Presence in
 // this map is the single source of truth for "not out yet" (isFuture()) — excludes
 // from totals/evenings/countdown, disables the checkbox, hides the Disney+ link,
 // skips it for "up next" and "tonight".
 import type { PlatformEntry } from './types';
 
 export const PLAT: Record<string, PlatformEntry> = {
-  brandnewday: {
-    l: 'Cinéma',
-    c: 'cin',
-    date: '31 juil. 2026',
-    l_en: 'In Theaters',
-    date_en: 'Jul 31, 2026',
-  },
   yfns2: {
     l: 'Bientôt',
     c: 'soon',
