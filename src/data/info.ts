@@ -1415,6 +1415,22 @@ export const INFO: Record<string, InfoEntry> = {
       type: 'movie',
     },
   },
+  secretwars: {
+    synopsis:
+      "Conclusion de la Saga du Multivers : les héros de la Terre affrontent les conséquences ultimes de l'incursion multiversique déclenchée par Doctor Doom, dans une bataille qui redessine la réalité.",
+    director: 'Anthony et Joe Russo',
+    cast: "Robert Downey Jr., et l'ensemble du casting Avengers",
+    budget: 'N/A',
+    box: 'TBD (pas encore sorti)',
+    rt: 'TBD (pas encore sorti)',
+    triv: 'Seule sortie Marvel Studios prévue en 2027 ; repoussé de mai à décembre 2027 pour laisser plus de temps à la post-production après Doomsday.',
+    link: 'Dernier chapitre de la Saga du Multivers, fait suite à Avengers: Doomsday (déc. 2026).',
+    yt: 'Pas encore publiée',
+    tmdb: {
+      id: 1003598,
+      type: 'movie',
+    },
+  },
 };
 
 // English overrides: only fields that differ from a generic FR->EN transform of the
@@ -1930,5 +1946,13 @@ export const INFO_EN: Record<string, InfoOverride> = {
     rt: 'TBD (not yet released)',
     triv: 'Reported to be among the most expensive films ever produced (budget unconfirmed); its trailer (July 20, 2026) racked up 503M views in 24 hours, the 2nd-biggest trailer launch of all time.',
     link: 'The second-to-last chapter of the Multiverse Saga, setting up Avengers: Secret Wars (Dec. 2027).',
+  },
+  secretwars: {
+    synopsis:
+      "The finale of the Multiverse Saga: Earth's heroes face the ultimate consequences of the multiversal incursion triggered by Doctor Doom, in a battle that reshapes reality.",
+    box: 'TBD (not yet released)',
+    rt: 'TBD (not yet released)',
+    triv: "Marvel Studios' only 2027 release; pushed from May to December 2027 to allow more post-production time after Doomsday.",
+    link: 'The final chapter of the Multiverse Saga, following Avengers: Doomsday (Dec. 2026).',
   },
 };

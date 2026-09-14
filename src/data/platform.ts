@@ -8,9 +8,9 @@ export const PLAT: Record<string, PlatformEntry> = {
   yfns2: {
     l: 'Bientôt',
     c: 'soon',
-    date: 'automne 2026',
+    date: 'janvier 2027',
     l_en: 'Coming Soon',
-    date_en: 'Fall 2026',
+    date_en: 'January 2027',
   },
   visionquest: {
     l: 'Bientôt',
@@ -25,6 +25,13 @@ export const PLAT: Record<string, PlatformEntry> = {
     date: '18 déc. 2026',
     l_en: 'In Theaters',
     date_en: 'Dec 18, 2026',
+  },
+  secretwars: {
+    l: 'Cinéma',
+    c: 'cin',
+    date: '17 déc. 2027',
+    l_en: 'In Theaters',
+    date_en: 'Dec 17, 2027',
   },
 };
 

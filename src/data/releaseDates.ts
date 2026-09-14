@@ -86,11 +86,12 @@ export const RELEASE_DATE: Record<string, string> = {
   punisher: '2026-02-01',
   'xmen97-2': '2026-04-01',
   brandnewday: '2026-07-31',
-  yfns2: '2026-10-01',
+  yfns2: '2027-01-01',
   visionquest: '2026-10-14',
   doomsday: '2026-12-18',
   capmarvel: '2019-03-08',
   gotg2: '2017-05-05',
+  secretwars: '2027-12-17',
 };
 
 export function releaseYear(id: string): number | null {

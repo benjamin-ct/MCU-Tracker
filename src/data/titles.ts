@@ -43,4 +43,5 @@ export const TITLE_EN: Record<string, string> = {
   brandnewday: 'Spider-Man: Brand New Day',
   yfns2: 'Your Friendly Neighborhood Spider-Man',
   doomsday: 'Avengers: Doomsday',
+  secretwars: 'Avengers: Secret Wars',
 };
