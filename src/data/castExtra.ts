@@ -84,6 +84,8 @@ export const CAST_EXTRA: Record<string, string> = {
     "Jeremy Renner, Hailee Steinfeld, Vera Farmiga, Tony Dalton, Fra Fee, Brian d'Arcy James, Aleks Paunovic, Piotr Adamczyk, Linda Cardellini, Alaqua Cox, Zahn McClarnon, Florence Pugh, Vincent D'Onofrio",
   moonknight:
     'Oscar Isaac, May Calamawy, Ethan Hawke, F. Murray Abraham, Karim El Hakim, Antonia Salib, Gaspard Ulliel, Khalid Abdalla, David Ganly, Ann Akinjirin',
+  shangchi:
+    "Simu Liu, Awkwafina, Tony Leung, Meng'er Zhang, Fala Chen, Florian Munteanu, Benedict Wong, Yuen Wah, Michelle Yeoh, Ben Kingsley, Zach Cherry",
   eternals:
     'Gemma Chan, Richard Madden, Angelina Jolie, Kumail Nanjiani, Lia McHugh, Brian Tyree Henry, Lauren Ridloff, Barry Keoghan, Don Lee, Kit Harington, Salma Hayek, Bill Skarsgård, Harish Patel, Haaz Sleiman, Harry Styles',
   msmarvel:
@@ -173,4 +175,9 @@ export const CAST_EXTRA: Record<string, string> = {
     "Paul Bettany, James Spader, Emily Hampshire, Diane Morgan, Todd Stashwick, Ruaridh Mollica, T'Nia Miller, Orla Brady, James D'Arcy, Faran Tahir, Mary McDonnell, Henry Lewis, Jonathan Sayer",
   doomsday:
     'Robert Downey Jr., Chris Hemsworth, Pedro Pascal, Paul Rudd, Anthony Mackie, Florence Pugh, Vanessa Kirby, Ebon Moss-Bachrach, Wyatt Russell, Channing Tatum, Simu Liu, Ian McKellen, Tom Hiddleston, James Marsden, Patrick Stewart, Joseph Quinn, Sebastian Stan, David Harbour, Letitia Wright, Lewis Pullman, Kelsey Grammer, Kathryn Newton, Danny Ramirez, Winston Duke, Alan Cumming, Hannah John-Kamen, Rebecca Romijn, Mabel Cadena, Tenoch Huerta',
+  secretwars:
+    'Robert Downey Jr., Chris Hemsworth, Anthony Mackie, Letitia Wright, Simu Liu, Pedro Pascal, Vanessa Kirby, Ebon Moss-Bachrach, Joseph Quinn, Sebastian Stan, Florence Pugh, David Harbour, Wyatt Russell',
+  daredevil3: "Charlie Cox, Vincent D'Onofrio",
+  xmenreboot:
+    'Kit Connor, Christopher Abbott, Samara Weaving, Inde Navarrette, Maya Boyd, Sadie Sink, Adam Driver, Asa Germann',
 };

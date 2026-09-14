@@ -2,6 +2,8 @@ export type { UseCatalogFiltersResult } from './useCatalogFilters';
 export { useCatalogFilters } from './useCatalogFilters';
 export type { UseCollapseStateResult } from './useCollapseState';
 export { useCollapseState } from './useCollapseState';
+export type { CountdownParts } from './useCountdown';
+export { useCountdown } from './useCountdown';
 export type { UseLanguageResult } from './useLanguage';
 export { useLanguage } from './useLanguage';
 export { useLocalStorageState } from './useLocalStorageState';

@@ -24,7 +24,6 @@ import {
 import { t, trCopiedForDisney } from './i18n';
 import {
   cnt,
-  daysLeft,
   estimateEvenings,
   futurePendingCount,
   isEntryFullyWatched,
@@ -101,7 +100,6 @@ function App() {
     () => estimateEvenings(stats.remainingUnitDurations),
     [stats.remainingUnitDurations],
   );
-  const days = useMemo(() => daysLeft(DOOMSDAY_DATE), []);
   const pendingCount = useMemo(() => futurePendingCount(CATALOG, watchDates, mode), [watchDates, mode]);
   const totalVisibleCount = useMemo(
     () => visibleGroups(CATALOG, sortMode, mode, searchQuery, viewFilter, watchDates).totalVisibleCount,
@@ -207,7 +205,7 @@ function App() {
         watchedMinutes={stats.watchedMinutes}
         percentComplete={percentComplete}
         eveningsRemaining={eveningsRemaining}
-        daysLeft={days}
+        doomsdayDate={DOOMSDAY_DATE}
         futurePendingCount={pendingCount}
       />
       <div className="blayout">

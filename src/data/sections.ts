@@ -1,7 +1,7 @@
 // Narrative chapters (chronological order tab) and calendar months, FR/EN.
 export const ROMANS = ['I', 'II', 'III', 'IV'] as const;
-export const SEC_FR = ['Avant les Avengers', "Saga de l'Infini", 'Saga du Multivers', 'Phase 6 — vers Doomsday'];
-export const SEC_EN = ['Before the Avengers', 'The Infinity Saga', 'The Multiverse Saga', 'Phase 6 — Road to Doomsday'];
+export const SEC_FR = ['Avant les Avengers', "Saga de l'Infini", 'Saga du Multivers', 'Phase 6 et au-delà'];
+export const SEC_EN = ['Before the Avengers', 'The Infinity Saga', 'The Multiverse Saga', 'Phase 6 and Beyond'];
 export const MONTHS_FR = [
   'jan.',
   'fév.',

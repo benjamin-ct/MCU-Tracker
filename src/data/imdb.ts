@@ -48,6 +48,7 @@ export const IMDB_ID: Record<string, string> = {
   hawkeye: 'tt10160804',
   moonknight: 'tt10234724',
   eternals: 'tt9032400',
+  shangchi: 'tt9376612',
   msmarvel: 'tt10857164',
   nowayhome: 'tt10872600',
   drstrange2: 'tt9419884',
@@ -94,4 +95,7 @@ export const IMDB_ID: Record<string, string> = {
   yfns2: 'tt16027074',
   visionquest: 'tt23112594',
   doomsday: 'tt21357150',
+  daredevil3: 'tt18923754',
+  secretwars: 'tt21361444',
+  xmenreboot: 'tt29347085',
 };

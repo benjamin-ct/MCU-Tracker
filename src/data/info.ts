@@ -690,6 +690,23 @@ export const INFO: Record<string, InfoEntry> = {
       type: 'tv',
     },
   },
+  shangchi: {
+    synopsis:
+      'Shang-Chi doit affronter son père, chef de la mystérieuse organisation des Dix Anneaux, et le passé qu’il croyait avoir fui.',
+    director: 'Destin Daniel Cretton',
+    cast: 'Simu Liu, Awkwafina, Tony Leung',
+    pc: 'Oui — Wong, Bruce Banner et Carol Danvers examinent les Dix Anneaux, qui émettent un mystérieux signal.',
+    budget: '~150-200M$',
+    box: '~432M$',
+    rt: '92% critique / 98% public',
+    triv: 'Premier super-héros asiatique en tête d’affiche du MCU ; plus gros lancement de l’histoire pour un weekend de Labor Day aux USA.',
+    link: 'Le signal des Dix Anneaux, teasé en scène post-crédit, refait surface dans les phases suivantes.',
+    yt: 'https://www.youtube.com/watch?v=pOEvuzEVh8g',
+    tmdb: {
+      id: 566525,
+      type: 'movie',
+    },
+  },
   eternals: {
     synopsis: "Des êtres immortels sortent de l'ombre pour protéger la Terre d'une menace ancienne, les Déviants.",
     director: 'Chloé Zhao',
@@ -1415,6 +1432,53 @@ export const INFO: Record<string, InfoEntry> = {
       type: 'movie',
     },
   },
+  secretwars: {
+    synopsis:
+      "Conclusion de la Saga du Multivers : les héros de la Terre affrontent les conséquences ultimes de l'incursion multiversique déclenchée par Doctor Doom, dans une bataille qui redessine la réalité.",
+    director: 'Anthony et Joe Russo',
+    cast: "Robert Downey Jr., et l'ensemble du casting Avengers",
+    budget: 'N/A',
+    box: 'TBD (pas encore sorti)',
+    rt: 'TBD (pas encore sorti)',
+    triv: 'Seule sortie Marvel Studios prévue en 2027 ; repoussé de mai à décembre 2027 pour laisser plus de temps à la post-production après Doomsday.',
+    link: 'Dernier chapitre de la Saga du Multivers, fait suite à Avengers: Doomsday (déc. 2026).',
+    yt: 'Pas encore publiée',
+    tmdb: {
+      id: 1003598,
+      type: 'movie',
+    },
+  },
+  daredevil3: {
+    synopsis: 'Suite non détaillée à ce jour ; seul projet Earth-616 prévu entre Doomsday et Secret Wars.',
+    director: 'Showrunner(s) non confirmé(s)',
+    cast: "Charlie Cox, Vincent D'Onofrio",
+    budget: 'N/A',
+    box: 'N/A',
+    rt: 'TBD (pas encore sorti)',
+    triv: 'Saison déjà commandée dès la sortie de la saison 2 ; 8 épisodes annoncés.',
+    link: 'Seul projet Earth-616 entre Avengers: Doomsday et Avengers: Secret Wars.',
+    yt: 'Pas encore publiée',
+    tmdb: {
+      id: 202555,
+      type: 'tv',
+    },
+  },
+  xmenreboot: {
+    synopsis:
+      "Reboot des X-Men au sein du MCU ; intrigue non dévoilée, présenté par Feige comme la suite de l'univers après Secret Wars.",
+    director: 'Jake Schreier',
+    cast: 'Kit Connor, Sadie Sink, Christopher Abbott, Adam Driver',
+    budget: 'N/A',
+    box: 'N/A',
+    rt: 'TBD (pas encore sorti)',
+    triv: "Casting dévoilé au D23 2026 ; titre encore non officiel. Selon Kevin Feige, Avengers: Secret Wars sert de « reset » et ce film ouvre la suite de l'univers.",
+    link: 'Lance la prochaine ère du MCU après Avengers: Secret Wars.',
+    yt: 'Pas encore publiée',
+    tmdb: {
+      id: 1293690,
+      type: 'movie',
+    },
+  },
 };
 
 // English overrides: only fields that differ from a generic FR->EN transform of the
@@ -1665,6 +1729,13 @@ export const INFO_EN: Record<string, InfoOverride> = {
     synopsis: 'Steven Grant discovers he shares his body with a mercenary wielding Egyptian powers, Marc Spector.',
     triv: 'Oscar Isaac plays multiple personas (Steven Grant / Marc Spector).',
     link: 'Introduces Egyptian mythology, largely self-contained for now.',
+  },
+  shangchi: {
+    synopsis:
+      'Shang-Chi must confront his father, leader of the mysterious Ten Rings organization, and the past he thought he had escaped.',
+    pc: 'Yes — Wong, Bruce Banner, and Carol Danvers examine the Ten Rings, which emit a mysterious signal.',
+    triv: "The MCU's first Asian headlining superhero; the biggest Labor Day weekend opening in US box office history.",
+    link: 'The Ten Rings signal, teased in the post-credit scene, resurfaces in later phases.',
   },
   eternals: {
     synopsis: 'Immortal beings step out of the shadows to protect Earth from an ancient threat, the Deviants.',
@@ -1930,5 +2001,30 @@ export const INFO_EN: Record<string, InfoOverride> = {
     rt: 'TBD (not yet released)',
     triv: 'Reported to be among the most expensive films ever produced (budget unconfirmed); its trailer (July 20, 2026) racked up 503M views in 24 hours, the 2nd-biggest trailer launch of all time.',
     link: 'The second-to-last chapter of the Multiverse Saga, setting up Avengers: Secret Wars (Dec. 2027).',
+  },
+  secretwars: {
+    synopsis:
+      "The finale of the Multiverse Saga: Earth's heroes face the ultimate consequences of the multiversal incursion triggered by Doctor Doom, in a battle that reshapes reality.",
+    box: 'TBD (not yet released)',
+    rt: 'TBD (not yet released)',
+    triv: "Marvel Studios' only 2027 release; pushed from May to December 2027 to allow more post-production time after Doomsday.",
+    link: 'The final chapter of the Multiverse Saga, following Avengers: Doomsday (Dec. 2026).',
+  },
+  daredevil3: {
+    synopsis: 'Plot not yet detailed; the only Earth-616 project set to release between Doomsday and Secret Wars.',
+    cast: "Charlie Cox, Vincent D'Onofrio",
+    box: 'N/A',
+    rt: 'TBD (not yet released)',
+    triv: 'Renewed right after season 2 premiered; 8 episodes announced.',
+    link: 'The only Earth-616 project between Avengers: Doomsday and Avengers: Secret Wars.',
+  },
+  xmenreboot: {
+    synopsis:
+      'An MCU reboot of the X-Men; plot undisclosed, framed by Feige as the next chapter of the universe after Secret Wars.',
+    cast: 'Kit Connor, Sadie Sink, Christopher Abbott, Adam Driver',
+    box: 'N/A',
+    rt: 'TBD (not yet released)',
+    triv: 'Cast unveiled at D23 2026; the title is still unofficial. Per Kevin Feige, Avengers: Secret Wars serves as a "reset" and this film kicks off what comes next.',
+    link: "Launches the MCU's next era after Avengers: Secret Wars.",
   },
 };
