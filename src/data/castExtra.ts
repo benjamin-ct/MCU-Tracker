@@ -84,6 +84,8 @@ export const CAST_EXTRA: Record<string, string> = {
     "Jeremy Renner, Hailee Steinfeld, Vera Farmiga, Tony Dalton, Fra Fee, Brian d'Arcy James, Aleks Paunovic, Piotr Adamczyk, Linda Cardellini, Alaqua Cox, Zahn McClarnon, Florence Pugh, Vincent D'Onofrio",
   moonknight:
     'Oscar Isaac, May Calamawy, Ethan Hawke, F. Murray Abraham, Karim El Hakim, Antonia Salib, Gaspard Ulliel, Khalid Abdalla, David Ganly, Ann Akinjirin',
+  shangchi:
+    "Simu Liu, Awkwafina, Tony Leung, Meng'er Zhang, Fala Chen, Florian Munteanu, Benedict Wong, Yuen Wah, Michelle Yeoh, Ben Kingsley, Zach Cherry",
   eternals:
     'Gemma Chan, Richard Madden, Angelina Jolie, Kumail Nanjiani, Lia McHugh, Brian Tyree Henry, Lauren Ridloff, Barry Keoghan, Don Lee, Kit Harington, Salma Hayek, Bill Skarsgård, Harish Patel, Haaz Sleiman, Harry Styles',
   msmarvel:

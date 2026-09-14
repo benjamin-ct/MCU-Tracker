@@ -75,20 +75,20 @@ const E = [
 ];
 ```
 
-- 93 entrées au total (54 films + 39 séries), réparties en 4 chapitres (`SEC` / `ROMANS`) : Avant les Avengers / Saga de l'Infini / Saga du Multivers / Phase 6 et au-delà.
+- 94 entrées au total (55 films + 39 séries), réparties en 4 chapitres (`SEC` / `ROMANS`) : Avant les Avengers / Saga de l'Infini / Saga du Multivers / Phase 6 et au-delà.
 - `opt: true` = contenu "optionnel" (Fox X-Men, Netflix Defenders-verse) — masqué en mode "Essentiel", visible en mode "Tout regarder".
 
 **`PLAT`** — dictionnaire des contenus **pas encore sortis** (dernière vérification : 14/09/2026) : `yfns2`, `visionquest`, `doomsday`, `daredevil3`, `secretwars`, `xmenreboot`. C'est la **source unique de vérité** pour "pas encore sorti" via `isFuture(e)` — utilisée pour exclure des totaux/soirées/countdown, désactiver la case à cocher, masquer le lien Disney+, etc. **Ne jamais dupliquer cette logique ailleurs.**
 
 **`INFO`** — dictionnaire par id avec les champs pour la modale "i" : `synopsis`, `director`, `cast` (2-3 noms principaux affichés), `pc` (scène post-crédit), `budget`, `box` (box-office), `rt` (score Rotten Tomatoes), `triv` (anecdote), `link` (connexion à la saga), `yt` (URL bande-annonce — anglaise par défaut, mutée par `applyLangToContent()` en FR quand `TRAILER_FR[id]` existe), `tmdb: {id, type}` (pour fetch API poster uniquement), `poster` (chemin d'affiche statique vérifié, pour les quelques titres où on a une vraie image sans avoir besoin de clé API).
 
-**`IMDB_ID`** — dictionnaire par id, tt-id IMDb vérifié à la main pour les 93 entrées (jamais dérivé de l'API TMDB, voir décision #5 ci-dessous). Les séries splitées en plusieurs saisons partagent le même tt-id (IMDb n'a pas de fiche par saison). `imdbUrl(e)` (`js/modals.js`) construit le lien direct `https://www.imdb.com/title/${tt-id}/` ; repli sur une recherche IMDb seulement si un id venait à manquer pour un futur ajout pas encore mis à jour dans `IMDB_ID`.
+**`IMDB_ID`** — dictionnaire par id, tt-id IMDb vérifié à la main pour les 94 entrées (jamais dérivé de l'API TMDB, voir décision #5 ci-dessous). Les séries splitées en plusieurs saisons partagent le même tt-id (IMDb n'a pas de fiche par saison). `imdbUrl(e)` (`js/modals.js`) construit le lien direct `https://www.imdb.com/title/${tt-id}/` ; repli sur une recherche IMDb seulement si un id venait à manquer pour un futur ajout pas encore mis à jour dans `IMDB_ID`.
 
 **`CAST_EXTRA`** — dictionnaire par id, casting bien plus complet que `INFO[id].cast` (souvent 10-30 noms selon l'ampleur du film/série — casting principal + secondaire, pas seulement 2-3 apparitions notables comme la version initiale du 27/07/2026 matin), jamais rendu à l'écran, consulté uniquement par `matchSearch()` (`js/compute.js`) pour que la recherche par acteur trouve un rôle même minoritaire, sans pour autant alourdir la fiche "i" qui garde volontairement 2-3 noms.
 
-**`TRAILER_FR`** — dictionnaire par id, URL YouTube de la bande-annonce française officielle (quand trouvée — 86/93 ; les titres pas encore promus en France, ou sans bande-annonce publiée, retombent sur la bande-annonce anglaise ou l'absence de bouton). Appliqué à `INFO[id].yt` par `applyLangToContent()` quand `lang==='fr'`.
+**`TRAILER_FR`** — dictionnaire par id, URL YouTube de la bande-annonce française officielle (quand trouvée — 87/94 ; les titres pas encore promus en France, ou sans bande-annonce publiée, retombent sur la bande-annonce anglaise ou l'absence de bouton). Appliqué à `INFO[id].yt` par `applyLangToContent()` quand `lang==='fr'`.
 
-**`RELEASE_DATE`** — dictionnaire par id, date de sortie **réelle** au format ISO (`'YYYY-MM-DD'`), pour les 93 entrées. Sert uniquement à l'onglet "Ordre de sortie" (tri + regroupement par année) — n'a aucun effet sur le marathon en ordre chronologique interne. Dates confirmées pour tout ce qui est déjà sorti ; approximatives (mais dans le bon ordre relatif) pour le très récent/annoncé sans date figée. `releaseYear(id)` en extrait l'année pour le regroupement.
+**`RELEASE_DATE`** — dictionnaire par id, date de sortie **réelle** au format ISO (`'YYYY-MM-DD'`), pour les 94 entrées. Sert uniquement à l'onglet "Ordre de sortie" (tri + regroupement par année) — n'a aucun effet sur le marathon en ordre chronologique interne. Dates confirmées pour tout ce qui est déjà sorti ; approximatives (mais dans le bon ordre relatif) pour le très récent/annoncé sans date figée. `releaseYear(id)` en extrait l'année pour le regroupement.
 
 ## Onglets Chronologique / Ordre de sortie
 

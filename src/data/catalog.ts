@@ -1,5 +1,5 @@
 // Auto-generated from the vanilla-JS catalogue during the React migration (27/07/2026).
-// 93 entries, chronological internal order (sec 0-3). See types.ts for the shape.
+// 94 entries, chronological internal order (sec 0-3). See types.ts for the shape.
 import type { CatalogEntry } from './types';
 
 export const CATALOG: CatalogEntry[] = [
@@ -408,6 +408,15 @@ export const CATALOG: CatalogEntry[] = [
     count: 6,
     epMins: [50, 50, 50, 50, 50, 50],
     opt: true,
+  },
+  {
+    type: 'f',
+    id: 'shangchi',
+    title: 'Shang-Chi et la Légende des Dix Anneaux',
+    sec: 2,
+    m: 132,
+    opt: false,
+    y: null,
   },
   {
     type: 'f',

@@ -19,6 +19,7 @@ export const TITLE_EN: Record<string, string> = {
   falcon: 'The Falcon and the Winter Soldier',
   farfromhome: 'Spider-Man: Far From Home',
   eternals: 'Eternals',
+  shangchi: 'Shang-Chi and the Legend of the Ten Rings',
   nowayhome: 'Spider-Man: No Way Home',
   thor4: 'Thor: Love and Thunder',
   shehulk: 'She-Hulk: Attorney at Law',

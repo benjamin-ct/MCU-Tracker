@@ -45,6 +45,7 @@ export const TRAILER_FR: Record<string, string> = {
   farfromhome: 'https://www.youtube.com/watch?v=SFoCPkEfHEM',
   hawkeye: 'https://www.youtube.com/watch?v=P-6jVdKj_dk',
   moonknight: 'https://www.youtube.com/watch?v=BxcyFgJSpjQ',
+  shangchi: 'https://www.youtube.com/watch?v=PD3rUCBFDlI',
   eternals: 'https://www.youtube.com/watch?v=nHcubNwuKFA',
   msmarvel: 'https://www.youtube.com/watch?v=JTb4NIzxtYE',
   nowayhome: 'https://www.youtube.com/watch?v=KR-eyxSuOgk',

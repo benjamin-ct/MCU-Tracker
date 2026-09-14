@@ -690,6 +690,23 @@ export const INFO: Record<string, InfoEntry> = {
       type: 'tv',
     },
   },
+  shangchi: {
+    synopsis:
+      'Shang-Chi doit affronter son père, chef de la mystérieuse organisation des Dix Anneaux, et le passé qu’il croyait avoir fui.',
+    director: 'Destin Daniel Cretton',
+    cast: 'Simu Liu, Awkwafina, Tony Leung',
+    pc: 'Oui — Wong, Bruce Banner et Carol Danvers examinent les Dix Anneaux, qui émettent un mystérieux signal.',
+    budget: '~150-200M$',
+    box: '~432M$',
+    rt: '92% critique / 98% public',
+    triv: 'Premier super-héros asiatique en tête d’affiche du MCU ; plus gros lancement de l’histoire pour un weekend de Labor Day aux USA.',
+    link: 'Le signal des Dix Anneaux, teasé en scène post-crédit, refait surface dans les phases suivantes.',
+    yt: 'https://www.youtube.com/watch?v=pOEvuzEVh8g',
+    tmdb: {
+      id: 566525,
+      type: 'movie',
+    },
+  },
   eternals: {
     synopsis: "Des êtres immortels sortent de l'ombre pour protéger la Terre d'une menace ancienne, les Déviants.",
     director: 'Chloé Zhao',
@@ -1712,6 +1729,13 @@ export const INFO_EN: Record<string, InfoOverride> = {
     synopsis: 'Steven Grant discovers he shares his body with a mercenary wielding Egyptian powers, Marc Spector.',
     triv: 'Oscar Isaac plays multiple personas (Steven Grant / Marc Spector).',
     link: 'Introduces Egyptian mythology, largely self-contained for now.',
+  },
+  shangchi: {
+    synopsis:
+      'Shang-Chi must confront his father, leader of the mysterious Ten Rings organization, and the past he thought he had escaped.',
+    pc: 'Yes — Wong, Bruce Banner, and Carol Danvers examine the Ten Rings, which emit a mysterious signal.',
+    triv: "The MCU's first Asian headlining superhero; the biggest Labor Day weekend opening in US box office history.",
+    link: 'The Ten Rings signal, teased in the post-credit scene, resurfaces in later phases.',
   },
   eternals: {
     synopsis: 'Immortal beings step out of the shadows to protect Earth from an ancient threat, the Deviants.',

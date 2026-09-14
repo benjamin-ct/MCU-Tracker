@@ -41,6 +41,7 @@ export const RELEASE_DATE: Record<string, string> = {
   hawkeye: '2021-11-24',
   moonknight: '2022-03-30',
   eternals: '2021-11-05',
+  shangchi: '2021-09-03',
   msmarvel: '2022-06-08',
   nowayhome: '2021-12-17',
   drstrange2: '2022-05-06',
