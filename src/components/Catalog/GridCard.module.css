@@ -1,0 +1,119 @@
+/* ── Grid card (poster-forward browsing view) ── */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.posterWrap {
+  position: relative;
+}
+
+/* Checkbox overlay, top-left of the poster — dark backdrop so it reads on any
+   poster, bright or dark. */
+.check {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  display: flex;
+  padding: 4px;
+  border-radius: 7px;
+  background: rgba(8, 8, 10, 0.55);
+  backdrop-filter: blur(2px);
+  cursor: pointer;
+}
+
+.check input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* "i" info button overlay, top-right of the poster — reuses the shared .info-btn
+   (index.css) for the glyph itself, just repositioned since it's normally inline. */
+.infoBtn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  margin: 0;
+  color: var(--text);
+  background: rgba(8, 8, 10, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.infoBtn::before {
+  display: none;
+}
+
+.platformOverlay {
+  position: absolute;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  display: flex;
+}
+
+.platformOverlay > * {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  min-width: 0;
+}
+
+.title {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sub {
+  margin-top: 3px;
+  font-family: var(--m), sans-serif;
+  font-size: 10px;
+  color: var(--dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* ── Watched / future states — same semantics as the row views ── */
+.card.done .title {
+  color: var(--faint);
+}
+
+.card.done .posterWrap {
+  opacity: 0.55;
+}
+
+:global(body.view-todo) .card.done {
+  display: none;
+}
+
+.card.future {
+  opacity: 0.5;
+}
+
+.card.future .check {
+  cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 13.5px;
+  }
+
+  .sub {
+    font-size: 10.5px;
+  }
+}

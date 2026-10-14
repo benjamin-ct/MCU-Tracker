@@ -1,6 +1,7 @@
-import type { CatalogEntry, Lang, SortMode, ViewFilter } from '../../data';
+import type { CatalogEntry, Lang, SortMode, ViewFilter, ViewLayout } from '../../data';
 import { ActionButtons } from './ActionButtons';
 import { BulkExpand } from './BulkExpand';
+import { LayoutToggle } from './LayoutToggle';
 import { NextUpCard } from './NextUpCard';
 import styles from './Sidebar.module.css';
 import { SortToggle } from './SortToggle';
@@ -14,11 +15,13 @@ interface SidebarProps {
   tonightMin: number;
   futurePendingCount: number;
   sortMode: SortMode;
+  viewLayout: ViewLayout;
   viewFilter: ViewFilter;
   onMarkNext: () => void;
   onSurprise: () => void;
   onOpenStats: () => void;
   onSortChange: (sortMode: SortMode) => void;
+  onViewLayoutChange: (viewLayout: ViewLayout) => void;
   onViewFilterChange: (viewFilter: ViewFilter) => void;
   onTonightStepUp: () => void;
   onTonightStepDown: () => void;
@@ -33,11 +36,13 @@ export function Sidebar({
   tonightMin,
   futurePendingCount,
   sortMode,
+  viewLayout,
   viewFilter,
   onMarkNext,
   onSurprise,
   onOpenStats,
   onSortChange,
+  onViewLayoutChange,
   onViewFilterChange,
   onTonightStepUp,
   onTonightStepDown,
@@ -57,6 +62,9 @@ export function Sidebar({
       <ActionButtons lang={lang} onSurprise={onSurprise} onOpenStats={onOpenStats} />
       <div className={styles.filterRow}>
         <SortToggle sortMode={sortMode} lang={lang} onChange={onSortChange} />
+      </div>
+      <div className={styles.filterRow}>
+        <LayoutToggle viewLayout={viewLayout} lang={lang} onChange={onViewLayoutChange} />
       </div>
       <div className={styles.filterRow}>
         <ViewFilterToggle viewFilter={viewFilter} lang={lang} onChange={onViewFilterChange} />

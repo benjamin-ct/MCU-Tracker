@@ -2,6 +2,7 @@ export { OptionalBadge, PlatformBadge, SeriesTonightBadge, TonightBadge } from '
 export { Catalog } from './Catalog';
 export { ChapterGroup } from './ChapterGroup';
 export { DisneyPlusLink } from './DisneyPlusLink';
+export { GridCard } from './GridCard';
 export { MovieRow } from './MovieRow';
 export { RowPoster } from './RowPoster';
 export { SeriesEpisodeList } from './SeriesEpisodeList';

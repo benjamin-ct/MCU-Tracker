@@ -67,9 +67,12 @@ interface RowPosterProps {
   title: string;
   fetchPoster: (tmdbInfo: TmdbRef) => Promise<PosterFetchResult>;
   onClick: () => void;
+  // 'row' (default): small fixed-size thumbnail for MovieRow/SeriesRow. 'grid': fills
+  // its container at a 2:3 poster ratio, for GridCard.
+  size?: 'row' | 'grid';
 }
 
-export function RowPoster({ entry, title, fetchPoster, onClick }: RowPosterProps) {
+export function RowPoster({ entry, title, fetchPoster, onClick, size = 'row' }: RowPosterProps) {
   const [posterUrl, setPosterUrl] = useState<string | null>(null);
   const info = INFO[entry.id];
 
@@ -100,7 +103,7 @@ export function RowPoster({ entry, title, fetchPoster, onClick }: RowPosterProps
   return (
     <button
       type="button"
-      className={styles.poster}
+      className={size === 'grid' ? `${styles.poster} ${styles.posterGrid}` : styles.poster}
       onClick={onClick}
       aria-label={title}
       data-row-poster

@@ -72,3 +72,4 @@ export type Lang = 'fr' | 'en';
 export type SortMode = 'chrono' | 'release';
 export type ViewFilter = 'all' | 'todo';
 export type Mode = 'essentiel' | 'tout';
+export type ViewLayout = 'list' | 'grid';

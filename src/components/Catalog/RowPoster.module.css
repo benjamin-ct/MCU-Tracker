@@ -52,3 +52,31 @@
     font-size: 15px;
   }
 }
+
+/* ── Grid variant (GridCard) — fills its container, 2:3 poster ratio ── */
+.posterGrid {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  border-radius: 10px;
+}
+
+.posterGrid:hover,
+.posterGrid:focus-visible {
+  transform: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.posterGrid .posterInit {
+  font-size: 22px;
+}
+
+@media (min-width: 768px) {
+  .posterGrid {
+    border-radius: 12px;
+  }
+
+  .posterGrid .posterInit {
+    font-size: 26px;
+  }
+}
