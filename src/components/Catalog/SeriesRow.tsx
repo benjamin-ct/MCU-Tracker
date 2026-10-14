@@ -1,12 +1,14 @@
 import type { MouseEvent as ReactMouseEvent } from 'react';
 import { useEffect, useRef } from 'react';
 
-import type { Lang, PlatformEntry, SeriesEntry } from '../../data';
+import type { Lang, PlatformEntry, SeriesEntry, TmdbRef } from '../../data';
 import { getTitle } from '../../data';
+import type { PosterFetchResult } from '../../hooks';
 import { t } from '../../i18n';
 import { fmt } from '../../utils/format';
 import { OptionalBadge, PlatformBadge, SeriesTonightBadge } from './Badges';
 import { DisneyPlusLink } from './DisneyPlusLink';
+import { RowPoster } from './RowPoster';
 import { SeriesEpisodeList } from './SeriesEpisodeList';
 import styles from './SeriesRow.module.css';
 import { StarRating } from './StarRating';
@@ -23,6 +25,7 @@ interface SeriesRowProps {
   platform: PlatformEntry | undefined;
   rating: number;
   disneyPlusHref: string;
+  fetchPoster: (tmdbInfo: TmdbRef) => Promise<PosterFetchResult>;
   onToggleOpen: () => void;
   onToggleEpisode: (index: number, watched: boolean) => void;
   onBulkToggle: (watched: boolean) => void;
@@ -43,6 +46,7 @@ export function SeriesRow({
   platform,
   rating,
   disneyPlusHref,
+  fetchPoster,
   onToggleOpen,
   onToggleEpisode,
   onBulkToggle,
@@ -72,13 +76,20 @@ export function SeriesRow({
 
   const handleHeaderClick = (event: ReactMouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLElement;
-    if (target.closest('[data-bulk]') || target.closest('.info-btn') || target.closest('[data-dp-link]')) return;
+    if (
+      target.closest('[data-bulk]') ||
+      target.closest('.info-btn') ||
+      target.closest('[data-dp-link]') ||
+      target.closest('[data-row-poster]')
+    )
+      return;
     onToggleOpen();
   };
 
   return (
     <div className={sgClassName} id={`sg-${entry.id}`}>
       <div className={styles.sgHd} onClick={handleHeaderClick}>
+        <RowPoster entry={entry} title={title} fetchPoster={fetchPoster} onClick={onOpenInfo} />
         <div className={styles.sgBulk} data-bulk>
           <label>
             <input

@@ -249,6 +249,7 @@ function App() {
             isSeriesCollapsed={seriesCollapse.isCollapsed}
             onToggleSeries={seriesCollapse.toggle}
             disneyPlusHrefFor={() => disneyPlusHref}
+            fetchPoster={fetchPoster}
             onSetWatched={setWatched}
             onRate={toggleRating}
             onOpenInfo={setOpenInfoEntryId}

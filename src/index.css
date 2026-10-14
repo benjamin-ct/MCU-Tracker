@@ -1,58 +1,63 @@
-/* ── Variables thème sombre (défaut) ── */
+/* ── Variables thème sombre (défaut) — "Cinéma sombre" ──
+   Identité visuelle principale de l'appli : noir profond façon salle de cinéma,
+   rouge marquee comme accent (enfin un --red qui est vraiment rouge — l'ancienne
+   valeur était un vert hérité de la version vanilla-JS d'origine), touche dorée en
+   accent secondaire pour les badges "bientôt". */
 :root {
-  --bg: #080c09;
-  --card: #0d1210;
-  --raised: #121a13;
-  --groove: #182019;
-  --red: #38bf50;
-  --red-glow: rgba(56, 191, 80, 0.15);
-  --red-deep: #1e7a2c;
-  --purple: #c8941a;
-  --purple-soft: rgba(200, 148, 26, 0.13);
-  --green: #4ade80;
-  --green-soft: rgba(74, 222, 128, 0.12);
-  --text: #e6ede7;
-  --dim: #7a9480;
-  --faint: #3e5240;
-  --ln: rgba(255, 255, 255, 0.055);
-  --ln2: rgba(255, 255, 255, 0.1);
-  --amber: #fbbf24;
-  --danger: #ef9a9a;
-  --danger-glow: rgba(239, 154, 154, 0.3);
+  --bg: #0a0809;
+  --card: #151215;
+  --raised: #1c171d;
+  --groove: #272028;
+  --red: #ef233c;
+  --red-glow: rgba(239, 35, 60, 0.18);
+  --red-deep: #a4161a;
+  --purple: #d4a62f;
+  --purple-soft: rgba(212, 166, 47, 0.14);
+  --green: #34d399;
+  --green-soft: rgba(52, 211, 153, 0.13);
+  --text: #f5f1ea;
+  --dim: #9c8f93;
+  --faint: #4c444a;
+  --ln: rgba(255, 255, 255, 0.07);
+  --ln2: rgba(255, 255, 255, 0.12);
+  --amber: #f5a524;
+  --danger: #ff6b6b;
+  --danger-glow: rgba(255, 107, 107, 0.3);
   --dp-text: #dff5e2;
-  --on-accent: #080c09;
-  --topbar-bg: rgba(8, 12, 9, 0.94);
+  --on-accent: #fff8f6;
+  --topbar-bg: rgba(10, 8, 9, 0.92);
   --g: 'Space Grotesk', -apple-system, sans-serif;
   --m: 'DM Mono', monospace, sans-serif;
   --hh: 0px;
 }
 
 /* ── Variables thème clair ──
-   Même hiérarchie sémantique que le thème sombre (bg < card < raised < groove),
-   couleurs d'accent assombries là où elles servent de texte. */
+   Même hiérarchie sémantique que le thème sombre (bg < card < raised < groove) et
+   même identité "cinéma" (rouge marquee, or), juste assombrie/désaturée pour rester
+   lisible en plein jour — fond chaud façon affiche vieillie plutôt que blanc pur. */
 :root[data-theme='light'] {
-  --bg: #f3f6f2;
+  --bg: #f7f2ea;
   --card: #ffffff;
-  --raised: #ebf0e9;
-  --groove: #dee6dc;
-  --red: #1e8a34;
-  --red-glow: rgba(30, 138, 52, 0.12);
-  --red-deep: #166828;
-  --purple: #8a6710;
-  --purple-soft: rgba(138, 103, 16, 0.12);
-  --green: #1f9d4c;
-  --green-soft: rgba(31, 157, 76, 0.12);
-  --text: #10160e;
-  --dim: #57654e;
-  --faint: #8a9481;
-  --ln: rgba(0, 0, 0, 0.08);
-  --ln2: rgba(0, 0, 0, 0.13);
+  --raised: #f1e9dc;
+  --groove: #e4d8c4;
+  --red: #c81d25;
+  --red-glow: rgba(200, 29, 37, 0.12);
+  --red-deep: #8f1115;
+  --purple: #96731c;
+  --purple-soft: rgba(150, 115, 28, 0.13);
+  --green: #17936a;
+  --green-soft: rgba(23, 147, 106, 0.12);
+  --text: #1c1410;
+  --dim: #6b5d52;
+  --faint: #a99c8c;
+  --ln: rgba(28, 20, 16, 0.08);
+  --ln2: rgba(28, 20, 16, 0.14);
   --amber: #8a5a00;
   --danger: #b5352f;
   --danger-glow: rgba(181, 53, 47, 0.25);
   --dp-text: #0f5c22;
-  --on-accent: #f3f6f2;
-  --topbar-bg: rgba(243, 246, 242, 0.88);
+  --on-accent: #fff8f6;
+  --topbar-bg: rgba(247, 242, 234, 0.9);
 }
 
 /* ── Reset ── */
@@ -233,7 +238,7 @@ input[type='checkbox']:indeterminate + .sq::before {
 
 .info-btn:active::before {
   border-color: var(--red);
-  background: rgba(56, 191, 80, 0.12);
+  background: color-mix(in srgb, var(--red) 12%, transparent);
 }
 
 .info-btn:active {
@@ -251,7 +256,7 @@ input[type='checkbox']:indeterminate + .sq::before {
     box-shadow: none;
   }
   50% {
-    box-shadow: 0 0 0 3px rgba(56, 191, 80, 0.45);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 45%, transparent);
   }
 }
 

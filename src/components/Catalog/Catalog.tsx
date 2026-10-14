@@ -6,8 +6,9 @@
 // state — this component just reads it and reports toggles.
 import { useMemo } from 'react';
 
-import type { CatalogEntry, Lang, Mode, SeriesEntry, SortMode, ViewFilter } from '../../data';
+import type { CatalogEntry, Lang, Mode, SeriesEntry, SortMode, TmdbRef, ViewFilter } from '../../data';
 import { isFilm, isFuture, PLAT } from '../../data';
+import type { PosterFetchResult } from '../../hooks';
 import { fitsTonight, isWatched, sDone, sRem, type WatchDates } from '../../utils/compute';
 import { groupBadge, visibleGroups } from '../../utils/groups';
 import { ChapterGroup } from './ChapterGroup';
@@ -29,6 +30,7 @@ interface CatalogProps {
   isSeriesCollapsed: (id: string) => boolean;
   onToggleSeries: (id: string) => void;
   disneyPlusHrefFor: (entry: CatalogEntry) => string;
+  fetchPoster: (tmdbInfo: TmdbRef) => Promise<PosterFetchResult>;
   onSetWatched: (id: string, watched: boolean) => void;
   onRate: (id: string, value: number) => void;
   onOpenInfo: (id: string) => void;
@@ -51,6 +53,7 @@ export function Catalog({
   isSeriesCollapsed,
   onToggleSeries,
   disneyPlusHrefFor,
+  fetchPoster,
   onSetWatched,
   onRate,
   onOpenInfo,
@@ -86,6 +89,7 @@ export function Catalog({
                 isFuture={isFuture(entry.id)}
                 platform={PLAT[entry.id]}
                 disneyPlusHref={disneyPlusHrefFor(entry)}
+                fetchPoster={fetchPoster}
                 onToggleWatched={(watched) => onSetWatched(entry.id, watched)}
                 onRate={(value) => onRate(entry.id, value)}
                 onOpenInfo={() => onOpenInfo(entry.id)}
@@ -105,6 +109,7 @@ export function Catalog({
                 platform={PLAT[entry.id]}
                 rating={ratings[entry.id] ?? 0}
                 disneyPlusHref={disneyPlusHrefFor(entry)}
+                fetchPoster={fetchPoster}
                 onToggleOpen={() => onToggleSeries(entry.id)}
                 onToggleEpisode={(index, watched) => onSetWatched(`${entry.id}-e${index + 1}`, watched)}
                 onBulkToggle={(watched) => onBulkToggleSeries(entry, watched)}

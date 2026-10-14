@@ -120,7 +120,7 @@ export function CumulativeChart({ series, totalMinutes, lang }: CumulativeChartP
         }}
         onTouchEnd={hide}
       >
-        <polygon points={areaPts} fill="rgba(56,191,80,.14)" />
+        <polygon points={areaPts} fill="color-mix(in srgb, var(--red) 14%, transparent)" />
         <line
           x1={hovered ? hovered.x : 0}
           y1={6}
@@ -134,14 +134,14 @@ export function CumulativeChart({ series, totalMinutes, lang }: CumulativeChartP
         <polyline
           points={lineStr}
           fill="none"
-          stroke="#38BF50"
+          stroke="var(--red)"
           strokeWidth={2.2}
           strokeLinejoin="round"
           strokeLinecap="round"
         />
         <circle
           r={4}
-          fill="#38BF50"
+          fill="var(--red)"
           stroke="var(--card)"
           strokeWidth={1.5}
           cx={hovered ? hovered.x : 0}
