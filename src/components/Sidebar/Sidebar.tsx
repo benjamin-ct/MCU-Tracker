@@ -1,12 +1,9 @@
 import type { CatalogEntry, Lang, SortMode, ViewFilter, ViewLayout } from '../../data';
 import { ActionButtons } from './ActionButtons';
 import { BulkExpand } from './BulkExpand';
-import { LayoutToggle } from './LayoutToggle';
+import { FilterMenu } from './FilterMenu';
 import { NextUpCard } from './NextUpCard';
 import styles from './Sidebar.module.css';
-import { SortToggle } from './SortToggle';
-import { TonightStepper } from './TonightStepper';
-import { ViewFilterToggle } from './ViewFilterToggle';
 
 interface SidebarProps {
   lang: Lang;
@@ -60,23 +57,18 @@ export function Sidebar({
         onMarkNext={onMarkNext}
       />
       <ActionButtons lang={lang} onSurprise={onSurprise} onOpenStats={onOpenStats} />
-      <div className={styles.filterPanel}>
-        <div className={styles.filterRow}>
-          <SortToggle sortMode={sortMode} lang={lang} onChange={onSortChange} />
-        </div>
-        <div className={styles.filterRow}>
-          <LayoutToggle viewLayout={viewLayout} lang={lang} onChange={onViewLayoutChange} />
-        </div>
-        <div className={styles.filterRow}>
-          <ViewFilterToggle viewFilter={viewFilter} lang={lang} onChange={onViewFilterChange} />
-          <TonightStepper
-            tonightMin={tonightMin}
-            lang={lang}
-            onStepUp={onTonightStepUp}
-            onStepDown={onTonightStepDown}
-          />
-        </div>
-      </div>
+      <FilterMenu
+        lang={lang}
+        sortMode={sortMode}
+        viewLayout={viewLayout}
+        viewFilter={viewFilter}
+        tonightMin={tonightMin}
+        onSortChange={onSortChange}
+        onViewLayoutChange={onViewLayoutChange}
+        onViewFilterChange={onViewFilterChange}
+        onTonightStepUp={onTonightStepUp}
+        onTonightStepDown={onTonightStepDown}
+      />
       <BulkExpand lang={lang} onExpandAll={onExpandAll} onCollapseAll={onCollapseAll} />
     </aside>
   );

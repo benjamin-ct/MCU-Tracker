@@ -5,6 +5,7 @@
 .fltGrp {
   display: flex;
   gap: 2px;
+  width: 100%;
   background: var(--raised);
   border: 1px solid var(--ln2);
   border-radius: 9px;
@@ -22,6 +23,8 @@
   padding: 7px 11px;
   border-radius: 7px;
   cursor: pointer;
+  flex: 1;
+  text-align: center;
   transition:
     color 0.15s,
     background 0.15s;
@@ -40,15 +43,4 @@
 
 .fltBtn.on:hover {
   color: var(--on-accent);
-}
-
-@media (min-width: 768px) {
-  .fltGrp {
-    width: 100%;
-  }
-
-  .fltBtn {
-    flex: 1;
-    text-align: center;
-  }
 }

@@ -3,7 +3,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-left: auto;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .tnLbl {
@@ -58,10 +59,4 @@
   font-weight: 500;
   min-width: 32px;
   text-align: center;
-}
-
-@media (min-width: 768px) {
-  .tnWrap {
-    margin-left: 0;
-  }
 }

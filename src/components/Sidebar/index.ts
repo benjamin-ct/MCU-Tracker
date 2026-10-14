@@ -1,5 +1,6 @@
 export { ActionButtons } from './ActionButtons';
 export { BulkExpand } from './BulkExpand';
+export { FilterMenu } from './FilterMenu';
 export { LayoutToggle } from './LayoutToggle';
 export { NextUpCard } from './NextUpCard';
 export { Sidebar } from './Sidebar';
