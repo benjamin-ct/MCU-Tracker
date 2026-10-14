@@ -1,9 +1,11 @@
-import { FilmEntry, getMonthNames, getTitle, Lang, PlatformEntry } from '../../data';
+import { FilmEntry, getMonthNames, getTitle, Lang, PlatformEntry, TmdbRef } from '../../data';
+import type { PosterFetchResult } from '../../hooks';
 import { trWatchedOn } from '../../i18n';
 import { fmt, fmtDayMonth } from '../../utils/format';
 import { OptionalBadge, PlatformBadge, TonightBadge } from './Badges';
 import { DisneyPlusLink } from './DisneyPlusLink';
 import styles from './MovieRow.module.css';
+import { RowPoster } from './RowPoster';
 import { StarRating } from './StarRating';
 
 interface MovieRowProps {
@@ -16,6 +18,7 @@ interface MovieRowProps {
   isFuture: boolean;
   platform: PlatformEntry | undefined;
   disneyPlusHref: string;
+  fetchPoster: (tmdbInfo: TmdbRef) => Promise<PosterFetchResult>;
   onToggleWatched: (watched: boolean) => void;
   onRate: (value: number) => void;
   onOpenInfo: () => void;
@@ -32,6 +35,7 @@ export function MovieRow({
   isFuture,
   platform,
   disneyPlusHref,
+  fetchPoster,
   onToggleWatched,
   onRate,
   onOpenInfo,
@@ -45,46 +49,49 @@ export function MovieRow({
 
   return (
     <div className={rowClassName} id={`r-${entry.id}`}>
-      <div className={styles.rowTop}>
-        <label>
-          <input
-            type="checkbox"
-            checked={isWatched}
-            disabled={isFuture}
-            onChange={(event) => onToggleWatched(event.target.checked)}
-          />
-          <span className="sq" />
-          <span className={styles.rt}>
-            <span className={styles.rtT}>
-              {title}
-              {entry.y ? <span className={styles.rtYr}>({entry.y})</span> : null}
-            </span>
-            {entry.opt || platform ? (
-              <span className={styles.rtBadges}>
-                {entry.opt ? <OptionalBadge lang={lang} /> : null}
-                {platform ? <PlatformBadge platform={platform} lang={lang} /> : null}
+      <RowPoster entry={entry} title={title} fetchPoster={fetchPoster} onClick={onOpenInfo} />
+      <div className={styles.rowBody}>
+        <div className={styles.rowTop}>
+          <label>
+            <input
+              type="checkbox"
+              checked={isWatched}
+              disabled={isFuture}
+              onChange={(event) => onToggleWatched(event.target.checked)}
+            />
+            <span className="sq" />
+            <span className={styles.rt}>
+              <span className={styles.rtT}>
+                {title}
+                {entry.y ? <span className={styles.rtYr}>({entry.y})</span> : null}
               </span>
-            ) : null}
-            <span className={styles.watchDate}>
-              {isWatched && watchDateIso ? trWatchedOn(lang, fmtDayMonth(watchDateIso, getMonthNames(lang))) : ''}
+              {entry.opt || platform ? (
+                <span className={styles.rtBadges}>
+                  {entry.opt ? <OptionalBadge lang={lang} /> : null}
+                  {platform ? <PlatformBadge platform={platform} lang={lang} /> : null}
+                </span>
+              ) : null}
+              <span className={styles.watchDate}>
+                {isWatched && watchDateIso ? trWatchedOn(lang, fmtDayMonth(watchDateIso, getMonthNames(lang))) : ''}
+              </span>
             </span>
+          </label>
+          <span className={styles.rtMeta}>
+            <span className={styles.rtD}>{fmt(entry.m)}</span>
+            <TonightBadge lang={lang} visible={tonightFit} />
           </span>
-        </label>
-        <span className={styles.rtMeta}>
-          <span className={styles.rtD}>{fmt(entry.m)}</span>
-          <TonightBadge lang={lang} visible={tonightFit} />
-        </span>
-        <button type="button" className="info-btn" onClick={onOpenInfo}>
-          <span>i</span>
-        </button>
-      </div>
-      <div className={styles.rowFooter}>
-        <div className={styles.dpRow}>
-          <div className={styles.dpRowInner}>
-            <DisneyPlusLink href={disneyPlusHref} title={title} onCopied={onCopiedForDisney} />
-          </div>
+          <button type="button" className="info-btn" onClick={onOpenInfo}>
+            <span>i</span>
+          </button>
         </div>
-        <StarRating rating={rating} containerClassName={styles.stars} onRate={onRate} />
+        <div className={styles.rowFooter}>
+          <div className={styles.dpRow}>
+            <div className={styles.dpRowInner}>
+              <DisneyPlusLink href={disneyPlusHref} title={title} onCopied={onCopiedForDisney} />
+            </div>
+          </div>
+          <StarRating rating={rating} containerClassName={styles.stars} onRate={onRate} />
+        </div>
       </div>
     </div>
   );

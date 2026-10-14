@@ -435,7 +435,7 @@ export const CATALOG: CatalogEntry[] = [
     season: 1,
     count: 6,
     epMins: [35, 35, 35, 35, 35, 35],
-    opt: true,
+    opt: false,
   },
   {
     type: 'f',

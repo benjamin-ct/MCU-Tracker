@@ -1,10 +1,24 @@
-/* ── FILM ROW ── */
+/* ── FILM ROW ──
+   .row is now a flex container: poster thumbnail (RowPoster) + .rowBody, which keeps
+   all of its own vertical padding exactly as before a poster existed — .row itself adds
+   no vertical padding, so nothing doubles up. Center-aligned rather than flex-start:
+   .rowBody's height varies with wrapped badges, and a fixed-size poster centered next
+   to it reads as a normal "list item with thumbnail", no offset math needed. */
 .row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 2px;
   border-bottom: 1px solid var(--ln);
 }
 
 .row:last-child {
   border-bottom: none;
+}
+
+.rowBody {
+  flex: 1;
+  min-width: 0;
 }
 
 .rowTop {

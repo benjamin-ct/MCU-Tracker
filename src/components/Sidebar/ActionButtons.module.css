@@ -8,18 +8,25 @@
 .actBtn {
   appearance: none;
   border: 1px solid var(--ln2);
-  border-radius: 8px;
+  border-radius: 9px;
   background: var(--raised);
   color: var(--dim);
   font-family: var(--g), sans-serif;
   font-size: 12px;
   font-weight: 600;
-  padding: 9px 0;
+  padding: 10px 0;
   cursor: pointer;
   flex: 1;
   transition:
     border-color 0.15s,
+    background 0.15s,
     color 0.15s;
+}
+
+.actBtn:hover {
+  border-color: color-mix(in srgb, var(--red) 45%, var(--ln2));
+  background: color-mix(in srgb, var(--red) 6%, var(--raised));
+  color: var(--text);
 }
 
 .actBtn:active {

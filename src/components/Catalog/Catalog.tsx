@@ -6,11 +6,15 @@
 // state — this component just reads it and reports toggles.
 import { useMemo } from 'react';
 
-import type { CatalogEntry, Lang, Mode, SeriesEntry, SortMode, ViewFilter } from '../../data';
-import { isFilm, isFuture, PLAT } from '../../data';
+import type { CatalogEntry, Lang, Mode, SeriesEntry, SortMode, TmdbRef, ViewFilter, ViewLayout } from '../../data';
+import { getTitle, isFilm, isFuture, PLAT } from '../../data';
+import type { PosterFetchResult } from '../../hooks';
+import { t } from '../../i18n';
 import { fitsTonight, isWatched, sDone, sRem, type WatchDates } from '../../utils/compute';
+import { fmt } from '../../utils/format';
 import { groupBadge, visibleGroups } from '../../utils/groups';
 import { ChapterGroup } from './ChapterGroup';
+import { GridCard } from './GridCard';
 import { MovieRow } from './MovieRow';
 import { SeriesRow } from './SeriesRow';
 
@@ -18,6 +22,7 @@ interface CatalogProps {
   catalog: CatalogEntry[];
   lang: Lang;
   sortMode: SortMode;
+  viewLayout: ViewLayout;
   mode: Mode;
   searchQuery: string;
   viewFilter: ViewFilter;
@@ -29,6 +34,7 @@ interface CatalogProps {
   isSeriesCollapsed: (id: string) => boolean;
   onToggleSeries: (id: string) => void;
   disneyPlusHrefFor: (entry: CatalogEntry) => string;
+  fetchPoster: (tmdbInfo: TmdbRef) => Promise<PosterFetchResult>;
   onSetWatched: (id: string, watched: boolean) => void;
   onRate: (id: string, value: number) => void;
   onOpenInfo: (id: string) => void;
@@ -40,6 +46,7 @@ export function Catalog({
   catalog,
   lang,
   sortMode,
+  viewLayout,
   mode,
   searchQuery,
   viewFilter,
@@ -51,6 +58,7 @@ export function Catalog({
   isSeriesCollapsed,
   onToggleSeries,
   disneyPlusHrefFor,
+  fetchPoster,
   onSetWatched,
   onRate,
   onOpenInfo,
@@ -71,10 +79,35 @@ export function Catalog({
           isOpen={!isChapterCollapsed(group.key)}
           badgeText={groupBadge(group.entries, watchDates, mode)}
           lang={lang}
+          layout={viewLayout}
           onToggleOpen={() => onToggleChapter(group.key)}
         >
-          {visibleEntries.map((entry) =>
-            isFilm(entry) ? (
+          {visibleEntries.map((entry) => {
+            if (viewLayout === 'grid') {
+              const isSeries = !isFilm(entry);
+              const doneCount = isSeries ? sDone(entry, watchDates) : 0;
+              return (
+                <GridCard
+                  key={entry.id}
+                  entry={entry}
+                  title={getTitle(entry, lang)}
+                  metaText={
+                    isFilm(entry) ? fmt(entry.m) : `S${entry.season} · ${entry.count} ${t(lang, 'episodesAbbrev')}`
+                  }
+                  lang={lang}
+                  isWatched={isFilm(entry) ? isWatched(watchDates, entry.id) : doneCount === entry.count}
+                  indeterminate={isSeries && doneCount > 0 && doneCount < entry.count}
+                  isFuture={isFuture(entry.id)}
+                  platform={PLAT[entry.id]}
+                  fetchPoster={fetchPoster}
+                  onToggleWatched={(watched) =>
+                    isFilm(entry) ? onSetWatched(entry.id, watched) : onBulkToggleSeries(entry, watched)
+                  }
+                  onOpenInfo={() => onOpenInfo(entry.id)}
+                />
+              );
+            }
+            return isFilm(entry) ? (
               <MovieRow
                 key={entry.id}
                 entry={entry}
@@ -86,6 +119,7 @@ export function Catalog({
                 isFuture={isFuture(entry.id)}
                 platform={PLAT[entry.id]}
                 disneyPlusHref={disneyPlusHrefFor(entry)}
+                fetchPoster={fetchPoster}
                 onToggleWatched={(watched) => onSetWatched(entry.id, watched)}
                 onRate={(value) => onRate(entry.id, value)}
                 onOpenInfo={() => onOpenInfo(entry.id)}
@@ -105,6 +139,7 @@ export function Catalog({
                 platform={PLAT[entry.id]}
                 rating={ratings[entry.id] ?? 0}
                 disneyPlusHref={disneyPlusHrefFor(entry)}
+                fetchPoster={fetchPoster}
                 onToggleOpen={() => onToggleSeries(entry.id)}
                 onToggleEpisode={(index, watched) => onSetWatched(`${entry.id}-e${index + 1}`, watched)}
                 onBulkToggle={(watched) => onBulkToggleSeries(entry, watched)}
@@ -112,8 +147,8 @@ export function Catalog({
                 onOpenInfo={() => onOpenInfo(entry.id)}
                 onCopiedForDisney={onCopiedForDisney}
               />
-            ),
-          )}
+            );
+          })}
         </ChapterGroup>
       ))}
     </main>

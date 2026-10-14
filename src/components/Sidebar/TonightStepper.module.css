@@ -3,7 +3,8 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-left: auto;
+  width: 100%;
+  justify-content: space-between;
 }
 
 .tnLbl {
@@ -18,8 +19,18 @@
   align-items: center;
   background: var(--card);
   border: 1px solid var(--ln2);
-  border-radius: 8px;
+  border-radius: 9px;
   overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+/* A budget is set — same red cue as every other active filter in the sidebar. */
+.tnStepper.active {
+  border-color: color-mix(in srgb, var(--red) 55%, transparent);
+}
+
+.tnStepper.active .tnVal {
+  color: var(--red);
 }
 
 .tnBtn {
@@ -48,10 +59,4 @@
   font-weight: 500;
   min-width: 32px;
   text-align: center;
-}
-
-@media (min-width: 768px) {
-  .tnWrap {
-    margin-left: 0;
-  }
 }

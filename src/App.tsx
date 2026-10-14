@@ -52,6 +52,8 @@ function App() {
     setMode,
     sortMode,
     setSortMode,
+    viewLayout,
+    setViewLayout,
     viewFilter,
     setViewFilter,
     searchQuery,
@@ -216,11 +218,13 @@ function App() {
           tonightMin={tonightMin}
           futurePendingCount={pendingCount}
           sortMode={sortMode}
+          viewLayout={viewLayout}
           viewFilter={viewFilter}
           onMarkNext={handleMarkNext}
           onSurprise={handleSurprise}
           onOpenStats={() => setStatsModalOpen(true)}
           onSortChange={handleSortChange}
+          onViewLayoutChange={setViewLayout}
           onViewFilterChange={setViewFilter}
           onTonightStepUp={stepTonightUp}
           onTonightStepDown={stepTonightDown}
@@ -238,6 +242,7 @@ function App() {
             catalog={CATALOG}
             lang={lang}
             sortMode={sortMode}
+            viewLayout={viewLayout}
             mode={mode}
             searchQuery={searchQuery}
             viewFilter={viewFilter}
@@ -249,6 +254,7 @@ function App() {
             isSeriesCollapsed={seriesCollapse.isCollapsed}
             onToggleSeries={seriesCollapse.toggle}
             disneyPlusHrefFor={() => disneyPlusHref}
+            fetchPoster={fetchPoster}
             onSetWatched={setWatched}
             onRate={toggleRating}
             onOpenInfo={setOpenInfoEntryId}

@@ -71,6 +71,22 @@
   display: block;
 }
 
+/* ── Grid layout (LayoutToggle = "Grille") — overrides the block list above when
+   both classes are present; extra class gives it the higher specificity it needs. */
+.ch.open .chBody.chBodyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 18px 10px;
+  padding-bottom: 6px;
+}
+
+@media (min-width: 768px) {
+  .ch.open .chBody.chBodyGrid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 22px 16px;
+  }
+}
+
 @media (min-width: 768px) {
   .chHd {
     padding: 16px 0;

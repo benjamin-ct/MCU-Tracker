@@ -68,7 +68,7 @@
 .chip.accent {
   color: var(--red);
   border-color: var(--red-glow);
-  background: rgba(56, 191, 80, 0.07);
+  background: color-mix(in srgb, var(--red) 7%, transparent);
 }
 
 @media (min-width: 768px) {

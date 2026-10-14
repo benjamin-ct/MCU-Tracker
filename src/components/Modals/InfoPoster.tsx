@@ -11,11 +11,14 @@ import { TMDB_IMAGE_BASE } from '../../hooks';
 import { t } from '../../i18n';
 import styles from './InfoPoster.module.css';
 
+// One colour per saga — bronze for the pre-Avengers era, the app's own marquee red for
+// the Infinity Saga, violet for the Multiverse Saga, gold for Phase 6 and beyond. Kept
+// in sync with Catalog/RowPoster's copy of this same array.
 const CHAPTER_GRADIENTS: [string, string][] = [
-  ['#1E7A2C', '#0B120C'],
-  ['#38BF50', '#0F1E13'],
-  ['#5B7FD1', '#12162A'],
-  ['#C8941A', '#241C08'],
+  ['#A8732E', '#180F07'],
+  ['#D62839', '#1A0B0C'],
+  ['#7B5CC9', '#140F24'],
+  ['#D4A62F', '#1F1708'],
 ];
 
 // Words that don't help identify a title (articles/conjunctions, FR+EN) — skipped

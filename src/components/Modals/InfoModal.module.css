@@ -103,13 +103,13 @@
 }
 
 .trailerBtn {
-  background: rgba(56, 191, 80, 0.12);
-  border: 1px solid rgba(56, 191, 80, 0.35);
+  background: color-mix(in srgb, var(--red) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--red) 35%, transparent);
   color: var(--text);
 }
 
 .trailerBtn:active {
-  background: rgba(56, 191, 80, 0.22);
+  background: color-mix(in srgb, var(--red) 22%, transparent);
 }
 
 .imdbBtn {
@@ -152,7 +152,7 @@
 }
 
 .infoPC {
-  background: rgba(56, 191, 80, 0.06);
+  background: color-mix(in srgb, var(--red) 6%, transparent);
   margin: 0 -8px;
   padding: 8px;
   border-radius: 8px;
