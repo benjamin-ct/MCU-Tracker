@@ -18,8 +18,18 @@
   align-items: center;
   background: var(--card);
   border: 1px solid var(--ln2);
-  border-radius: 8px;
+  border-radius: 9px;
   overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+/* A budget is set — same red cue as every other active filter in the sidebar. */
+.tnStepper.active {
+  border-color: color-mix(in srgb, var(--red) 55%, transparent);
+}
+
+.tnStepper.active .tnVal {
+  color: var(--red);
 }
 
 .tnBtn {

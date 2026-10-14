@@ -60,15 +60,22 @@ export function Sidebar({
         onMarkNext={onMarkNext}
       />
       <ActionButtons lang={lang} onSurprise={onSurprise} onOpenStats={onOpenStats} />
-      <div className={styles.filterRow}>
-        <SortToggle sortMode={sortMode} lang={lang} onChange={onSortChange} />
-      </div>
-      <div className={styles.filterRow}>
-        <LayoutToggle viewLayout={viewLayout} lang={lang} onChange={onViewLayoutChange} />
-      </div>
-      <div className={styles.filterRow}>
-        <ViewFilterToggle viewFilter={viewFilter} lang={lang} onChange={onViewFilterChange} />
-        <TonightStepper tonightMin={tonightMin} lang={lang} onStepUp={onTonightStepUp} onStepDown={onTonightStepDown} />
+      <div className={styles.filterPanel}>
+        <div className={styles.filterRow}>
+          <SortToggle sortMode={sortMode} lang={lang} onChange={onSortChange} />
+        </div>
+        <div className={styles.filterRow}>
+          <LayoutToggle viewLayout={viewLayout} lang={lang} onChange={onViewLayoutChange} />
+        </div>
+        <div className={styles.filterRow}>
+          <ViewFilterToggle viewFilter={viewFilter} lang={lang} onChange={onViewFilterChange} />
+          <TonightStepper
+            tonightMin={tonightMin}
+            lang={lang}
+            onStepUp={onTonightStepUp}
+            onStepDown={onTonightStepDown}
+          />
+        </div>
       </div>
       <BulkExpand lang={lang} onExpandAll={onExpandAll} onCollapseAll={onCollapseAll} />
     </aside>
