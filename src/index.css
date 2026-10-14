@@ -23,7 +23,6 @@
   --amber: #f5a524;
   --danger: #ff6b6b;
   --danger-glow: rgba(255, 107, 107, 0.3);
-  --dp-text: #dff5e2;
   --on-accent: #fff8f6;
   --topbar-bg: rgba(10, 8, 9, 0.92);
   --g: 'Space Grotesk', -apple-system, sans-serif;
@@ -55,7 +54,6 @@
   --amber: #8a5a00;
   --danger: #b5352f;
   --danger-glow: rgba(181, 53, 47, 0.25);
-  --dp-text: #0f5c22;
   --on-accent: #fff8f6;
   --topbar-bg: rgba(247, 242, 234, 0.9);
 }
