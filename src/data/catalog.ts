@@ -357,7 +357,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 2,
     season: 1,
     count: 6,
-    epMins: [50, 50, 50, 50, 50, 50],
+    epMins: [49, 50, 53, 53, 60, 51],
     opt: false,
   },
   {
@@ -367,7 +367,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 2,
     season: 1,
     count: 6,
-    epMins: [50, 50, 50, 50, 50, 50],
+    epMins: [52, 54, 42, 48, 49, 46],
     opt: false,
   },
   {
@@ -396,7 +396,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 2,
     season: 1,
     count: 6,
-    epMins: [45, 45, 45, 45, 45, 45],
+    epMins: [49, 51, 43, 40, 44, 61],
     opt: true,
   },
   {
@@ -406,7 +406,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 2,
     season: 1,
     count: 6,
-    epMins: [50, 50, 50, 50, 50, 50],
+    epMins: [47, 53, 53, 53, 50, 42],
     opt: true,
   },
   {
@@ -434,7 +434,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 2,
     season: 1,
     count: 6,
-    epMins: [35, 35, 35, 35, 35, 35],
+    epMins: [49, 51, 47, 48, 41, 49],
     opt: false,
   },
   {
@@ -471,7 +471,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 2,
     season: 1,
     count: 9,
-    epMins: [35, 35, 35, 35, 35, 35, 35, 35, 35],
+    epMins: [38, 30, 34, 36, 31, 31, 35, 36, 33],
     opt: true,
   },
   {
@@ -490,7 +490,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 2,
     season: 1,
     count: 6,
-    epMins: [45, 45, 45, 45, 45, 45],
+    epMins: [55, 58, 42, 38, 39, 38],
     opt: true,
   },
   {
@@ -500,7 +500,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 2,
     season: 2,
     count: 6,
-    epMins: [50, 50, 50, 50, 50, 50],
+    epMins: [47, 51, 55, 50, 46, 58],
     opt: false,
   },
   {
@@ -547,7 +547,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 2,
     season: 1,
     count: 5,
-    epMins: [43, 43, 43, 43, 43],
+    epMins: [49, 39, 42, 37, 34],
     opt: true,
   },
   {
@@ -693,7 +693,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 2,
     season: 1,
     count: 9,
-    epMins: [45, 45, 45, 45, 45, 45, 45, 45, 45],
+    epMins: [42, 44, 39, 44, 32, 47, 36, 49, 42],
     opt: true,
   },
   {
@@ -751,7 +751,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 3,
     season: 1,
     count: 6,
-    epMins: [45, 45, 45, 45, 45, 45],
+    epMins: [41, 48, 53, 50, 57, 40],
     opt: true,
   },
   {
@@ -770,7 +770,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 3,
     season: 1,
     count: 4,
-    epMins: [30, 30, 30, 30],
+    epMins: [31, 31, 30, 29],
     opt: true,
   },
   {
@@ -800,7 +800,7 @@ export const CATALOG: CatalogEntry[] = [
     sec: 3,
     season: 2,
     count: 8,
-    epMins: [45, 45, 45, 45, 45, 45, 45, 45],
+    epMins: [51, 46, 47, 51, 50, 49, 44, 51],
     opt: false,
   },
   {
