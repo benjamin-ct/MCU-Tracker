@@ -694,7 +694,7 @@ export const CATALOG: CatalogEntry[] = [
     season: 1,
     count: 9,
     epMins: [42, 44, 39, 44, 32, 47, 36, 49, 42],
-    opt: true,
+    opt: false,
   },
   {
     type: 's',
@@ -848,8 +848,8 @@ export const CATALOG: CatalogEntry[] = [
     sec: 3,
     season: 1,
     count: 8,
-    epMins: [40, 40, 40, 40, 40, 40, 40, 40],
-    opt: true,
+    epMins: [53, 45, 52, 48, 46, 54, 62, 68],
+    opt: false,
   },
   {
     type: 'f',

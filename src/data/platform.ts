@@ -1,4 +1,4 @@
-// Titles not yet released as of the last verification (14/09/2026). Presence in
+// Titles not yet released as of the last verification (11/11/2026). Presence in
 // this map is the single source of truth for "not out yet" (isFuture()) — excludes
 // from totals/evenings/countdown, disables the checkbox, hides the Disney+ link,
 // skips it for "up next" and "tonight".
@@ -11,13 +11,6 @@ export const PLAT: Record<string, PlatformEntry> = {
     date: 'janvier 2027',
     l_en: 'Coming Soon',
     date_en: 'January 2027',
-  },
-  visionquest: {
-    l: 'Bientôt',
-    c: 'soon',
-    date: '14 oct. 2026',
-    l_en: 'Coming Soon',
-    date_en: 'Oct 14, 2026',
   },
   doomsday: {
     l: 'Cinéma',
