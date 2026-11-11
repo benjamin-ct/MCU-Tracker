@@ -698,6 +698,16 @@ export const CATALOG: CatalogEntry[] = [
   },
   {
     type: 's',
+    id: 'visionquest',
+    title: 'VisionQuest',
+    sec: 2,
+    season: 1,
+    count: 8,
+    epMins: [53, 45, 52, 48, 46, 54, 62, 68],
+    opt: false,
+  },
+  {
+    type: 's',
     id: 'whatif3',
     title: 'What If…?',
     sec: 2,
@@ -840,16 +850,6 @@ export const CATALOG: CatalogEntry[] = [
     count: 10,
     epMins: [28, 28, 28, 28, 28, 28, 28, 28, 28, 28],
     opt: true,
-  },
-  {
-    type: 's',
-    id: 'visionquest',
-    title: 'VisionQuest',
-    sec: 3,
-    season: 1,
-    count: 8,
-    epMins: [53, 45, 52, 48, 46, 54, 62, 68],
-    opt: false,
   },
   {
     type: 'f',
